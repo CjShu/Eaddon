@@ -130,6 +130,9 @@
 
         private static void OnEndScene(EventArgs args)
         {
+            if (player.IsDead && !MenuGUI.IsChatOpen && !Chat.IsOpen)
+                return;
+
             if (R.IsReady() && Menu["Draw"]["RMinMap"].GetValue<MenuBool>().Value)
             {
                 var pointList = new List<Vector3>();
@@ -159,7 +162,7 @@
 
         private static void OnDraw(EventArgs args)
         {
-            if (player.IsDead)
+            if (player.IsDead && !MenuGUI.IsChatOpen && !Chat.IsOpen)
                 return;
 
             if (Menu["Draw"]["Q"] && Q.IsReady())
