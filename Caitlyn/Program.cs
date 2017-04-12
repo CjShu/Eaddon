@@ -16,7 +16,6 @@
     {
         public static Menu Menu;
         private static Spell Q, W, E, R;
-        private static AIHeroClient player => Player.Instance;
         private static bool canCastR = true;
         private static int LastCastQTick = 0, LastCastWTick = 0, castW = 0;
         private static string[] dangerousEnemies = new[]
@@ -25,7 +24,7 @@
             "Lissandra", "Vayne", "Lucian", "Zyra"
         };
 
-        public static void Main()
+        static void Main(string[] atgs)
         {
             Bootstrap.Init();
             Loading.OnLoadingComplete += OnLoadingComplete;
@@ -33,7 +32,7 @@
 
         private static void OnLoadingComplete(EventArgs args)
         {
-            if (Player.Instance.Hero != Champion.Caitlyn)
+            if (GameObjects.Player.ChampionName != "Caitlyn")
                 return;
 
             InitSpells();
@@ -89,14 +88,12 @@
             DrawMenu.Add(new MenuBool("W", "W"));
             DrawMenu.Add(new MenuBool("E", "E"));
             DrawMenu.Add(new MenuBool("R", "R"));
-            DrawMenu.Add(new MenuBool("RMinMap", "R 小地圖範圍"));
+            DrawMenu.Add(new MenuBool("RMinMap", "R 小地圖範圍"));            
             DrawMenu.Add(new MenuBool("RKill", "顯示R能擊殺目標", true));
             DamageIndicator.AddToMenu(DrawMenu);
 
             Menu.Add(new MenuKeyBind("EQKey", "EQ按鍵", System.Windows.Forms.Keys.G, KeyBindType.Press));
             Menu.Add(new MenuKeyBind("FleeKey", "逃跑按鍵", System.Windows.Forms.Keys.Z, KeyBindType.Press));
-
-            Common.Manager.WriteConsole("By: CjShu" + player.ChampionName);
 
             Variables.Orbwalker.Enabled = true;
         }
@@ -116,7 +113,7 @@
             if (W.IsReady())
             {
                 BuffInstance aBuff =
-                    (from fBuffs in sender.Buffs.Where(s => sender.Team != player.Team && sender.Distance(player.Position) < W.Range)
+                    (from fBuffs in sender.Buffs.Where(s => sender.Team != ObjectManager.Player.Team && sender.Distance(ObjectManager.Player.Position) < W.Range)
                      from b in new[] { "teleport", "pantheon_grandskyfall_jump", "crowstorm", "zhonya", "katarinar", "MissFortuneBulletTime", "gate", "chronorevive" }
                      where args.Buff.Name.ToLower().Contains(b)
                      select fBuffs).FirstOrDefault();
@@ -130,9 +127,6 @@
 
         private static void OnEndScene(EventArgs args)
         {
-            if (player.IsDead && !MenuGUI.IsChatOpen && !Chat.IsOpen)
-                return;
-
             if (R.IsReady() && Menu["Draw"]["RMinMap"].GetValue<MenuBool>().Value)
             {
                 var pointList = new List<Vector3>();
@@ -141,7 +135,7 @@
                 {
                     var angle = i * Math.PI * 2 / 30;
 
-                    pointList.Add(new Vector3(player.Position.X + R.Range * (float)Math.Cos(angle), player.Position.Y + R.Range * (float)Math.Sin(angle), player.Position.Z));
+                    pointList.Add(new Vector3(GameObjects.Player.Position.X + R.Range * (float)Math.Cos(angle), GameObjects.Player.Position.Y + R.Range * (float)Math.Sin(angle), GameObjects.Player.Position.Z));
                 }
 
                 for (var i = 0; i < pointList.Count; i++)
@@ -154,35 +148,35 @@
                     var aon1Screen = Drawing.WorldToScreen(a);
                     var bon1Screen = Drawing.WorldToScreen(b);
 
-                    Drawing.DrawLine(aon1Screen.X, aon1Screen.Y, bon1Screen.X, bon1Screen.Y, 1, System.Drawing.Color.BlueViolet);
-                    Drawing.DrawLine(aonScreen.X, aonScreen.Y, bonScreen.X, bonScreen.Y, 1, System.Drawing.Color.BlueViolet);
+                    Drawing.DrawLine(aon1Screen.X, aon1Screen.Y, bon1Screen.X, bon1Screen.Y, 1, System.Drawing.Color.White);
+                    Drawing.DrawLine(aonScreen.X, aonScreen.Y, bonScreen.X, bonScreen.Y, 1, System.Drawing.Color.White);
                 }
             }
         }
 
         private static void OnDraw(EventArgs args)
         {
-            if (player.IsDead && !MenuGUI.IsChatOpen && !Chat.IsOpen)
+            if (GameObjects.Player.IsDead)
                 return;
 
             if (Menu["Draw"]["Q"] && Q.IsReady())
             {
-                Render.Circle.DrawCircle(player.Position, Q.Range, System.Drawing.Color.Blue);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, Q.Range, System.Drawing.Color.LightBlue, 2);
             }
 
             if (Menu["Draw"]["W"] && W.IsReady())
             {
-                Render.Circle.DrawCircle(player.Position, W.Range, System.Drawing.Color.Yellow);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, W.Range, System.Drawing.Color.OrangeRed, 2);
             }
 
             if (Menu["Draw"]["E"] && E.IsReady())
             {
-                Render.Circle.DrawCircle(player.Position, E.Range, System.Drawing.Color.Red);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, E.Range, System.Drawing.Color.LightYellow, 2);
             }
 
             if (Menu["Draw"]["R"] && R.IsReady())
             {
-                Render.Circle.DrawCircle(player.Position, R.Range, System.Drawing.Color.Green);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, R.Range, System.Drawing.Color.Green, 2);
             }
 
             if (Menu["Draw"]["RKill"])
@@ -191,7 +185,7 @@
                 {
                     if (target != null)
                     {
-                        Drawing.DrawText(Drawing.WorldToScreen(target.Position)[0] - 20, Drawing.WorldToScreen(target.Position)[1], System.Drawing.Color.Cyan, "R !!!!!");
+                        Drawing.DrawText(Drawing.WorldToScreen(target.Position)[0] - 20, Drawing.WorldToScreen(target.Position)[1], System.Drawing.Color.Red, "R KillAble!!!!!");
                     }
                 }
             }
@@ -201,7 +195,7 @@
         {
             R.Range = 500 * (R.Level == 0 ? 1 : R.Level) + 1500;
 
-            if (player.IsDead)
+            if (GameObjects.Player.IsDead)
                 return;
 
             if (Menu["R"]["Key"].GetValue<MenuKeyBind>().Active && R.IsReady())
@@ -241,7 +235,7 @@
 
                 if (Menu["E"]["Flee"] && E.IsReady())
                 {
-                    var position = player.ServerPosition - (Game.CursorPos - player.ServerPosition);
+                    var position = ObjectManager.Player.ServerPosition - (Game.CursorPos - ObjectManager.Player.ServerPosition);
                     E.Cast(position);
                 }
 
@@ -280,7 +274,7 @@
 
         private static void LaneLogic()
         {
-            if (Menu["Q"]["Lane"].GetValue<MenuSliderButton>().BValue && player.ManaPercent >= Menu["Q"]["Lane"].GetValue<MenuSliderButton>().SValue && Q.IsReady())
+            if (Menu["Q"]["Lane"].GetValue<MenuSliderButton>().BValue && GameObjects.Player.ManaPercent >= Menu["Q"]["Lane"].GetValue<MenuSliderButton>().SValue && Q.IsReady())
             {
                 var Minions = GameObjects.Minions.Where(x => x.IsValidTarget(Q.Range) && x.IsEnemy && x.IsMinion && x.Team != GameObjectTeam.Neutral).ToList();
 
@@ -298,7 +292,7 @@
 
         private static void JungleLogic()
         {
-            if (Menu["Q"]["Jungle"].GetValue<MenuSliderButton>().BValue && player.ManaPercent >= Menu["Q"]["Jungle"].GetValue<MenuSliderButton>().SValue && Q.IsReady())
+            if (Menu["Q"]["Jungle"].GetValue<MenuSliderButton>().BValue && GameObjects.Player.ManaPercent >= Menu["Q"]["Jungle"].GetValue<MenuSliderButton>().SValue && Q.IsReady())
             {
                 var Mobs = ObjectManager.Get<Obj_AI_Minion>().Where(x => !x.IsDead && !x.IsZombie && x.Team == GameObjectTeam.Neutral && x.IsValidTarget(Q.Range)).ToList();
 
@@ -326,7 +320,7 @@
 
                     if (t.HasBuffOfType(BuffType.Slow))
                     {
-                        var hit = t.IsFacing(player) ? t.Position.Extend(player.Position, + 140) : t.Position.Extend(player.Position, -140);
+                        var hit = t.IsFacing(ObjectManager.Player) ? t.Position.Extend(ObjectManager.Player.Position, +140) : t.Position.Extend(ObjectManager.Player.Position, -140);
 
                         CastW(hit);
                     }
@@ -337,7 +331,7 @@
             {
                 var t = Variables.TargetSelector.GetTarget(Q.Range - 30, DamageType.Physical);
 
-                if (t.IsValidTarget(Q.Range) && (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) || t.HasBuffOfType(BuffType.Taunt) || (t.Health <= player.GetSpellDamage(t, SpellSlot.Q) && t.DistanceToPlayer() >= player.AttackRange)))
+                if (t.IsValidTarget(Q.Range) && (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) || t.HasBuffOfType(BuffType.Taunt) || (t.Health <= ObjectManager.Player.GetSpellDamage(t, SpellSlot.Q) && t.DistanceToPlayer() >= GameObjects.Player.AttackRange)))
                 {
                     CastQ(t);
                 }
@@ -346,13 +340,13 @@
 
         private static void HarassLogic()
         {
-            if (Menu["Q"]["Harass"].GetValue<MenuSliderButton>().BValue && player.ManaPercent >= Menu["Q"]["Harass"].GetValue<MenuSliderButton>().SValue && Q.IsReady())
+            if (Menu["Q"]["Harass"].GetValue<MenuSliderButton>().BValue && GameObjects.Player.ManaPercent >= Menu["Q"]["Harass"].GetValue<MenuSliderButton>().SValue && Q.IsReady())
             {
                 var targets = GameObjects.EnemyHeroes.Where(e => !e.IsDead && !e.IsZombie && e.IsHPBarRendered && e.IsValidTarget(Q.Range));
 
                 foreach (var target in targets)
                 {
-                    if (player.CountEnemyHeroesInRange(bonusRange() + 100 + target.BoundingRadius) == 0)
+                    if (GameObjects.Player.CountEnemyHeroesInRange(bonusRange() + 100 + target.BoundingRadius) == 0)
                     {
                         CastQ(target);
                     }
@@ -366,48 +360,48 @@
 
             if (Manager.CheckTarget(target))
             {
-                if (Menu["E"]["Combo"] && E.IsReady() && target.IsValidTarget(target.IsFacing(player) ? E.Range - 200 : E.Range - 300) && E.GetPrediction(target).CollisionObjects.Count == 0)
+                if (Menu["E"]["Combo"] && E.IsReady() && target.IsValidTarget(target.IsFacing(ObjectManager.Player) ? E.Range - 200 : E.Range - 300) && E.GetPrediction(target).CollisionObjects.Count == 0)
                 {
                     E.Cast(target.Position);
                 }
 
                 if (Menu["Q"]["Combo"] && Q.IsReady() && target.IsValidTarget(Q.Range))
                 {
-                    if (GetRealDistance(target) > Menu["Q"]["ComboRange"].GetValue<MenuSlider>().Value && !Manager.InAutoAttackRange(target) && target.Health < Q.GetDamage(target) && player.CountEnemyHeroesInRange(400) == 0)
+                    if (GetRealDistance(target) > Menu["Q"]["ComboRange"].GetValue<MenuSlider>().Value && !Manager.InAutoAttackRange(target) && target.Health < Q.GetDamage(target) && GameObjects.Player.CountEnemyHeroesInRange(400) == 0)
                     {
                         CastQ(target);
                     }
-                    else if (player.Mana > R.skillshot.ManaCost + Q.skillshot.ManaCost + E.skillshot.ManaCost + 10 && player.CountEnemyHeroesInRange(bonusRange() + 100 + target.BoundingRadius) == 0)
+                    else if (GameObjects.Player.Mana > R.skillshot.ManaCost + Q.skillshot.ManaCost + E.skillshot.ManaCost + 10 && GameObjects.Player.CountEnemyHeroesInRange(bonusRange() + 100 + target.BoundingRadius) == 0)
                     {
                         CastQ(target);
                     }
                 }
 
-                if (Menu["R"]["Combo"] && R.IsReady() && !player.IsUnderEnemyTurret() && target.IsValidTarget(R.Range) && target.Health < R.GetDamage(target) && player.CountEnemyHeroesInRange(Menu["R"]["ComboSetRange"].GetValue<MenuSlider>().Value) < Menu["R"]["ComboSafeRange"].GetValue<MenuSlider>().Value && target.DistanceToPlayer() > Menu["R"]["ComboRange"].GetValue<MenuSlider>().Value && canCastR && LastCastQTick + 1000 >= Variables.TickCount)
+                if (Menu["R"]["Combo"] && R.IsReady() && !GameObjects.Player.IsUnderEnemyTurret() && target.IsValidTarget(R.Range) && target.Health < R.GetDamage(target) && GameObjects.Player.CountEnemyHeroesInRange(Menu["R"]["ComboSetRange"].GetValue<MenuSlider>().Value) < Menu["R"]["ComboSafeRange"].GetValue<MenuSlider>().Value && target.DistanceToPlayer() > Menu["R"]["ComboRange"].GetValue<MenuSlider>().Value && canCastR && LastCastQTick + 1000 >= Variables.TickCount)
                 {
                     bool cast = true;
 
                     PredictionOutput output = R.GetPrediction(target);
-                    Vector2 direction = output.CastPosition.ToVector2() - player.Position.ToVector2();
+                    Vector2 direction = output.CastPosition.ToVector2() - GameObjects.Player.Position.ToVector2();
                     direction.Normalize();
                     List<AIHeroClient> enemies = GameObjects.EnemyHeroes.Where(x => x.IsValidTarget()).ToList();
 
                     foreach (var enemy in enemies)
                     {
-                        if (enemy.ChampionName == target.ChampionName || !cast)
+                        if (enemy.BaseSkinName == target.BaseSkinName || !cast)
                             continue;
 
                         PredictionOutput prediction = R.GetPrediction(enemy);
                         Vector3 predictedPosition = prediction.CastPosition;
-                        Vector3 v = output.CastPosition - player.ServerPosition;
-                        Vector3 w = predictedPosition - player.ServerPosition;
+                        Vector3 v = output.CastPosition - GameObjects.Player.ServerPosition;
+                        Vector3 w = predictedPosition - GameObjects.Player.ServerPosition;
                         double c1 = Vector3.Dot(w, v);
                         double c2 = Vector3.Dot(v, v);
                         double b = c1 / c2;
-                        Vector3 pb = player.ServerPosition + ((float)b * v);
+                        Vector3 pb = GameObjects.Player.ServerPosition + ((float)b * v);
                         float length = Vector3.Distance(predictedPosition, pb);
 
-                        if (length < (400f + enemy.BoundingRadius) && player.Distance(predictedPosition) < player.Distance(target.ServerPosition))
+                        if (length < (400f + enemy.BoundingRadius) && GameObjects.Player.Distance(predictedPosition) < GameObjects.Player.Distance(target.ServerPosition))
                             cast = false;
                     }
 
@@ -418,7 +412,7 @@
                     }
                 }
 
-                if (W.IsReady() && Menu["W"]["Combo"].GetValue<MenuList>().Index != 3 && target.IsValidTarget(W.Range) && !player.Spellbook.IsAutoAttacking && player.Spellbook.GetSpell(SpellSlot.W).Ammo >= Menu["W"]["ComboCount"].GetValue<MenuSlider>().Value + 1)
+                if (W.IsReady() && Menu["W"]["Combo"].GetValue<MenuList>().Index != 3 && target.IsValidTarget(W.Range) && !GameObjects.Player.Spellbook.IsAutoAttacking && GameObjects.Player.Spellbook.GetSpell(SpellSlot.W).Ammo >= Menu["W"]["ComboCount"].GetValue<MenuSlider>().Value + 1)
                 {
                     if (Menu["W"]["Combo"].GetValue<MenuList>().Index == 0)
                     {
@@ -436,21 +430,21 @@
                                         Range = W.Range
                                     });
 
-                            if (targetw.IsMelee && targetw.IsFacing(player) && targetw.Distance(player) < 300 && Environment.TickCount - castW > 1300)
+                            if (targetw.IsMelee && targetw.IsFacing(ObjectManager.Player) && targetw.Distance(GameObjects.Player) < 300 && Environment.TickCount - castW > 1300)
                             {
-                                W.Cast(player);
+                                W.Cast(GameObjects.Player);
                                 castW = Environment.TickCount;
                             }
 
-                            if (prediction.Hitchance >= HitChance.VeryHigh && targetw.IsFacing(player) && Environment.TickCount - castW > 1300)
+                            if (prediction.Hitchance >= HitChance.VeryHigh && targetw.IsFacing(GameObjects.Player) && Environment.TickCount - castW > 1300)
                             {
                                 W.Cast(prediction.CastPosition);
                                 castW = Environment.TickCount;
                             }
 
-                            if (!targetw.IsFacing(player) && Environment.TickCount - castW > 2000)
+                            if (!targetw.IsFacing(GameObjects.Player) && Environment.TickCount - castW > 2000)
                             {
-                                var vector = targetw.ServerPosition - player.Position;
+                                var vector = targetw.ServerPosition - GameObjects.Player.Position;
                                 var Behind = W.GetPrediction(targetw).CastPosition + Vector3.Normalize(vector) * 100;
 
                                 W.Cast(Behind);
@@ -462,16 +456,16 @@
                     {
                         var pred = GetPrediction(target, W);
 
-                        if (!GameObjects.AllyMinions.Any(m => !m.IsDead && m.CharData.BaseSkinName.Contains("trap") && m.Distance(pred.Item2) < 100) && (int)pred.Item1 > (int)HitChance.Medium && player.Distance(pred.Item2) < W.Range)
+                        if (!GameObjects.AllyMinions.Any(m => !m.IsDead && m.CharData.BaseSkinName.Contains("trap") && m.Distance(pred.Item2) < 100) && (int)pred.Item1 > (int)HitChance.Medium && GameObjects.Player.Distance(pred.Item2) < W.Range)
                         {
                             CastW(pred.Item2);
                         }
                     }
                     else if (Menu["W"]["Combo"].GetValue<MenuList>().Index == 2)
                     {
-                        if (player.Distance(target) < 450 && target.IsFacing(player))
+                        if (ObjectManager.Player.Distance(target) < 450 && target.IsFacing(GameObjects.Player))
                         {
-                            CastW(Common.Geometry.CenterOfVectors(new[] { player.Position, target.Position }));
+                            CastW(Common.Geometry.CenterOfVectors(new[] { GameObjects.Player.Position, target.Position }));
                         }
                     }
                 }
@@ -489,7 +483,7 @@
             {
                 if (args.End.DistanceToPlayer() < 180)
                 {
-                    W.Cast(player.Position);
+                    W.Cast(ObjectManager.Player.Position);
                 }
                 else
                 {
@@ -525,7 +519,7 @@
             if (Q.CanCast(t))
             {
                 var qPrediction = Q.GetPrediction(t);
-                var hithere = qPrediction.CastPosition.Extend(player.Position, -100);
+                var hithere = qPrediction.CastPosition.Extend(ObjectManager.Player.Position, -100);
 
                 if (qPrediction.Hitchance >= HitChance.VeryHigh)
                 {
@@ -544,12 +538,12 @@
 
         private static float GetRealDistance(GameObject target)
         {
-            return Player.Instance.ServerPosition.Distance(target.Position) + player.BoundingRadius + target.BoundingRadius;
+            return GameObjects.Player.ServerPosition.Distance(target.Position) + GameObjects.Player.BoundingRadius + target.BoundingRadius;
         }
 
         private static float bonusRange()
         {
-            return 720f + Player.Instance.BoundingRadius;
+            return 720f + GameObjects.Player.BoundingRadius;
         }
 
         public static Tuple<HitChance, Vector3, List<Obj_AI_Base>> GetPrediction(AIHeroClient target, Spell spell)

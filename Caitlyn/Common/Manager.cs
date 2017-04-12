@@ -58,9 +58,7 @@
         public static AIHeroClient GetTarget(float Range, DamageType DamageType = DamageType.Physical)
         {
             return Variables.TargetSelector.GetTarget(Range, DamageType);
-            //return EloBuddy.SDK.TargetSelector.GetTarget(Range, DamageType);
         }
-
 
         /// <summary>
         /// Search Target
@@ -81,18 +79,18 @@
         public static bool InAutoAttackRange(AttackableUnit target)
         {
             var baseTarget = (Obj_AI_Base)target;
-            var myRange = GetAttackRange(Player.Instance);
+            var myRange = GetAttackRange(GameObjects.Player);
 
             if (baseTarget != null)
             {
                 return baseTarget.IsHPBarRendered &&
                     Vector2.DistanceSquared(baseTarget.ServerPosition.ToVector2(),
-                    Player.Instance.ServerPosition.ToVector2()) <= myRange * myRange;
+                    ObjectManager.Player.ServerPosition.ToVector2()) <= myRange * myRange;
             }
 
             return target.IsValidTarget() &&
                 Vector2.DistanceSquared(target.Position.ToVector2(),
-                Player.Instance.ServerPosition.ToVector2())
+                ObjectManager.Player.ServerPosition.ToVector2())
                 <= myRange * myRange;
         }
 
