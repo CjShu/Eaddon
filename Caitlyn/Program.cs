@@ -16,7 +16,6 @@
         private static Spell Q, W, E, R;
         private static bool canCastR = true;
         private static int LastCastQTick = 0, LastCastWTick = 0, castW = 0;
-        private static int LastWTime;
         public static Orbwalking.Orbwalker Orbwalker;
 
         static void Main(string[] atgs)
@@ -494,16 +493,14 @@
                                     Range = W.Range
                                 });
 
-                            if (target.IsMelee && target.IsFacing(player) && target.Distance(player) < target.AttackRange + 100 && Utils.TickCount - castW > 1300)
+                            if (target.IsMelee && target.IsFacing(player) && target.DistanceToPlayer() < target.AttackRange + 100 && Utils.TickCount - castW > 1300)
                             {
                                 W.Cast(player.Position);
-                                castW = Utils.TickCount;
                             }
 
                             if (prediction.Hitchance >= HitChance.VeryHigh && target.IsFacing(player) && Utils.TickCount - castW > 1300)
                             {
                                 W.Cast(prediction.CastPosition, true);
-                                castW = Environment.TickCount;
                             }
 
                             if (!target.IsFacing(player) && Environment.TickCount - castW > 1500)
@@ -512,7 +509,6 @@
                                 var Behind = W.GetPrediction(target).CastPosition + Vector3.Normalize(vector) * 100;
 
                                 W.Cast(Behind);
-                                castW = Environment.TickCount;
                             }
                         }
                     }
