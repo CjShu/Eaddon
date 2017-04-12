@@ -53,8 +53,8 @@
 
             DamageToUnit = Damage ?? DamageCalculate.GetComboDamage;
 
-            Enabled = mainMenu["DrawComboDamage"].GetValue<MenuBool>().Value;
-            Fill = mainMenu["DrawFillDamage"].GetValue<MenuBool>().Value;
+            Enabled = mainMenu["DrawComboDamage"].GetValue<MenuBool>();
+            Fill = mainMenu["DrawFillDamage"].GetValue<MenuBool>();
         }
 
         public static DamageToUnitDelegate DamageToUnit

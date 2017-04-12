@@ -19,7 +19,7 @@
             damage += GetEDamage(target);
             damage += GetRDamage(target);
 
-            damage += Player.Instance.GetAutoAttackDamage(target);
+            damage += GameObjects.Player.GetAutoAttackDamage(target);
 
             if (ObjectManager.Player.HasBuff("SummonerExhaust"))
             {
@@ -51,8 +51,8 @@
 
         public static float GetQDamage(Obj_AI_Base target)
         {
-            if (Player.Instance.Spellbook.GetSpell(SpellSlot.Q).Level == 0 ||
-                !Player.Instance.Spellbook.GetSpell(SpellSlot.Q).IsReady())
+            if (GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0 ||
+                !GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).IsReady())
             {
                 return 0f;
             }
@@ -62,46 +62,46 @@
 
         public static float GetWDamage(Obj_AI_Base target)
         {
-            if (Player.Instance.Spellbook.GetSpell(SpellSlot.W).Level == 0 ||
-                !Player.Instance.Spellbook.GetSpell(SpellSlot.W).IsReady())
+            if (GameObjects.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0 ||
+                !GameObjects.Player.Spellbook.GetSpell(SpellSlot.W).IsReady())
             {
                 return 0f;
             }
 
-            return (float)Player.Instance.GetSpellDamage(target, SpellSlot.W);
+            return (float)GameObjects.Player.GetSpellDamage(target, SpellSlot.W);
         }
 
         public static float GetEDamage(Obj_AI_Base target)
         {
-            if (Player.Instance.Spellbook.GetSpell(SpellSlot.E).Level == 0 ||
-                !Player.Instance.Spellbook.GetSpell(SpellSlot.E).IsReady())
+            if (GameObjects.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0 ||
+                !GameObjects.Player.Spellbook.GetSpell(SpellSlot.E).IsReady())
             {
                 return 0f;
             }
 
-            return (float)Player.Instance.GetSpellDamage(target, SpellSlot.E);
+            return (float)GameObjects.Player.GetSpellDamage(target, SpellSlot.E);
         }
 
         public static float GetRDamage(Obj_AI_Base target)
         {
-            if (Player.Instance.Spellbook.GetSpell(SpellSlot.R).Level == 0 ||
-                !Player.Instance.Spellbook.GetSpell(SpellSlot.R).IsReady())
+            if (GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).Level == 0 ||
+                !GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).IsReady())
             {
                 return 0f;
             }
 
-            return (float)Player.Instance.GetSpellDamage(target, SpellSlot.R);
+            return (float)GameObjects.Player.GetSpellDamage(target, SpellSlot.R);
         }
 
         public static float GetIgniteDmage(Obj_AI_Base target)
         {
-            if (Player.Instance.GetSpellSlot("SummonerDot") == SpellSlot.Unknown ||
-                !Player.Instance.GetSpellSlot("SummonerDot").IsReady())
+            if (GameObjects.Player.GetSpellSlot("SummonerDot") == SpellSlot.Unknown ||
+                !GameObjects.Player.GetSpellSlot("SummonerDot").IsReady())
             {
                 return 0f;
             }
 
-            return 50 + 20 * Player.Instance.Level - target.HPRegenRate / 5 * 3;
+            return 50 + 20 * GameObjects.Player.Level - target.HPRegenRate / 5 * 3;
         }
     }
 }

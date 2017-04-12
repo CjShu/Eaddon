@@ -32,7 +32,7 @@
 
         private static void OnLoadingComplete(EventArgs args)
         {
-            if (GameObjects.Player.ChampionName != "Caitlyn")
+            if (Player.Instance.ChampionName != "Caitlyn")
                 return;
 
             InitSpells();
