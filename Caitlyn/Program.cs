@@ -279,15 +279,15 @@
                 JungleLogic();
             }
 
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Flee)
+            switch (Orbwalker.ActiveMode)
             {
-                Orbwalking.MoveTo(Game.CursorPos);
-
-                if (Menu.Item("FleeE").
-                    GetValue<bool>() && E.IsReady())
-                {
-                    E.Cast(player.Position - (Game.CursorPos - player.Position));
-                }
+                case Orbwalking.OrbwalkingMode.Flee:
+                    Orbwalking.MoveTo(Game.CursorPos);
+                    if (Menu.Item("FleeE").GetValue<bool>() && E.IsReady())
+                    {
+                        E.Cast(player.Position - (Game.CursorPos - player.Position));
+                    }
+                    break;
             }
         }
 
