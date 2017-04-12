@@ -9,7 +9,7 @@
 
     internal class Offensive
     {
-        private static AIHeroClient Me => Player.Instance;
+        private static AIHeroClient Me => GameObjects.Player;
         private static Menu Menu => Tools.Menu;
 
         public static void Inject()
