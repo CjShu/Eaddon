@@ -16,12 +16,8 @@
         private static Spell Q, W, E, R;
         private static bool canCastR = true;
         private static int LastCastQTick = 0, LastCastWTick = 0, castW = 0;
+        private static int LastWTime;
         public static Orbwalking.Orbwalker Orbwalker;
-        private static string[] dangerousEnemies = new[]
-        {
-            "Alistar", "Garen", "Zed", "Fizz", "Rengar", "JarvanIV", "Irelia", "Amumu", "DrMundo", "Ryze", "Fiora", "KhaZix", "LeeSin", "Riven",
-            "Lissandra", "Vayne", "Lucian", "Zyra"
-        };
 
         static void Main(string[] atgs)
         {
@@ -504,11 +500,9 @@
                                 castW = Utils.TickCount;
                             }
 
-                            var wPred = W.GetPrediction(target);
-
                             if (prediction.Hitchance >= HitChance.VeryHigh && target.IsFacing(player) && Utils.TickCount - castW > 1300)
                             {
-                                W.Cast(wPred.CastPosition, true);
+                                W.Cast(prediction.CastPosition, true);
                                 castW = Environment.TickCount;
                             }
 
