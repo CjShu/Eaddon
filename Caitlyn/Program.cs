@@ -262,12 +262,6 @@
 
             AutoLogic();
 
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo)
-            {
-                ComboLogic();
-                EQLogic();
-            }
-
             if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed)
             {
                 HarassLogic();
@@ -281,6 +275,11 @@
 
             switch (Orbwalker.ActiveMode)
             {
+                case Orbwalking.OrbwalkingMode.Combo:
+                    ComboLogic();
+                    EQLogic();
+                    break;
+
                 case Orbwalking.OrbwalkingMode.Flee:
                     Orbwalking.MoveTo(Game.CursorPos);
                     if (Menu.Item("FleeE").GetValue<bool>() && E.IsReady())
@@ -507,7 +506,7 @@
 
                                 if (tw.IsMelee && target.IsFacing(player) && tw.Distance(player) < 300 && Environment.TickCount - castW > 1300)
                                 {
-                                    W.Cast(player, true);
+                                    W.Cast(player.Position, true);
                                     castW = Environment.TickCount;
                                 }
 
@@ -522,7 +521,7 @@
                                     var vector = tw.ServerPosition - Player.Instance.Position;
                                     var Behind = W.GetPrediction(tw).CastPosition + Vector3.Normalize(vector) * 100;
 
-                                    W.Cast(Behind, true);
+                                    W.Cast(Behind);
                                     castW = Environment.TickCount;
                                 }
                             }
