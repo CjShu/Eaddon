@@ -231,17 +231,6 @@
 
             AutoLogic();
 
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed)
-            {
-                HarassLogic();
-            }
-
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LaneClear)
-            {
-                LaneLogic();
-                JungleLogic();
-            }
-
             switch (Orbwalker.ActiveMode)
             {
                 case Orbwalking.OrbwalkingMode.Combo:
@@ -249,6 +238,14 @@
                     EQLogic();
                     break;
 
+                case Orbwalking.OrbwalkingMode.Mixed:
+                    HarassLogic();
+                    break;
+
+                case Orbwalking.OrbwalkingMode.LaneClear:
+                    LaneLogic();
+                    JungleLogic();
+                    break;
                 case Orbwalking.OrbwalkingMode.Flee:
                     Orbwalking.MoveTo(Game.CursorPos);
                     if (Menu.Item("FleeE").GetValue<bool>() && E.IsReady())
@@ -256,7 +253,6 @@
                         E.Cast(player.Position - (Game.CursorPos - player.Position));
                     }
                     break;
-
                 case Orbwalking.OrbwalkingMode.None:
                     if (Menu.Item("RKey").GetValue<KeyBind>().Active && R.IsReady())
                     {
