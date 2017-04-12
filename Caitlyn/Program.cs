@@ -51,7 +51,7 @@
 
         private static void InitMenu()
         {
-            (Menu = new Menu("CjShu Caitlyn", "CjShu 凱特琳", true)).AddToMainMenu();
+            (Menu = new Menu("CjShu 凱特琳", "CjShu Caitlyn", true)).AddToMainMenu();
 
             Menu.AddSubMenu(new Menu("走砍設置", "Orbwalking"));
             Orbwalker = new Orbwalking.Orbwalker(Menu.SubMenu("Orbwalking"));
