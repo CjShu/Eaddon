@@ -1,26 +1,24 @@
 ﻿namespace Caitlyn.Tools
 {
     using EloBuddy;
-    using LeagueSharp.SDK;
-    using LeagueSharp.SDK.UI;
-    using LeagueSharp.SDK.Utils;
+    using LeagueSharp.Common;
     using System;
     using System.Linq;
 
     internal class Offensive
     {
-        private static AIHeroClient Me => GameObjects.Player;
+        private static AIHeroClient Me => ObjectManager.Player;
         private static Menu Menu => Tools.Menu;
 
         public static void Inject()
         {
-            var OffensiveMenu = Menu.Add(new Menu("Offensive", "進攻物品"));
+            var OffensiveMenu = Menu.AddSubMenu(new Menu("攻擊道具", "Offensive"));
             {
-                OffensiveMenu.Add(new MenuBool("Youmuus", "使用妖夢", true));
-                OffensiveMenu.Add(new MenuBool("Cutlass", "使用灣刀", true));
-                OffensiveMenu.Add(new MenuBool("Botrk", "使用殞落王者", true));
-                OffensiveMenu.Add(new MenuSeparator("  ", "  "));
-                OffensiveMenu.Add(new MenuBool("Combo", "連招中啟動", true));
+                OffensiveMenu.AddItem(new MenuItem("Youmuus", "使用妖夢").SetValue(true));
+                OffensiveMenu.AddItem(new MenuItem("Cutlass", "使用灣刀").SetValue(true));
+                OffensiveMenu.AddItem(new MenuItem("Botrk", "使用殞落王者").SetValue(true));
+                OffensiveMenu.AddItem(new MenuItem("1", "  "));
+                OffensiveMenu.AddItem(new MenuItem("ComboOffensive", "連招中啟動").SetValue(false));
             }
 
             Common.Manager.WriteConsole("OffensiveMenu Load!");
@@ -35,23 +33,23 @@
                 return;
             }
 
-            if (Common.Manager.InCombo && Menu["Offensive"]["Combo"])
+            if (Common.Manager.InCombo && Menu.Item("ComboOffensive").GetValue<bool>())
             {
-                var target = Variables.TargetSelector.GetTarget(600, DamageType.Physical);
+                var target = TargetSelector.GetTarget(600, TargetSelector.DamageType.Physical);
 
                 if (target != null && target.IsHPBarRendered)
                 {
-                    if (Menu["Offensive"]["Youmuus"] && Items.HasItem(3142) && target.IsValidTarget(Me.GetRealAutoAttackRange() + 150))
+                    if (Menu.Item("Youmuus").GetValue<bool>() && Items.HasItem(3142) && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange() + 150))
                     {
                         Items.UseItem(3142);
                     }
 
-                    if (Menu["Offensive"]["Cutlass"] && Items.HasItem(3144) && target.IsValidTarget(Me.GetRealAutoAttackRange()) && target.HealthPercent < 80)
+                    if (Menu.Item("Cutlass").GetValue<bool>() && Items.HasItem(3144) && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange()) && target.HealthPercent < 80)
                     {
                         Items.UseItem(3144, target);
                     }
 
-                    if (Menu["Offensive"]["Botrk"] && Items.HasItem(3153) && target.IsValidTarget(Me.GetRealAutoAttackRange()) && (target.HealthPercent < 80 || Me.HealthPercent < 80))
+                    if (Menu.Item("Botrk").GetValue<bool>() && Items.HasItem(3153) && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange()) && (target.HealthPercent < 80 || Me.HealthPercent < 80))
                     {
                         Items.UseItem(3153, target);
                     }

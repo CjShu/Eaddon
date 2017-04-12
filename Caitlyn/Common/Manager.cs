@@ -1,9 +1,7 @@
 ﻿namespace Caitlyn.Common
 {
     using EloBuddy;
-    using LeagueSharp.SDK;
-    using LeagueSharp.SDK.Utils;
-    using LeagueSharp.SDK.Enumerations;
+    using LeagueSharp.Common;
     using SharpDX;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,173 +9,79 @@
 
     public static class Manager
     {
-        /// <summary>
-        ///  Get Enemy Minions
-        /// </summary>
-        /// <param name="From">Search Origin Position</param>
-        /// <param name="Range">Search Minions Range</param>
-        /// <returns></returns>
-        public static List<Obj_AI_Minion> GetMinions(Vector3 From, float Range)
-        {
-            return GameObjects.EnemyMinions.Where(x => x.IsValidTarget(Range, false, @From)).ToList();
-        }
+        public static Orbwalking.Orbwalker Orbwalker => Program.Orbwalker;
 
-        /// <summary>
-        /// Get Mobs
-        /// </summary>
-        /// <param name="From">Search Origin Position</param>
-        /// <param name="Range">Search Minions Range</param>
-        /// <param name="OnlyBig">Only Search Big Mob</param>
-        /// <returns></returns>
-        public static List<Obj_AI_Minion> GetMobs(Vector3 From, float Range, bool OnlyBig = false)
+        public static bool Check(this Obj_AI_Base target, float range = float.MaxValue)
         {
-            if (OnlyBig)
+            if (target == null)
             {
-                return GameObjects.Jungle.Where(x => x.IsValidTarget(Range, false, @From) && !GameObjects.JungleSmall.Contains(x)).ToList();
+                return false;
             }
-            else
-                return GameObjects.Jungle.Where(x => x.IsValidTarget(Range, false, @From)).ToList();
+
+            if (target.Distance(ObjectManager.Player) > range)
+            {
+                return false;
+            }
+
+            if (target.HasBuff("KindredRNoDeathBuff"))
+            {
+                return false;
+            }
+
+            if (target.HasBuff("UndyingRage") && target.GetBuff("UndyingRage").EndTime - Game.Time > 0.3)
+            {
+                return false;
+            }
+
+            if (target.HasBuff("JudicatorIntervention"))
+            {
+                return false;
+            }
+
+            if (target.HasBuff("ChronoShift") && target.GetBuff("ChronoShift").EndTime - Game.Time > 0.3)
+            {
+                return false;
+            }
+
+            if (target.HasBuff("ShroudofDarkness"))
+            {
+                return false;
+            }
+
+            if (target.HasBuff("SivirShield"))
+            {
+                return false;
+            }
+
+            return !target.HasBuff("FioraW");
         }
 
-        /// <summary>
-        /// Search Enemies List
-        /// </summary>
-        /// <param name="Range">Search Enemies Range</param>
-        /// <returns></returns>
-        public static List<AIHeroClient> GetEnemies(float Range)
-        {
-            return GameObjects.EnemyHeroes.Where(x => x.IsValidTarget(Range) && !x.IsZombie && !x.IsDead).ToList();
-        }
-
-        /// <summary>
-        /// Search Target
-        /// </summary>
-        /// <param name="Range">Search Target Range</param>
-        /// <param name="DamageType">Spell Damage Type</param>
-        /// <returns></returns>
-        public static AIHeroClient GetTarget(float Range, DamageType DamageType = DamageType.Physical)
-        {
-            return Variables.TargetSelector.GetTarget(Range, DamageType);
-        }
-
-        /// <summary>
-        /// Search Target
-        /// </summary>
-        /// <param name="Spell">Spell Target</param>
-        /// <param name="Ignote">Ignote Shield</param>
-        /// <returns></returns>
-        public static AIHeroClient GetTarget(Spell Spell, bool Ignote = true)
-        {
-            return Variables.TargetSelector.GetTarget(Spell, Ignote);
-        }
-
-        /// <summary>
-        /// Judge Target Is In Auto Attack Range
-        /// </summary>
-        /// <param name="Target">Target</param>
-        /// <returns></returns>
         public static bool InAutoAttackRange(AttackableUnit target)
         {
             var baseTarget = (Obj_AI_Base)target;
-            var myRange = GetAttackRange(GameObjects.Player);
+            var myRange = GetAttackRange(ObjectManager.Player);
 
             if (baseTarget != null)
             {
                 return baseTarget.IsHPBarRendered &&
-                    Vector2.DistanceSquared(baseTarget.ServerPosition.ToVector2(),
-                    ObjectManager.Player.ServerPosition.ToVector2()) <= myRange * myRange;
+                    Vector2.DistanceSquared(baseTarget.ServerPosition.To2D(),
+                    ObjectManager.Player.ServerPosition.To2D()) <= myRange * myRange;
             }
 
             return target.IsValidTarget() &&
-                Vector2.DistanceSquared(target.Position.ToVector2(),
-                ObjectManager.Player.ServerPosition.ToVector2())
+                Vector2.DistanceSquared(target.Position.To2D(),
+                ObjectManager.Player.ServerPosition.To2D())
                 <= myRange * myRange;
         }
 
-        /// <summary>
-        /// Get Target Attack Range
-        /// </summary>
-        /// <param name="Target">Target</param>
-        /// <returns></returns>
-        public static float GetAttackRange(Obj_AI_Base Target)
+        public static float GetAttackRange(Obj_AI_Base target)
         {
-            if (Target != null)
+            if (target != null)
             {
-                return Target.GetRealAutoAttackRange();
+                return Orbwalking.GetRealAutoAttackRange();
             }
             else
                 return 0f;
-        }
-
-        /// <summary>
-        /// Get Damage
-        /// </summary>
-        /// <param name="Target">Target</param>
-        /// <param name="CalCulateAttackDamage">CalCulate Attack Damage</param>
-        /// <param name="CalCulateQDamage">CalCulate Q Damage</param>
-        /// <param name="CalCulateWDamage">CalCulate W Damage</param>
-        /// <param name="CalCulateEDamage">CalCulate E Damage</param>
-        /// <param name="CalCulateRDamage">CalCulate R Damage</param>
-        /// <returns></returns>
-        public static double GetDamage(AIHeroClient Target, bool CalCulateAttackDamage = true,
-            bool CalCulateQDamage = true, bool CalCulateWDamage = true,
-            bool CalCulateEDamage = true, bool CalCulateRDamage = true)
-        {
-            if (CheckTarget(Target))
-            {
-                double Damage = 0d;
-
-                if (CalCulateAttackDamage)
-                {
-                    Damage += GameObjects.Player.GetAutoAttackDamage(Target);
-                }
-
-                if (CalCulateQDamage)
-                {
-                    Damage += GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).IsReady() ? GameObjects.Player.GetSpellDamage(Target, SpellSlot.Q) : 0d;
-                }
-
-                if (CalCulateWDamage)
-                {
-                    Damage += GameObjects.Player.Spellbook.GetSpell(SpellSlot.W).IsReady() ? GameObjects.Player.GetSpellDamage(Target, SpellSlot.W) : 0d;
-                }
-
-                if (CalCulateEDamage)
-                {
-                    Damage += GameObjects.Player.Spellbook.GetSpell(SpellSlot.E).IsReady() ? GameObjects.Player.GetSpellDamage(Target, SpellSlot.E) : 0d;
-                }
-
-                if (CalCulateRDamage)
-                {
-                    Damage += GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).IsReady() ? GameObjects.Player.GetSpellDamage(Target, SpellSlot.R) : 0d;
-                }
-
-                return Damage;
-            }
-            else
-            {
-                return 0d;
-            }
-        }
-
-        /// <summary>
-        /// Judge Target MoveMent Status (This Part From SebbyLib)
-        /// </summary>
-        /// <param name="Target">Target</param>
-        /// <returns></returns>
-        public static bool CanMove(AIHeroClient Target)
-        {
-            if (Target.MoveSpeed < 50 || Target.IsStunned || Target.HasBuffOfType(BuffType.Stun) ||
-                Target.HasBuffOfType(BuffType.Fear) || Target.HasBuffOfType(BuffType.Snare) ||
-                Target.HasBuffOfType(BuffType.Knockup) || Target.HasBuff("Recall") ||
-                Target.HasBuffOfType(BuffType.Knockback) || Target.HasBuffOfType(BuffType.Charm) ||
-                Target.HasBuffOfType(BuffType.Taunt) || Target.HasBuffOfType(BuffType.Suppression)
-                || (Target.IsCastingInterruptableSpell() && !Target.IsMoving))
-            {
-                return false;
-            }
-            else
-                return true;
         }
 
         /// <summary>
@@ -202,7 +106,7 @@
         {
             get
             {
-                return Variables.Orbwalker.ActiveMode == OrbwalkingMode.Combo;
+                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo;
             }
         }
 
@@ -213,7 +117,7 @@
         {
             get
             {
-                return Variables.Orbwalker.ActiveMode == OrbwalkingMode.Hybrid;
+                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed;
             }
         }
 
@@ -224,7 +128,7 @@
         {
             get
             {
-                return Variables.Orbwalker.ActiveMode == OrbwalkingMode.LaneClear;
+                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LaneClear;
             }
         }
 
@@ -235,7 +139,7 @@
         {
             get
             {
-                return Variables.Orbwalker.ActiveMode == OrbwalkingMode.LastHit;
+                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LastHit;
             }
         }
 
@@ -246,7 +150,7 @@
         {
             get
             {
-                return Variables.Orbwalker.ActiveMode == OrbwalkingMode.None;
+                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.None;
             }
         }
 
@@ -257,7 +161,7 @@
         public static void WriteConsole(string Message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(GameObjects.Player.ChampionName + " : " + Message);
+            Console.WriteLine(ObjectManager.Player.ChampionName + " : " + Message);
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -267,7 +171,7 @@
             {
                 return
                     (int)
-                        source.CalculateDamage(target, DamageType.Physical,
+                        source.CalcDamage(target, Damage.DamageType.Physical,
                             1.0 * source.FlatPhysicalDamageMod + source.BaseAttackDamage);
             }
 
@@ -275,7 +179,7 @@
             {
                 return
                     (int)
-                        source.CalculateDamage(target, DamageType.Magical,
+                        source.CalcDamage(target, Damage.DamageType.Magical,
                             (0.75 * source.FlatPhysicalDamageMod + source.BaseAttackDamage) +
                             (0.50 * source.FlatMagicDamageMod));
             }

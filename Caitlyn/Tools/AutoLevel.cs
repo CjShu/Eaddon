@@ -1,59 +1,113 @@
 ﻿namespace Caitlyn.Tools
 {
     using EloBuddy;
-    using LeagueSharp.SDK;
-    using LeagueSharp.SDK.UI;
-    using LeagueSharp.SDK.Utils;
+    using LeagueSharp.Common;
     using System;
+    using Utility = LeagueSharp.Common.Utility;
 
     internal class AutoLevel
     {
-        private static AIHeroClient Me => GameObjects.Player;
-        private static Menu Menu => Tools.Menu;
+        private static Menu levelMenu;
 
-        public static void Inject()
+        public static void AddToMenu(Menu mainMenu)
         {
-            var AutoLevelMenu = Menu.Add(new Menu("AutoLevels", "自動升級"));
-            {
-                AutoLevelMenu.Add(new MenuBool("Enable", "啟動", false));
-                AutoLevelMenu.Add(new MenuBool("AutoR", "自動加大絕", true));
-                AutoLevelMenu.Add(new MenuSlider("Delay", "自動加點延遲", 700, 0, 2000));
-                AutoLevelMenu.Add(new MenuSlider("Levels", "當玩家等級>= | 才開始加點", 3, 1, 6));
-                AutoLevelMenu.Add(new MenuList<string>("Mode", "加點模式: ", new[] { "Q -> W -> E", "Q -> E -> W", "W -> Q -> E", "W -> E -> Q", "E -> Q -> W", "E -> W -> Q" }));
-            }
+            levelMenu = mainMenu;
 
-            Common.Manager.WriteConsole("AutoLevelUpMenu Load!");
+            mainMenu.AddItem(new MenuItem("LevelsEnable", "啟動").SetValue(false));
+            mainMenu.AddItem(new MenuItem("LevelsAutoR", "自動升級 R").SetValue(true));
+            mainMenu.AddItem(
+                new MenuItem("LevelsDelay", "自動升級延遲").SetValue(new Slider(700, 0, 2000)));
+            mainMenu.AddItem(
+                new MenuItem("LevelsLevels", "當自己等級到達多少 啟動! >= ").SetValue(new Slider(3, 1, 6)));
+            mainMenu.AddItem(
+                new MenuItem("LevelsMode", "模式: ").SetValue(
+                    new StringList(new[]
+                        {"Q -> W -> E", "Q -> E -> W", "W -> Q -> E", "W -> E -> Q", "E -> Q -> W", "E -> W -> Q"})));
 
             Obj_AI_Base.OnLevelUp += OnLevelUp;
         }
 
-        private static void OnLevelUp(Obj_AI_Base sender, EventArgs Args)
+        private static void OnLevelUp(Obj_AI_Base sender, EventArgs args)
         {
-            if (!sender.IsMe || !Menu["AutoLevels"]["Enable"])
+            if (!sender.IsMe || !levelMenu.Item("LevelsEnable").GetValue<bool>())
             {
                 return;
             }
 
-            if (Menu["AutoLevels"]["AutoR"] && (Me.Level == 6 || Me.Level == 11 || Me.Level == 16))
+            if (levelMenu.Item("LevelsAutoR").GetValue<bool>() && (ObjectManager.Player.Level == 6 || ObjectManager.Player.Level == 11 || ObjectManager.Player.Level == 16))
             {
-                Me.Spellbook.LevelSpell(SpellSlot.R);
+                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.R);
             }
 
-            if (Me.Level >= Menu["AutoLevels"]["Levels"].GetValue<MenuSlider>().Value)
+            if (ObjectManager.Player.Level >= levelMenu.Item("LevelsLevels").GetValue<Slider>().Value)
             {
-                int Delay = Menu["AutoLevels"]["Delay"].GetValue<MenuSlider>().Value;
+                int Delay = levelMenu.Item("LevelsDelay").GetValue<Slider>().Value;
 
-                if (Me.Level >= 4)
+                if (ObjectManager.Player.Level < 3)
                 {
-                    switch (Menu["AutoLevels"]["Mode"].GetValue<MenuList>().Index)
+                    switch (levelMenu.Item("LevelsMode").GetValue<StringList>().SelectedIndex)
                     {
                         case 0:
-                            if (Me.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.Q);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.W).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.W);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.E).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.E);
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            break;
+                        case 1:
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            break;
+                        case 2:
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            break;
+                        case 3:
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            break;
+                        case 4:
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            break;
+                        case 5:
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            break;
+                    }
+                }
+                else if (ObjectManager.Player.Level > 3)
+                {
+                    switch (levelMenu.Item("LevelsMode").GetValue<StringList>().SelectedIndex)
+                    {
+                        case 0:
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
 
                             //Q -> W -> E
                             DelayLevels(Delay, SpellSlot.Q);
@@ -61,12 +115,12 @@
                             DelayLevels(Delay + 100, SpellSlot.E);
                             break;
                         case 1:
-                            if (Me.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.Q);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.E).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.E);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.W).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.W);
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
 
                             //Q -> E -> W
                             DelayLevels(Delay, SpellSlot.Q);
@@ -74,12 +128,12 @@
                             DelayLevels(Delay + 100, SpellSlot.W);
                             break;
                         case 2:
-                            if (Me.Spellbook.GetSpell(SpellSlot.W).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.W);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.Q);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.E).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.E);
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
 
                             //W -> Q -> E
                             DelayLevels(Delay, SpellSlot.W);
@@ -87,12 +141,12 @@
                             DelayLevels(Delay + 100, SpellSlot.E);
                             break;
                         case 3:
-                            if (Me.Spellbook.GetSpell(SpellSlot.W).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.W);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.E).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.E);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.Q);
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
 
                             //W -> E -> Q
                             DelayLevels(Delay, SpellSlot.W);
@@ -100,12 +154,12 @@
                             DelayLevels(Delay + 100, SpellSlot.Q);
                             break;
                         case 4:
-                            if (Me.Spellbook.GetSpell(SpellSlot.E).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.E);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.Q);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.W).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.W);
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
 
                             //E -> Q -> W
                             DelayLevels(Delay, SpellSlot.E);
@@ -113,20 +167,17 @@
                             DelayLevels(Delay + 100, SpellSlot.W);
                             break;
                         case 5:
-                            if (Me.Spellbook.GetSpell(SpellSlot.E).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.E);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.W).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.W);
-                            else if (Me.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
-                                Me.Spellbook.LevelSpell(SpellSlot.Q);
+                            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.E);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.W);
+                            else if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0)
+                                ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.Q);
 
                             //E -> W -> Q
                             DelayLevels(Delay, SpellSlot.E);
                             DelayLevels(Delay + 50, SpellSlot.W);
                             DelayLevels(Delay + 100, SpellSlot.Q);
-                            break;
-                        default:
-                            //break
                             break;
                     }
                 }
@@ -135,7 +186,7 @@
 
         private static void DelayLevels(int time, SpellSlot slot)
         {
-            DelayAction.Add(time, () => Me.Spellbook.LevelSpell(slot));
+            Utility.DelayAction.Add(time, () => ObjectManager.Player.Spellbook.LevelSpell(slot));
         }
     }
 }

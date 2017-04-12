@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using ClipperLib;
     using EloBuddy;
-    using LeagueSharp.SDK;
+    using LeagueSharp.Common;
     using SharpDX;
     using Color = System.Drawing.Color;
     using SharpDX.Direct3D9;
@@ -335,7 +335,7 @@
                 for (var i = 0; i <= this.Points.Count - 1; i++)
                 {
                     var nextIndex = (this.Points.Count - 1 == i) ? 0 : (i + 1);
-                    DrawLineInWorld(this.Points[i].ToVector3(), this.Points[nextIndex].ToVector3(), width, color);
+                    DrawLineInWorld(this.Points[i].To3D(), this.Points[nextIndex].To3D(), width, color);
                 }
             }
 
@@ -361,7 +361,7 @@
             /// <returns></returns>
             public bool IsInside(Vector3 point)
             {
-                return !IsOutside(point.ToVector2());
+                return !IsOutside(point.To2D());
             }
 
             /// <summary>
@@ -371,7 +371,7 @@
             /// <returns></returns>
             public bool IsInside(GameObject point)
             {
-                return !IsOutside(point.Position.ToVector2());
+                return !IsOutside(point.Position.To2D());
             }
 
             public bool IsOutside(Vector2 point)
@@ -412,7 +412,7 @@
                 for (var i = 0; i <= this.Points.Count - 1; i++)
                 {
                     var nextIndex = (this.Points.Count - 1 == i) ? i : (i + 1);
-                    DrawLineInWorld(this.Points[i].ToVector3(), this.Points[nextIndex].ToVector3(), width, color);
+                    DrawLineInWorld(this.Points[i].To3D(), this.Points[nextIndex].To3D(), width, color);
                     //DrawLineInWorld(this.Points[i].ToVector3(), this.Points[nextIndex].ToVector3(), width, color);
                 }
             }
@@ -439,7 +439,7 @@
             /// <returns></returns>
             public bool IsInside(Vector3 point)
             {
-                return !IsOutside(point.ToVector2());
+                return !IsOutside(point.To2D());
             }
 
             /// <summary>
@@ -449,7 +449,7 @@
             /// <returns></returns>
             public bool IsInside(GameObject point)
             {
-                return !IsOutside(point.Position.ToVector2());
+                return !IsOutside(point.Position.To2D());
             }
 
             public bool IsOutside(Vector2 point)

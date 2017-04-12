@@ -1,22 +1,22 @@
 ﻿namespace Caitlyn.Tools
 {
     using EloBuddy;
-    using LeagueSharp.SDK;
-    using LeagueSharp.SDK.UI;
+    using LeagueSharp.Common;
     using System;
     using System.Linq;
 
     internal class Potions
     {
-        private static AIHeroClient Me => GameObjects.Player;
+        private static AIHeroClient Me => Player.Instance;
         private static Menu Menu => Tools.Menu;
 
         public static void Inject()
         {
-            var PotionsMenu = Menu.Add(new Menu("Potions", "自動藥水"));
+            var PotionsMenu = Menu.AddSubMenu(new Menu("自動喝水", "Potions"));
             {
-                PotionsMenu.Add(new MenuBool("Enable", "啟動", true));
-                PotionsMenu.Add(new MenuSlider("Hp", "當玩家血量低於 <= %", 50));
+                PotionsMenu.AddItem(new MenuItem("Enable", "啟動").SetValue(true));
+                PotionsMenu.AddItem(new MenuItem("Hp", "當玩家血量低於 <= %").SetValue(new
+                    Slider(50, 0, 100)));
             }
 
             Common.Manager.WriteConsole("PotionsMenu Load!");
@@ -31,7 +31,7 @@
                 return;
             }
 
-            if (Menu["Potions"]["Enable"] && Menu["Potions"]["Hp"].GetValue<MenuSlider>().Value >= Me.HealthPercent)
+            if (Menu.Item("Enable").GetValue<bool>() && Menu.Item("Hp").GetValue<Slider>().Value >= Me.HealthPercent)
             {
                 if (Me.Buffs.Any(x => x.Name.Equals("ItemCrystalFlask", StringComparison.OrdinalIgnoreCase) ||
                     x.Name.Equals("ItemCrystalFlaskJungle", StringComparison.OrdinalIgnoreCase) ||
