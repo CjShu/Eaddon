@@ -88,7 +88,6 @@
             DrawMenu.Add(new MenuBool("W", "W"));
             DrawMenu.Add(new MenuBool("E", "E"));
             DrawMenu.Add(new MenuBool("R", "R"));
-            DrawMenu.Add(new MenuBool("RMinMap", "R 小地圖範圍"));            
             DrawMenu.Add(new MenuBool("RKill", "顯示R能擊殺目標", true));
             //DamageIndicator.AddToMenu(DrawMenu);
 
@@ -100,7 +99,6 @@
 
         private static void InitEvents()
         {
-            Drawing.OnEndScene += OnEndScene;
             Drawing.OnDraw += OnDraw;
             Game.OnUpdate += OnUpdate;
             Events.OnGapCloser += OnGapCloser;
@@ -121,35 +119,6 @@
                 if (aBuff != null)
                 {
                     CastW(sender.Position);
-                }
-            }
-        }
-
-        private static void OnEndScene(EventArgs args)
-        {
-            if (R.IsReady() && Menu["Draw"]["RMinMap"].GetValue<MenuBool>().Value)
-            {
-                var pointList = new List<Vector3>();
-
-                for (var i = 0; i < 30; i++)
-                {
-                    var angle = i * Math.PI * 2 / 30;
-
-                    pointList.Add(new Vector3(GameObjects.Player.Position.X + R.Range * (float)Math.Cos(angle), GameObjects.Player.Position.Y + R.Range * (float)Math.Sin(angle), GameObjects.Player.Position.Z));
-                }
-
-                for (var i = 0; i < pointList.Count; i++)
-                {
-                    var a = pointList[i];
-                    var b = pointList[i == pointList.Count - 1 ? 0 : i + 1];
-
-                    var aonScreen = Drawing.WorldToMinimap(a);
-                    var bonScreen = Drawing.WorldToMinimap(b);
-                    var aon1Screen = Drawing.WorldToScreen(a);
-                    var bon1Screen = Drawing.WorldToScreen(b);
-
-                    Drawing.DrawLine(aon1Screen.X, aon1Screen.Y, bon1Screen.X, bon1Screen.Y, 1, System.Drawing.Color.White);
-                    Drawing.DrawLine(aonScreen.X, aonScreen.Y, bonScreen.X, bonScreen.Y, 1, System.Drawing.Color.White);
                 }
             }
         }
@@ -176,7 +145,7 @@
 
             if (Menu["Draw"]["R"] && R.IsReady())
             {
-                Render.Circle.DrawCircle(GameObjects.Player.Position, R.Range, System.Drawing.Color.Green);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, R.Range, System.Drawing.Color.Yellow);
             }
 
             if (Menu["Draw"]["RKill"])
