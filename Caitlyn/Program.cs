@@ -90,7 +90,7 @@
             DrawMenu.Add(new MenuBool("R", "R"));
             DrawMenu.Add(new MenuBool("RMinMap", "R 小地圖範圍"));            
             DrawMenu.Add(new MenuBool("RKill", "顯示R能擊殺目標", true));
-            DamageIndicator.AddToMenu(DrawMenu);
+            //DamageIndicator.AddToMenu(DrawMenu);
 
             Menu.Add(new MenuKeyBind("EQKey", "EQ按鍵", System.Windows.Forms.Keys.G, KeyBindType.Press));
             Menu.Add(new MenuKeyBind("FleeKey", "逃跑按鍵", System.Windows.Forms.Keys.Z, KeyBindType.Press));
@@ -161,22 +161,22 @@
 
             if (Menu["Draw"]["Q"] && Q.IsReady())
             {
-                Render.Circle.DrawCircle(GameObjects.Player.Position, Q.Range, System.Drawing.Color.LightBlue, 2);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, Q.Range, System.Drawing.Color.BlueViolet);
             }
 
             if (Menu["Draw"]["W"] && W.IsReady())
             {
-                Render.Circle.DrawCircle(GameObjects.Player.Position, W.Range, System.Drawing.Color.OrangeRed, 2);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, W.Range, System.Drawing.Color.OrangeRed);
             }
 
             if (Menu["Draw"]["E"] && E.IsReady())
             {
-                Render.Circle.DrawCircle(GameObjects.Player.Position, E.Range, System.Drawing.Color.LightYellow, 2);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, E.Range, System.Drawing.Color.LightYellow);
             }
 
             if (Menu["Draw"]["R"] && R.IsReady())
             {
-                Render.Circle.DrawCircle(GameObjects.Player.Position, R.Range, System.Drawing.Color.Green, 2);
+                Render.Circle.DrawCircle(GameObjects.Player.Position, R.Range, System.Drawing.Color.Green);
             }
 
             if (Menu["Draw"]["RKill"])
