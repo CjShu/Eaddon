@@ -229,37 +229,6 @@
             if (player.IsDead)
                 return;
 
-            if (Menu.Item("RKey").GetValue<KeyBind>().Active && R.IsReady())
-            {
-                var select = TargetSelector.GetSelectedTarget();
-                var target = TargetSelector.GetTargetNoCollision(R);
-
-                if (select != null && target.IsValidTarget(R.Range))
-                {
-                    R.CastOnUnit(select, true);
-                    return;
-                }
-                else if (select == null && target != null && target.IsValidTarget(R.Range))
-                {
-                    R.CastOnUnit(target, true);
-                    return;
-                }
-            }
-
-            if (Menu.Item("EQKey").GetValue<KeyBind>().Active && E.IsReady() && Q.IsReady())
-            {
-                Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-
-                var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-
-                if (t.IsValidTarget(E.Range) && t.Health >= Q.GetDamage(t) + E.GetDamage(t) + 20 && E.CanCast(t))
-                {
-                    E.Cast(t, true);
-                    CastQ(t);
-                    return;
-                }
-            }
-
             AutoLogic();
 
             if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed)
@@ -285,6 +254,39 @@
                     if (Menu.Item("FleeE").GetValue<bool>() && E.IsReady())
                     {
                         E.Cast(player.Position - (Game.CursorPos - player.Position));
+                    }
+                    break;
+
+                case Orbwalking.OrbwalkingMode.None:
+                    if (Menu.Item("RKey").GetValue<KeyBind>().Active && R.IsReady())
+                    {
+                        var select = TargetSelector.GetSelectedTarget();
+                        var target = TargetSelector.GetTargetNoCollision(R);
+
+                        if (select != null && target.IsValidTarget(R.Range))
+                        {
+                            R.CastOnUnit(select, true);
+                            return;
+                        }
+                        else if (select == null && target != null && target.IsValidTarget(R.Range))
+                        {
+                            R.CastOnUnit(target, true);
+                            return;
+                        }
+                    }
+
+                    if (Menu.Item("EQKey").GetValue<KeyBind>().Active && E.IsReady() && Q.IsReady())
+                    {
+                        Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+
+                        var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
+
+                        if (t.IsValidTarget(E.Range) && t.Health >= Q.GetDamage(t) + E.GetDamage(t) + 20 && E.CanCast(t))
+                        {
+                            E.Cast(t, true);
+                            CastQ(t);
+                            return;
+                        }
                     }
                     break;
             }
@@ -490,60 +492,57 @@
                     {
                         if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex == 0)
                         {
-                            var tw = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
+                            var prediction = Prediction.GetPrediction(
+                                new PredictionInput
+                                {
+                                    Unit = target,
+                                    Delay = W.Delay,
+                                    Radius = W.Width,
+                                    Speed = W.Speed,
+                                    Range = W.Range
+                                });
 
-                            if (tw.IsValidTarget(W.Range))
+                            if (target.IsMelee && target.IsFacing(player) && target.Distance(player) < target.AttackRange + 100 && Utils.TickCount - castW > 1300)
                             {
-                                var prediction = Prediction.GetPrediction(
-                                    new PredictionInput
-                                    {
-                                        Unit = tw,
-                                        Delay = W.Delay,
-                                        Radius = W.Width,
-                                        Speed = W.Speed,
-                                        Range = W.Range
-                                    });
+                                W.Cast(player.Position);
+                                castW = Utils.TickCount;
+                            }
 
-                                if (tw.IsMelee && target.IsFacing(player) && tw.Distance(player) < 300 && Environment.TickCount - castW > 1300)
-                                {
-                                    W.Cast(player.Position, true);
-                                    castW = Environment.TickCount;
-                                }
+                            var wPred = W.GetPrediction(target);
 
-                                if (prediction.Hitchance >= HitChance.VeryHigh && tw.IsFacing(player) && Environment.TickCount - castW > 1300)
-                                {
-                                    W.Cast(prediction.CastPosition, true);
-                                    castW = Environment.TickCount;
-                                }
+                            if (prediction.Hitchance >= HitChance.VeryHigh && target.IsFacing(player) && Utils.TickCount - castW > 1300)
+                            {
+                                W.Cast(wPred.CastPosition, true);
+                                castW = Environment.TickCount;
+                            }
 
-                                if (!target.IsFacing(player) && Environment.TickCount - castW > 2000)
-                                {
-                                    var vector = tw.ServerPosition - Player.Instance.Position;
-                                    var Behind = W.GetPrediction(tw).CastPosition + Vector3.Normalize(vector) * 100;
+                            if (!target.IsFacing(player) && Environment.TickCount - castW > 1500)
+                            {
+                                var vector = target.ServerPosition - Player.Instance.Position;
+                                var Behind = W.GetPrediction(target).CastPosition + Vector3.Normalize(vector) * 100;
 
-                                    W.Cast(Behind);
-                                    castW = Environment.TickCount;
-                                }
+                                W.Cast(Behind);
+                                castW = Environment.TickCount;
                             }
                         }
-                        else if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex == 1)
-                        {
-                            var tw1 = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-                            var pred = GetPrediction(tw1, W);
+                    }
+                    else if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex == 1)
+                    {
+                        var tw1 = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
+                        var pred = GetPrediction(tw1, W);
 
-                            if (!MinionManager.GetMinions(player.Position, W.Range, MinionTypes.All, MinionTeam.Ally, MinionOrderTypes.None).Any(
-                                m => !m.IsDead && m.Name.ToLower().Contains("trap") && m.Distance(pred.Item2) < 100) && (int)pred.Item1
-                                > (int)HitChance.High && player.Distance(pred.Item2) < W.Range)
-                            {
-                                CastW(pred.Item2);
-                            }
-                        }
-                        else if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex == 2)
+                        if (!MinionManager.GetMinions(player.Position, W.Range, MinionTypes.All, MinionTeam.Ally, MinionOrderTypes.None).Any(
+                            m => !m.IsDead && m.Name.ToLower().Contains("trap") && m.Distance(pred.Item2) < 100) && (int)pred.Item1
+                            > (int)HitChance.High && player.Distance(pred.Item2) < W.Range)
                         {
-                            if (player.Distance(target) < 450 && target.IsFacing(player))
-                            {
-                                CastW(Common.Geometry.CenterOfVectors(new[] { player.Position, target.Position }));
-                            }
+                            CastW(pred.Item2);
+                        }
+                    }
+                    else if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex == 2)
+                    {
+                        if (player.Distance(target) < 450 && target.IsFacing(player))
+                        {
+                            CastW(Common.Geometry.CenterOfVectors(new[] { player.Position, target.Position }));
                         }
                     }
                 }
