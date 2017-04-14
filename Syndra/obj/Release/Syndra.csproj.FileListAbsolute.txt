@@ -1,0 +1,12 @@
+C:\Users\user\Source\Repos\Eaddon\Syndra\obj\Release\Syndra.csprojResolveAssemblyReference.cache
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\Syndra.exe.config
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\Syndra.exe
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\Syndra.pdb
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\EloBuddy.dll
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\EloBuddy.SDK.dll
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\Newtonsoft.Json.dll
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\PortAIO.Common.dll
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\user\Source\Repos\Eaddon\Syndra\bin\Release\SharpDX.dll
+C:\Users\user\Source\Repos\Eaddon\Syndra\obj\Release\Syndra.exe
+C:\Users\user\Source\Repos\Eaddon\Syndra\obj\Release\Syndra.pdb

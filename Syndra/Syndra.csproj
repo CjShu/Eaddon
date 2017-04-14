@@ -64,23 +64,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lib\Common\ExterienceManager.cs" />
-    <Compile Include="Lib\Common\Geometry.cs" />
-    <Compile Include="Lib\Common\HpBarDraw.cs" />
-    <Compile Include="Lib\Common\Manager.cs" />
-    <Compile Include="Lib\Common\YasuoCollsion.cs" />
+    <Compile Include="Common\DamageCalculate.cs" />
+    <Compile Include="Common\DamageIndicator.cs" />
+    <Compile Include="Common\MenuManager.cs" />
+    <Compile Include="Common\Manager.cs" />
+    <Compile Include="Common\YasuoCollsion.cs" />
     <Compile Include="Lib\Core\Helper.cs" />
     <Compile Include="Lib\Core\OrbManager.cs" />
+    <Compile Include="Tools\AutoLevel.cs" />
+    <Compile Include="Tools\Potions.cs" />
+    <Compile Include="Tools\Tools.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Lib\Prediction\" />
-    <Folder Include="Lib\Tools\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

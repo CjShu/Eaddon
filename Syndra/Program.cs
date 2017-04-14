@@ -1,57 +1,59 @@
 ﻿namespace Syndra
 {
     using EloBuddy;
-    using LeagueSharp.SDK;
-    using LeagueSharp.SDK.UI;
-    using LeagueSharp.SDK.Utils;
-    using LeagueSharp.SDK.Enumerations;
+    using EloBuddy.SDK.Events;
+    using LeagueSharp.Common;
     using System;
     using System.Linq;
-    using Lib.Common;
-    using static Lib.Common.Manager;
+    using Common;
     using System.Collections.Generic;
     using SharpDX;
 
     public class Program
     {
         public static Menu Menu;
-        public static AIHeroClient player => Player.Instance;
-        public static Orbwalker Orbwalker => Variables.Orbwalker;
-
+        private static AIHeroClient player => HeroManager.Player;
+        public static Orbwalking.Orbwalker Orbwalker;
         public static List<Spell> SpellList = new List<Spell>();
-
-        internal static Spell Q, W, E, EQ, R;
-        private static HpBarDraw HpBarDraw = new HpBarDraw();
-
+        public static Spell Q, W, E, EQ, R;
         private static SpellSlot Ignite;
         private static int qeComboT, weComboT;
 
         static void Main(string[] args)
         {
-            Bootstrap.Init();
-            EloBuddy.SDK.Events.Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            /// 注入接口
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
         }
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
-            if (Player.Instance.Hero != Champion.Syndra)
+            /// 如果不是星朵拉名稱英雄 不注入此腳本
+            if (Player.Instance.ChampionName != "Syndra")
                 return;
-
-            Ignite = player.GetSpellSlot("SummonerDot");
 
             InitSpells();
             InitMenuu();
-            InitEvents();
+            //InitEvents();
 
         }
 
         private static void InitSpells()
         {
-            Q = new Spell(SpellSlot.Q, 790).SetSkillshot(0.6f, 125f, float.MaxValue, false, SkillshotType.SkillshotCircle);
-            W = new Spell(SpellSlot.W, 925).SetSkillshot(0.25f, 140f, 1600f, false, SkillshotType.SkillshotCircle);
-            E = new Spell(SpellSlot.E, 700).SetSkillshot(0.25f, (float)(45 * 0.5), 2500f, false, SkillshotType.SkillshotCircle);
-            EQ = new Spell(SpellSlot.Q, Q.Range + 500).SetSkillshot(float.MaxValue, 55f, 2000f, false, SkillshotType.SkillshotCircle);
-            R = new Spell(SpellSlot.R, 675);
+            ///技能 + 範圍f
+            Q = new Spell(SpellSlot.Q, 790f);
+            W = new Spell(SpellSlot.W, 925f);
+            E = new Spell(SpellSlot.E, 700f);
+            EQ = new Spell(SpellSlot.Q, Q.Range + 475f);
+            R = new Spell(SpellSlot.R, 675f);
+
+            /// 技能 延遲 寬度 速度  碰撞 真 假 類型線 圈 圓 
+            Q.SetSkillshot(0.6f, 125f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            W.SetSkillshot(0.25f, 140f, 1600f, false, SkillshotType.SkillshotCircle);
+            E.SetSkillshot(0.25f, (float)(45 * 0.5), 2500f, false, SkillshotType.SkillshotCircle);
+            EQ.SetSkillshot(float.MaxValue, 55f, 2000f, false, SkillshotType.SkillshotCircle);
+
+            /// 點燃
+            Ignite = player.GetSpellSlot("SummonerDot");
 
             SpellList.Add(Q);
             SpellList.Add(W);
@@ -61,93 +63,134 @@
 
         private static void InitMenuu()
         {
-            Menu = new Menu("ShuSyndra", "CjShu 星朵拉", true).Attach();
+            ///菜單名稱
+            (Menu = new Menu("CjShu 星朵拉", "ShuSyndra", true)).AddToMainMenu();
 
-            var ComboMenu = Menu.Add(new Menu("Combo", "連招 設定"));
+            /// 菜單走砍
+            Menu.AddSubMenu(new Menu("走砍設置", "Orbwalking"));
+            Orbwalker = new Orbwalking.Orbwalker(Menu.SubMenu("Orbwalking"));
+
+            Tools.Tools.Inject();
+
+            /// 菜單名稱後擴充
+            var ComboMenu = Menu.AddSubMenu(new Menu("連招設定", "ComboMenu"));
+            ComboMenu.AddItem(new MenuItem("UseQCombo", "使用 Q").SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseWCombo", "使用 W").SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseECombo", "使用 E").SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseQECombo", "使用 QE").SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseRCombo", "使用 R").SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseIgniteCombo", "連招使用點燃").SetValue(true));
+
+            var HarassMenu = Menu.AddSubMenu(new Menu("騷擾設定", "HarassMenu"));
+            HarassMenu.AddItem(new MenuItem("UseQHarass", "使用 Q").SetValue(true));
+            HarassMenu.AddItem(new MenuItem("UseWHarass", "使用 W").SetValue(true));
+            HarassMenu.AddItem(new MenuItem("UseEHarass", "使用 E").SetValue(true));
+            HarassMenu.AddItem(new MenuItem("UseQEHarass", "使用 QE").SetValue(true));
+            HarassMenu.AddItem(new MenuItem("HarassMana", "騷擾 最低魔力 > = %").SetValue(new
+                Slider(40, 0, 100)));
+
+
+            var LaneClearMenu = Menu.AddSubMenu(new Menu("清線設定", "LaneClearMenu"));
+            LaneClearMenu.AddItem(new MenuItem("UseQFarm", "Q 模式 :").SetValue(new
+                StringList(new[] { "控線", "清線", "兩者都開", "關閉" }, 2)));
+
+            LaneClearMenu.AddItem(new MenuItem("UseWFarm", "W 模式 :").SetValue(new
+                StringList(new[] { "控線", "清線", "兩者都開", "關閉" }, 1)));
+            LaneClearMenu.AddItem(new MenuItem("LaneClearMana", "清線 最低魔力 > = %").SetValue(new
+                Slider(40, 0, 100)));
+
+            var JungleMenu = LaneClearMenu.AddSubMenu(new Menu("打野設定", "JungleMenu"));
+            JungleMenu.AddItem(new MenuItem("UseQJFarm", "使用 Q").SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseWJFarm", "使用 W").SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseEJFarm", "使用 E").SetValue(true));
+
+            var PredMenu = Menu.AddSubMenu(new Menu("預測設定", "PredMenu"));
+            PredMenu.AddItem(new MenuItem("2", "預測 選擇(切換後重新按 F5)"));
+            PredMenu.AddItem(new MenuItem("SelectPred", "選擇預測 : ").SetValue(new
+                StringList(new[] { "邏輯 預測", "Common", "SDK 預測" })));
+
+            var MiscMenu = Menu.AddSubMenu(new Menu("其他設定", "MiscMenu"));
+            MiscMenu.AddItem(new MenuItem("InterruptSpells", "使用技能打斷目標").SetValue(true));
+            MiscMenu.AddItem(new MenuItem("CastQEKey", "使用 QE 鼠標位置").SetValue(new
+                KeyBind('T', KeyBindType.Press)).SetTooltip("按鍵活性", Color.Red));
+            MiscMenu.AddItem(new MenuItem("InstantQEKey", "使用 QE 中斷目標").SetValue(new
+                KeyBind('T', KeyBindType.Press)).SetTooltip("按鍵活性", Color.Red));
+            MiscMenu.AddItem(new MenuItem("3", "不使用 R 在目標英雄上")).SetTooltip("敵人");
+            if (HeroManager.Enemies.Any())
             {
-                ComboMenu.Add(new MenuBool("UseQCombo", "使用 Q", true));
-                ComboMenu.Add(new MenuBool("UseWCombo", "使用 W", true));
-                ComboMenu.Add(new MenuBool("UseECombo", "使用 E", true));
-                ComboMenu.Add(new MenuBool("UseQECombo", "使用 QE", true));
-                ComboMenu.Add(new MenuBool("UseRCombo", "使用 R", true));
-                ComboMenu.Add(new MenuBool("UseIgniteCombo", "連招使用點燃", true));
+                HeroManager.Enemies.ForEach(
+                    i
+                     => MiscMenu.AddItem(new MenuItem("DontUlt" + i.ChampionName.ToLower(),
+                     i.ChampionName, true).SetValue(false)));
             }
 
-            var HarassMenu = Menu.Add(new Menu("Harass", "騷擾 設定"));
+            var QEMenu = Menu.AddSubMenu(new Menu("QE設定", "QEMenu"));
+            QEMenu.AddItem(new MenuItem("AntiGapcloserQE", "反突進QE").SetValue(true));
+            QEMenu.AddItem(new MenuItem("QEGAPSCLRSF", "反突進QE 名單"));
+            if (HeroManager.Enemies.Any())
             {
-                HarassMenu.Add(new MenuBool("UseQHarass", "使用 Q", true));
-                HarassMenu.Add(new MenuBool("UseWHarass", "使用 W", false));
-                HarassMenu.Add(new MenuBool("UseEHarass", "使用 E", false));
-                HarassMenu.Add(new MenuBool("UseQEHarass", "使用 QE", false));
-                HarassMenu.Add(new MenuSlider("HarassMana", "騷擾 最低魔力 > = %", 20));
+                HeroManager.Enemies.ForEach(
+                    i
+                     => QEMenu.AddItem(new MenuItem("Egapcloser" + i.ChampionName.ToLower(),
+                     i.ChampionName, true).SetValue(false)));
             }
 
-            var LaneClearMenu = Menu.Add(new Menu("LaneClear", "清線 設定"));
-            {
-                LaneClearMenu.GetList("UseQFarm", "Q 模式 :", new[] { "控線", "清線", "兩者都開", "關閉" }, 2);
-                LaneClearMenu.GetList("UseWFarm", "W 模式 :", new[] { "控線", "清線", "兩者都開", "關閉" }, 1);
-                LaneClearMenu.Add(new MenuSlider("LaneClearMana", "清線 最低魔力 > = %", 20));
-            }
 
-            var JungleMenu = Menu.Add(new Menu("Jungle", "打野 設定"));
-            {
-                JungleMenu.Add(new MenuBool("UseQJFarm", "使用 Q", true));
-                JungleMenu.Add(new MenuBool("UseWJFarm", "使用 W", true));
-                JungleMenu.Add(new MenuBool("UseEJFarm", "使用 E", true));
-            }
+            var DrawMenu = Menu.AddSubMenu(new Menu("顯示設定", "DrawMenu"));
+            DrawMenu.AddItem(new MenuItem("QDraw", "Q 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
+            DrawMenu.AddItem(new MenuItem("WDraw", "W 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
+            DrawMenu.AddItem(new MenuItem("EDraw", "E 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
+            DrawMenu.AddItem(new MenuItem("RDraw", "R 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
+            DrawMenu.AddItem(new MenuItem("QEDraw", "QE 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
+            DamageIndicator.AddToMenu(DrawMenu);
 
-            var PredMenu = Menu.Add(new Menu("Pred", "預測 設定"));
-            {
-                PredMenu.GetSeparator("預測 選擇(切換後重新按 F5)");
-                PredMenu.Add(new MenuList<string>("SelectPred", "選擇預測 : ", new[] { "邏輯 預測", "SDK 預測", }));
-            }
 
-            var MiscMenu = Menu.Add(new Menu("Misc", "其他 設定"));
-            {
-                MiscMenu.Add(new MenuBool("InterruptSpells", "使用技能打斷目標", true));
-                MiscMenu.GetKeyBind("CastQE", "使用QE 鼠標位置", System.Windows.Forms.Keys.T);
-                MiscMenu.GetKeyBind("Key.InstantQE", "使用 QE 中斷目標", System.Windows.Forms.Keys.T);
-                if (GameObjects.EnemyHeroes.Any())
-                {
-                    MiscMenu.GetSeparator("不使用 R 再目標英雄上");
-                    GameObjects.EnemyHeroes.ForEach(i => MiscMenu.GetBool("DontUlt" + i.CharData.BaseSkinName, i.CharData.BaseSkinName, false));
-                }
-            }
-
-            var DrawMenu = Menu.Add(new Menu("Draw", "顯示 設定"));
-            {
-                DrawMenu.Add(new MenuBool("Q", "Q 範圍", false));
-                DrawMenu.Add(new MenuBool("W", "W 範圍", false));
-                DrawMenu.Add(new MenuBool("E", "E 範圍", false));
-                DrawMenu.Add(new MenuBool("R", "R 範圍", false));
-                DrawMenu.Add(new MenuBool("QE", "QE 範圍", false));
-                DrawMenu.Add(new MenuBool("DrawDamage", "顯示 連招傷害", true));
-            }
-
-            WriteConsole(Player.Instance.ChampionName + "CjShu");
+            Menu.AddItem(new MenuItem("3", "腳本未寫完請物使用此腳本"));
+            Manager.WriteConsole(Player.Instance.ChampionName + "CjShu");
         }
 
+        
         private static void InitEvents()
         {
-            Game.OnUpdate += OnUpdate;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
-            Events.OnInterruptableTarget += OnInterruptableTarget;
-            Drawing.OnEndScene += OnEndScene;
+           //Game.OnUpdate += OnUpdate;
+           //Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+           //Interrupter2.OnInterruptableTarget += OnInterruptableTarget;
+           //Drawing.OnEndScene += OnEndScene;
             Drawing.OnDraw += OnDraw;
-            Variables.Orbwalker.OnAction += OnAction;
+            Orbwalking.BeforeAttack += BeforeAttack;
+        }
+    
+        private static void BeforeAttack(Orbwalking.BeforeAttackEventArgs args)
+        {
+            if (Manager.InCombo)
+            {
+                args.Process = !(Q.IsReady() || W.IsReady());
+            }
         }
 
-        private static void OnAction(object sender, OrbwalkingActionArgs args)
+        private static void OnDraw(EventArgs args)
         {
-            if (args.Type == OrbwalkingType.BeforeAttack)
+            if (!player.IsDead && !MenuGUI.IsChatOpen && !Chat.IsOpen)
             {
-                if (Orbwalker.ActiveMode == OrbwalkingMode.Combo)
+                if (Menu.Item("QEDraw").GetValue<Circle>().Active)
                 {
-                    args.Process = !(Q.IsReady() || W.IsReady());
+                    Render.Circle.DrawCircle(player.Position, EQ.Range, Menu.Item("QEDraw").GetValue<Circle>().Color);
+                }
+
+                foreach (var spell in SpellList)
+                {
+                    var menu = Menu.Item(spell.Slot + "Draw").GetValue<Circle>();
+
+                    if (menu.Active)
+                    {
+                        Render.Circle.DrawCircle(player.Position, spell.Range, menu.Color);
+                    }
                 }
             }
         }
 
+        /*
+        
         private static void OnUpdate(EventArgs args)
         {
             if (player.IsDead)
@@ -182,6 +225,25 @@
                     Farm(true);
                     JungleFarm();
                     break;
+            }
+        }
+
+        private static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
+        {
+            var target = sender;
+
+            if (!Menu.Item("InterruptSpells").GetValue<bool>())
+            {
+                return;
+            }
+            if (player.Distance(target) < E.Range && E.IsReady())
+            {
+                Q.CastTo(target);
+                E.CastTo(target);
+            }
+            else if (player.Distance(target) < EQ.Range && E.IsReady() && Q.IsReady())
+            {
+                UseQe(target);
             }
         }
 
@@ -246,40 +308,7 @@
                 HpBarDraw.DrawDmg(Lib.Core.Helper.TotalDamage(enemy), SharpDX.Color.Cyan);
             }
         }
-
-        private static void OnDraw(EventArgs args)
-        {
-            if (player.IsDead)
-            {
-                return;
-            }
-
-            if (Menu["Draw"]["Q"] && Q.Level > 0)
-            {
-                Render.Circle.DrawCircle(player.Position, Q.Range, E.IsReady() ? System.Drawing.Color.LimeGreen : System.Drawing.Color.IndianRed);
-            }
-
-            if (Menu["Draw"]["W"] && W.Level > 0)
-            {
-                Render.Circle.DrawCircle(player.Position, W.Range, W.IsReady() ? System.Drawing.Color.LimeGreen : System.Drawing.Color.IndianRed);
-            }
-
-            if (Menu["Draw"]["E"] && E.Level > 0)
-            {
-                Render.Circle.DrawCircle(player.Position, E.Range, E.IsReady() ? System.Drawing.Color.LimeGreen : System.Drawing.Color.IndianRed);
-            }
-
-            if (Menu["Draw"]["R"] && R.Level > 0)
-            {
-                Render.Circle.DrawCircle(player.Position, R.Range, R.IsReady() ? System.Drawing.Color.LimeGreen : System.Drawing.Color.IndianRed);
-            }
-
-            if (Menu["Draw"]["QE"])
-            {
-                Render.Circle.DrawCircle(player.Position, EQ.Range - 50, System.Drawing.Color.Yellow);
-            }
-        }
-
+     
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (!sender.IsMe)
@@ -298,26 +327,6 @@
                 W.LastCastAttemptT = Variables.TickCount + 400;
                 E.Cast(args.End);
             }
-        }
-
-        private static void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
-        {
-            var target = args.Sender;
-
-            if (!Menu["Misc"]["InterruptSpells"].GetValue<MenuBool>())
-            {
-                return;
-            }
-            if (player.Distance(target) < E.Range && E.IsReady())
-            {
-                Q.CastTo(target);
-                E.CastTo(target);
-            }
-            else if (player.Distance(target) < EQ.Range && E.IsReady() && Q.IsReady())
-            {
-                UseQe(target);
-            }
-
         }
 
         private static double GetIgniteDamage(AIHeroClient target)
@@ -554,5 +563,8 @@
                 }
             }
         }
+    }
+    */
+
     }
 }

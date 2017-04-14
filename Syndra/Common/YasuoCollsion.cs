@@ -1,8 +1,7 @@
-﻿namespace Syndra.Lib.Common
+﻿namespace Syndra.Common
 {
     using EloBuddy;
-    using LeagueSharp.SDK;
-    using LeagueSharp.SDK.Utils;
+    using LeagueSharp.Common;
     using SharpDX;
     using System;
     using System.Linq;
@@ -14,7 +13,7 @@
 
         static YasuoWindWall()
         {
-            foreach (var Yasuo in GameObjects.EnemyHeroes.Where(x => x.IsValidTarget()).Select(x => x.ChampionName == "Yasuo"))
+            foreach (var Yasuo in HeroManager.Enemies.Where(x => x.IsValidTarget()).Select(x => x.ChampionName == "Yasuo"))
             {
                 if (Yasuo)
                 {
@@ -38,7 +37,7 @@
                 return;
             }
 
-            if (!sender.IsEnemy || sender.IsMinion || AutoAttack.IsAutoAttack(Args.SData.Name) || sender.Type != GameObjectType.AIHeroClient)
+            if (!sender.IsEnemy || sender.IsMinion || Orbwalking.IsAutoAttack(Args.SData.Name) || sender.Type != GameObjectType.AIHeroClient)
             {
                 return;
             }

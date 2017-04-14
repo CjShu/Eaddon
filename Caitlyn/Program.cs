@@ -112,6 +112,8 @@
 
             Menu.AddItem(new MenuItem("EQKey", "EQ按鍵").SetValue(new
                KeyBind('G', KeyBindType.Press)));
+
+            Manager.WriteConsole(Player.Instance.ChampionName + "CjShu");
         }
 
         private static void InitEvents()
