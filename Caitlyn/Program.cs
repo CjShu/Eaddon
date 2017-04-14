@@ -14,7 +14,6 @@
         public static Menu Menu;
         private static AIHeroClient player => HeroManager.Player;
         private static Spell Q, W, E, R;
-        private static bool canCastR = true;
         private static int LastCastQTick = 0, LastCastWTick = 0, castW = 0;
         public static Orbwalking.Orbwalker Orbwalker;
 
@@ -573,15 +572,6 @@
             if (args.Slot == SpellSlot.W)
             {
                 LastCastWTick = Utils.TickCount;
-            }
-
-            if (sender.IsEnemy && sender is Obj_AI_Turret && args.Target.IsMe)
-            {
-                canCastR = false;
-            }
-            else
-            {
-                canCastR = true;
             }
         }
 

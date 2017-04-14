@@ -148,8 +148,7 @@
             Menu.AddItem(new MenuItem("3", "腳本未寫完請物使用此腳本"));
             Manager.WriteConsole(Player.Instance.ChampionName + "CjShu");
         }
-
-        
+       
         private static void InitEvents()
         {
            //Game.OnUpdate += OnUpdate;
