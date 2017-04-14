@@ -10,6 +10,7 @@
     public static class Manager
     {
         public static Orbwalking.Orbwalker Orbwalker => Program.Orbwalker;
+        public static bool InCombo => Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo;
 
         public static bool Check(this Obj_AI_Base target, float range = float.MaxValue)
         {
@@ -84,6 +85,18 @@
                 return 0f;
         }
 
+        public static bool CanMove(this AIHeroClient target)
+        {
+            return !(target.MoveSpeed < 50) && !target.IsStunned && !target.HasBuffOfType(BuffType.Stun) &&
+                   !target.HasBuffOfType(BuffType.Fear) && !target.HasBuffOfType(BuffType.Snare) &&
+                   !target.HasBuffOfType(BuffType.Knockup) && !target.HasBuff("Recall") &&
+                   !target.HasBuffOfType(BuffType.Knockback)
+                   && !target.HasBuffOfType(BuffType.Charm) && !target.HasBuffOfType(BuffType.Taunt) &&
+                   !target.HasBuffOfType(BuffType.Suppression) && (!target.IsCastingInterruptableSpell()
+                                                                   || target.IsMoving) &&
+                   !target.HasBuff("zhonyasringshield") && !target.HasBuff("bardrstasis");
+        }
+
         /// <summary>
         /// Check Target
         /// </summary>
@@ -97,61 +110,6 @@
             }
             else
                 return false;
-        }
-
-        /// <summary>
-        /// Combo Key Active
-        /// </summary>
-        public static bool InCombo
-        {
-            get
-            {
-                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo;
-            }
-        }
-
-        /// <summary>
-        /// Harass Key Active
-        /// </summary>
-        public static bool InHarass
-        {
-            get
-            {
-                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed;
-            }
-        }
-
-        /// <summary>
-        /// LaneClear Key Active
-        /// </summary>
-        public static bool InClear
-        {
-            get
-            {
-                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LaneClear;
-            }
-        }
-
-        /// <summary>
-        /// LastHit Key Active
-        /// </summary>
-        public static bool InLastHit
-        {
-            get
-            {
-                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LastHit;
-            }
-        }
-
-        /// <summary>
-        /// None Key Active
-        /// </summary>
-        public static bool InNone
-        {
-            get
-            {
-                return Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.None;
-            }
         }
 
         /// <summary>

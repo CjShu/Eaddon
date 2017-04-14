@@ -71,11 +71,13 @@
                 Slider(60, 0, 100))); 
 
             var WMenu = Menu.AddSubMenu(new Menu("W 設置", "W"));
+            WMenu.AddItem(new MenuItem("ComboW", "連招 W").SetValue(true));
             WMenu.AddItem(new MenuItem("ComboWMode", "連招模式").SetValue(new
-                StringList(new[] { "Rework", "連續控制", "對抗", "關閉" })));
+                StringList(new[] { "Rework", "對抗", "關閉" }))).SetTooltip("只在連招下觸發");
             WMenu.AddItem(new MenuItem("ComboWCount", "連招最少保留W層數 >=").SetValue(new
                 Slider(1, 1, 5)));
-            WMenu.AddItem(new MenuItem("AutoW", "自動使用").SetValue(true));
+            WMenu.AddItem(new MenuItem("AutoWCC", "CC W").SetValue(true)).SetTooltip("敵人在被控下自動W對方", Color.Red);
+            WMenu.AddItem(new MenuItem("AutoWTP", "TP W").SetValue(true)).SetTooltip("敵人在傳送自動W對方傳送點", Color.Red);
             WMenu.AddItem(new MenuItem("AntiGapcloserW", "反抗近戰").SetValue(true));
 
             var EMenu = Menu.AddSubMenu(new Menu("E 設置", "E"));
@@ -93,9 +95,9 @@
                 (int)Manager.GetAttackRange(Player.Instance) * 2)));
 
             RMenu.AddItem(new MenuItem("ComboSafeRange", "附近敵人數 >= | 禁止R").SetValue(new
-                Slider(3, 1, 5)));
+                Slider(3, 1, 5)).SetTooltip("塔下禁止"));
             RMenu.AddItem(new MenuItem("ComboSetRange", "檢測範圍").SetValue(new
-                Slider(1000, 700, 2000)));
+                Slider(1000, 700, 2000)).SetTooltip("塔下禁止"));
             RMenu.AddItem(new MenuItem("RKey", "手動按鍵").SetValue(new
                 KeyBind('T', KeyBindType.Press)));
 
@@ -105,7 +107,8 @@
             DrawMenu.AddItem(new MenuItem("EDraw", "E").SetValue(false));
             DrawMenu.AddItem(new MenuItem("RDraw", "R").SetValue(false));
             DrawMenu.AddItem(new MenuItem("RKill", "顯示R能擊殺目標").SetValue(true));
-            //DamageIndicator.AddToMenu(DrawMenu);
+            DrawMenu.AddItem(new MenuItem("RMinMap", "顯示小地圖 R 範圍圈").SetValue(false));
+            DamageIndicator.AddToMenu(DrawMenu);
 
             Menu.AddItem(new MenuItem("EQKey", "EQ按鍵").SetValue(new
                KeyBind('G', KeyBindType.Press)));
@@ -115,10 +118,42 @@
         {
             GameObject.OnCreate += OnCreate;
             Drawing.OnDraw += OnDraw;
+            Drawing.OnEndScene += OnEndScene;
             Game.OnUpdate += OnUpdate;
             AntiGapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             Obj_AI_Base.OnBuffGain += OnBuffGain;
+        }
+
+        private static void OnEndScene(EventArgs args)
+        {
+            if (R.IsReady() && Menu.Item("RMinMap").GetValue<bool>())
+            {
+                var pointList = new List<Vector3>();
+
+                for (var i = 0; i < 30; i++)
+                {
+                    var angle = i * Math.PI * 2 / 30;
+
+                    pointList.Add(new Vector3(ObjectManager.Player.Position.X + R.Range * (float)Math.Cos(angle),
+                        ObjectManager.Player.Position.Y + R.Range * (float)Math.Sin(angle),
+                        ObjectManager.Player.Position.Z));
+                }
+
+                for (var i = 0; i < pointList.Count; i++)
+                {
+                    var a = pointList[i];
+                    var b = pointList[i == pointList.Count - 1 ? 0 : i + 1];
+
+                    var aonScreen = Drawing.WorldToMinimap(a);
+                    var bonScreen = Drawing.WorldToMinimap(b);
+                    var aon1Screen = Drawing.WorldToScreen(a);
+                    var bon1Screen = Drawing.WorldToScreen(b);
+
+                    Drawing.DrawLine(aon1Screen.X, aon1Screen.Y, bon1Screen.X, bon1Screen.Y, 1, System.Drawing.Color.Yellow);
+                    Drawing.DrawLine(aonScreen.X, aonScreen.Y, bonScreen.X, bonScreen.Y, 1, System.Drawing.Color.Yellow);
+                }
+            }
         }
 
         private static void OnCreate(GameObject sender, EventArgs args)
@@ -224,8 +259,6 @@
             if (player.IsDead)
                 return;
 
-            AutoLogic();
-
             switch (Orbwalker.ActiveMode)
             {
                 case Orbwalking.OrbwalkingMode.Combo:
@@ -279,6 +312,7 @@
                             return;
                         }
                     }
+                    AutoLogic();
                     break;
             }
         }
@@ -347,35 +381,42 @@
 
         private static void AutoLogic()
         {
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.None)
+
+            if (Menu.Item("AutoQ").GetValue<bool>() && Q.IsReady())
             {
-                if (Menu.Item("AutoW").GetValue<bool>() && W.IsReady())
+                var t = TargetSelector.GetTarget(Q.Range - 30, TargetSelector.DamageType.Physical);
+
+                if (t.IsValidTarget(Q.Range) && (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) || t.HasBuffOfType(BuffType.Taunt) || (t.Health <= ObjectManager.Player.GetSpellDamage(t, SpellSlot.Q) && t.DistanceToPlayer() >= player.AttackRange)))
                 {
-                    var t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
+                    CastQ(t);
+                }
+            }
 
-                    if (t.IsValidTarget(W.Range))
+            if (Menu.Item("AutoWCC").GetValue<bool>() && W.IsReady())
+            {
+                foreach (var t in HeroManager.Enemies.Where(
+                    x => x.IsValidTarget(W.Range) && !x.CanMove() && !x.HasBuff("caitlynyordletrapinternal")))
+                {
+                    if (Utils.TickCount - castW > 1300)
                     {
-                        if (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) || t.HasBuffOfType(BuffType.Taunt) || t.HasBuffOfType(BuffType.Knockup) || t.HasBuff("zhonyasringshield") || t.HasBuff("Recall"))
-                        {
-                            CastW(t.Position);
-                        }
-
-                        if (t.HasBuffOfType(BuffType.Slow))
-                        {
-                            var hit = t.IsFacing(ObjectManager.Player) ? t.Position.Extend(ObjectManager.Player.Position, +140) : t.Position.Extend(ObjectManager.Player.Position, -140);
-
-                            CastW(hit);
-                        }
+                        W.Cast(t.Position, true);
                     }
                 }
+            }
 
-                if (Menu.Item("AutoQ").GetValue<bool>() && Q.IsReady())
+            if (Menu.Item("AutoWTP").GetValue<bool>() && W.IsReady())
+            {
+                var target = ObjectManager.Get<Obj_AI_Base>().FirstOrDefault(x => !x.IsAlly && !x.IsMe &&
+                x.DistanceToPlayer() <= W.Range && x.Buffs.Any(
+                    a =>
+                    a.Name.ToLower().Contains("teleport") || a.Name.ToLower().Contains("gate"))
+                    && !ObjectManager.Get<Obj_AI_Base>().Any(b => b.Name.ToLower().Contains("trap") && b.Distance(x) <= 130));
+
+                if (target != null)
                 {
-                    var t = TargetSelector.GetTarget(Q.Range - 30, TargetSelector.DamageType.Physical);
-
-                    if (t.IsValidTarget(Q.Range) && (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) || t.HasBuffOfType(BuffType.Taunt) || (t.Health <= ObjectManager.Player.GetSpellDamage(t, SpellSlot.Q) && t.DistanceToPlayer() >= player.AttackRange)))
+                    if (Utils.TickCount - castW > 1300)
                     {
-                        CastQ(t);
+                        W.Cast(target.Position, true);
                     }
                 }
             }
@@ -429,53 +470,50 @@
 
                 if (Menu.Item("ComboR").GetValue<bool>() && R.IsReady())
                 {
-                    if (!player.UnderTurret(true))
+                    if (Utils.TickCount - LastCastQTick > 2500)
                     {
-                        return;
-                    }
-
-                    if (target.Health < R.GetDamage(target)
-                        && player.CountEnemiesInRange(Menu.Item("ComboSetRange").GetValue<Slider>().Value)
-                        < Menu.Item("ComboSafeRange").GetValue<Slider>().Value
-                        && target.DistanceToPlayer() > Menu.Item("ComboRangeR").GetValue<Slider>().Value
-                        && canCastR && LastCastQTick + 1000 >= Utils.TickCount)
-                    {
-                        bool cast = true;
-
-                        PredictionOutput output = R.GetPrediction(target);
-                        Vector2 direction = output.CastPosition.To2D() - player.Position.To2D();
-                        direction.Normalize();
-                        List<AIHeroClient> enemies = HeroManager.Enemies.Where(x => x.IsValidTarget()).ToList();
-
-                        foreach (var enemy in enemies)
+                        if ((player.UnderTurret(true) || player.CountEnemiesInRange(Menu.Item("ComboSetRange").GetValue<Slider>().Value) >= Menu.Item("ComboSafeRange").GetValue<Slider>().Value))
                         {
-                            if (enemy.BaseSkinName == target.BaseSkinName || !cast)
-                                continue;
-
-                            PredictionOutput prediction = R.GetPrediction(enemy);
-                            Vector3 predictedPosition = prediction.CastPosition;
-                            Vector3 v = output.CastPosition - player.ServerPosition;
-                            Vector3 w = predictedPosition - player.ServerPosition;
-                            double c1 = Vector3.Dot(w, v);
-                            double c2 = Vector3.Dot(v, v);
-                            double b = c1 / c2;
-                            Vector3 pb = player.ServerPosition + ((float)b * v);
-                            float length = Vector3.Distance(predictedPosition, pb);
-
-                            if (length < (400f + enemy.BoundingRadius) && player.Distance(predictedPosition)
-                                < player.Distance(target.ServerPosition))
-                                cast = false;
-                        }
-
-                        if (cast)
-                        {
-                            R.CastOnUnit(target, true);
                             return;
                         }
+                        
+                        if (!target.IsValidTarget(R.Range))
+                        {
+                            return;
+                        }
+
+                        if (target.DistanceToPlayer() < Menu.Item("ComboRangeR").GetValue<Slider>().Value)
+                        {
+                            return;
+                        }
+
+                        if (target.Health + target.HPRegenRate * 2 > R.GetDamage(target))
+                        {
+                            return;
+                        }
+
+                        var RCollision = LeagueSharp.Common.Collision.GetCollision(new List<Vector3> {target.ServerPosition}, new PredictionInput
+                        {
+                            Delay = R.Delay,
+                            Radius = R.Width,
+                            Speed = R.Speed,
+                            Unit = player,
+                            UseBoundingRadius = true,
+                            Collision = true,
+                            CollisionObjects = new[] { CollisionableObjects.Heroes, CollisionableObjects.YasuoWall }
+                        }).Any(
+                            x => x.NetworkId != target.NetworkId);
+
+                        if (RCollision)
+                        {
+                            return;
+                        }
+
+                        R.CastOnUnit(target, true);
                     }
                 }
 
-                if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex != 3)
+                if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex != 2)
                 {
                     if (W.IsReady() && target.IsValidTarget(W.Range) && !player.Spellbook.IsAutoAttacking
                         && player.Spellbook.GetSpell(SpellSlot.W).Ammo
@@ -513,18 +551,6 @@
                         }
                     }
                     else if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex == 1)
-                    {
-                        var tw1 = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-                        var pred = GetPrediction(tw1, W);
-
-                        if (!MinionManager.GetMinions(player.Position, W.Range, MinionTypes.All, MinionTeam.Ally, MinionOrderTypes.None).Any(
-                            m => !m.IsDead && m.Name.ToLower().Contains("trap") && m.Distance(pred.Item2) < 100) && (int)pred.Item1
-                            > (int)HitChance.High && player.Distance(pred.Item2) < W.Range)
-                        {
-                            CastW(pred.Item2);
-                        }
-                    }
-                    else if (Menu.Item("ComboWMode").GetValue<StringList>().SelectedIndex == 2)
                     {
                         if (player.Distance(target) < 450 && target.IsFacing(player))
                         {

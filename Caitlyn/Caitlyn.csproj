@@ -64,6 +64,7 @@
     <Compile Include="Common\Distance.cs" />
     <Compile Include="Common\Geometry.cs" />
     <Compile Include="Common\Manager.cs" />
+    <Compile Include="Common\MenuManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\AutoLevel.cs" />
