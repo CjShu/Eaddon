@@ -1,7 +1,7 @@
 ﻿namespace Syndra.Lib.Core
 {
     using EloBuddy;
-    using LeagueSharp.SDK;
+    using LeagueSharp.Common;
 
     using SharpDX;
     using System.Linq;
@@ -59,13 +59,13 @@
         {
             if (sender.IsMe && args.SData.Name.Equals("SyndraQ", StringComparison.InvariantCultureIgnoreCase))
             {
-                tmpQOrbT = Variables.TickCount;
+                tmpQOrbT = Utils.TickCount;
                 tmpQOrbPos = args.End;
             }
 
             if (sender.IsMe && WObject(true) != null && (args.SData.Name.Equals("SyndraW", StringComparison.InvariantCultureIgnoreCase) || args.SData.Name.Equals("syndraw2", StringComparison.InvariantCultureIgnoreCase)))
             {
-                tmpWOrbT = Variables.TickCount + 250;
+                tmpWOrbT = Utils.TickCount + 250;
                 tmpWOrbPos = args.End;
             }
         }
@@ -75,7 +75,7 @@
             if (WObjectNetworkId == -1) return null;
             //var obj = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>(WObjectNetworkId);
             var obj = ObjectManager.GetUnitByNetworkId<Obj_AI_Base>((uint)WObjectNetworkId);
-            if (obj != null && obj.IsValid() && (obj.Name == "Seed" && onlyOrb || !onlyOrb)) return (Obj_AI_Minion)obj;
+            if (obj != null && obj.IsValid && (obj.Name == "Seed" && onlyOrb || !onlyOrb)) return (Obj_AI_Minion)obj;
             return null;
         }
 
@@ -102,12 +102,12 @@
                     result.Add(obj.ServerPosition);
             }
 
-            if (Variables.TickCount - tmpQOrbT < 400)
+            if (Utils.TickCount - tmpQOrbT < 400)
             {
                 result.Add(tmpQOrbPos);
             }
 
-            if (Variables.TickCount - tmpWOrbT < 400 && Variables.TickCount - tmpWOrbT > 0)
+            if (Utils.TickCount - tmpWOrbT < 400 && Utils.TickCount - tmpWOrbT > 0)
             {
                 result.Add(tmpWOrbPos);
             }

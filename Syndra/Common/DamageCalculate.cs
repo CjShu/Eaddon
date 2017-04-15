@@ -2,10 +2,11 @@
 {
     using EloBuddy;
     using LeagueSharp.Common;
+    using System;
 
     public static class DamageCalculate
     {
-        public static float GetComboDamage(Obj_AI_Base target)
+        public static float GetComboDamage(this Obj_AI_Base target)
         {
             if (target == null || target.IsDead || target.IsZombie)
             {
@@ -14,10 +15,14 @@
 
             var damage = 0d;
 
-            damage += GetQDamage(target);
-            damage += GetWDamage(target);
-            damage += GetEDamage(target);
-            damage += GetRDamage(target);
+            damage += Program.Q.IsReady(420) ? GetQDamage(target) : 0;
+            damage += Program.W.IsReady() ? GetWDamage(target) : 0;
+            damage += Program.E.IsReady() ? GetEDamage(target) : 0;
+            
+            if (Program.R.IsReady())
+            {
+                damage += Math.Min(7, Program.player.Spellbook.GetSpell(SpellSlot.R).Ammo) * Program.player.GetSpellDamage(target, SpellSlot.R, 1);
+            }
 
             damage += ObjectManager.Player.GetAutoAttackDamage(target);
 
@@ -49,51 +54,63 @@
             return (float)damage;
         }
 
-        public static float GetQDamage(Obj_AI_Base target)
+        public static float GetQDamage(this Obj_AI_Base target)
         {
-            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0 ||
-                !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).IsReady())
+            var damage = 0f;
+
+            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level == 0
+                || !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).IsReady())
             {
-                return 0f;
+                damage += (float)ObjectManager.Player.CalcDamage(target, Damage.DamageType.Magical,
+                    Program.Q.GetDamage(target));
             }
 
-            return (float)Player.Instance.GetSpellDamage(target, SpellSlot.Q);
+            return damage;
         }
 
-        public static float GetWDamage(Obj_AI_Base target)
+        public static float GetWDamage(this Obj_AI_Base target)
         {
-            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0 ||
-                !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).IsReady())
+            var damage = 0f;
+
+            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level == 0
+                || !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).IsReady())
             {
-                return 0f;
+                damage += (float)ObjectManager.Player.CalcDamage(target, Damage.DamageType.Magical,
+                    Program.W.GetDamage(target));
             }
 
-            return (float)ObjectManager.Player.GetSpellDamage(target, SpellSlot.W);
+            return damage;
         }
 
-        public static float GetEDamage(Obj_AI_Base target)
+        public static float GetEDamage(this Obj_AI_Base target)
         {
-            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0 ||
-                !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).IsReady())
+            var damage = 0f;
+
+            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level == 0
+                || !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).IsReady())
             {
-                return 0f;
+                damage += (float)ObjectManager.Player.CalcDamage(target, Damage.DamageType.Magical,
+                    Program.E.GetDamage(target));
             }
 
-            return (float)ObjectManager.Player.GetSpellDamage(target, SpellSlot.E);
+            return damage;
         }
 
-        public static float GetRDamage(Obj_AI_Base target)
+        public static float GetRDamage(this Obj_AI_Base target)
         {
-            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Level == 0 ||
-                !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).IsReady())
+            var damage = 0f;
+
+            if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Level == 0
+                || !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).IsReady())
             {
-                return 0f;
+                damage += (float)ObjectManager.Player.CalcDamage(target, Damage.DamageType.Magical,
+                    Program.R.GetDamage(target)) * 3;
             }
 
-            return (float)ObjectManager.Player.GetSpellDamage(target, SpellSlot.R);
+            return damage;
         }
 
-        public static float GetIgniteDmage(Obj_AI_Base target)
+        public static float GetIgniteDmage(this Obj_AI_Base target)
         {
             if (ObjectManager.Player.GetSpellSlot("SummonerDot") == SpellSlot.Unknown ||
                 !ObjectManager.Player.GetSpellSlot("SummonerDot").IsReady())

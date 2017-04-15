@@ -12,11 +12,12 @@
     public class Program
     {
         public static Menu Menu;
-        private static AIHeroClient player => HeroManager.Player;
+        internal static AIHeroClient player => HeroManager.Player;
         public static Orbwalking.Orbwalker Orbwalker;
         public static List<Spell> SpellList = new List<Spell>();
         public static Spell Q, W, E, EQ, R;
         private static SpellSlot Ignite;
+        private static float IgniteRange = 600f;
         private static int qeComboT, weComboT;
 
         static void Main(string[] args)
@@ -148,17 +149,17 @@
             Menu.AddItem(new MenuItem("3", "腳本未寫完請物使用此腳本"));
             Manager.WriteConsole(Player.Instance.ChampionName + "CjShu");
         }
-       
+
         private static void InitEvents()
         {
-           //Game.OnUpdate += OnUpdate;
-           //Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
-           //Interrupter2.OnInterruptableTarget += OnInterruptableTarget;
-           //Drawing.OnEndScene += OnEndScene;
+            //Game.OnUpdate += OnUpdate;
+            //Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+            //Interrupter2.OnInterruptableTarget += OnInterruptableTarget;
+            //Drawing.OnEndScene += OnEndScene;
             Drawing.OnDraw += OnDraw;
             Orbwalking.BeforeAttack += BeforeAttack;
         }
-    
+
         private static void BeforeAttack(Orbwalking.BeforeAttackEventArgs args)
         {
             if (Manager.InCombo)
@@ -188,45 +189,36 @@
             }
         }
 
-        /*
-        
         private static void OnUpdate(EventArgs args)
         {
-            if (player.IsDead)
-            {
-                return;
-            }
-
             R.Range = R.Level == 3 ? 750f : 675f;
 
-            if (Menu["Misc"]["CastQE"].GetValue<MenuKeyBind>().Active && E.IsReady() && Q.IsReady())
-            {
-                foreach (var enemy in GameObjects.EnemyHeroes.Where(enemy => enemy.IsValidTarget(EQ.Range) && Game.CursorPos.Distance(enemy.ServerPosition) < 300))
-                {
-                    UseQe(enemy);
-                }
-            }
-
-            if (Menu["Misc"]["Key.InstantQE"].GetValue<MenuKeyBind>().Active)
-            {
-                InstantQe2Enemy();
-            }
+            if (player.IsDead)
+                return;
 
             switch (Orbwalker.ActiveMode)
             {
-                case OrbwalkingMode.Combo:
-                    Combo();
+                case Orbwalking.OrbwalkingMode.Combo:
+                    //ComboLogic();
                     break;
-                case OrbwalkingMode.Hybrid:
-                    Harass();
+                case Orbwalking.OrbwalkingMode.LaneClear:
+
                     break;
-                case OrbwalkingMode.LaneClear:
-                    Farm(true);
-                    JungleFarm();
+                case Orbwalking.OrbwalkingMode.LastHit:
+
+                    break;
+                case Orbwalking.OrbwalkingMode.Mixed:
+
+                    break;
+
+                case Orbwalking.OrbwalkingMode.None:
+                    //QELogicKey();
                     break;
             }
         }
 
+        /*
+         
         private static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
             var target = sender;
@@ -246,15 +238,104 @@
             }
         }
 
+         
         #region Logic
 
-        private static void InstantQe2Enemy()
+
+        private static void QELogicKey()
         {
-            Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-            var t = GetTarget(EQ.Range, DamageType.Magical);
-            if (t.IsValidTarget() && E.IsReady() && Q.IsReady())
+            if (Menu.GetKey("CastQEKey") && E.IsReady() && Q.IsReady())
             {
-                UseQe(t);
+                foreach (var enemy in HeroManager.Enemies.Where(
+                    enemy => enemy.IsValidTarget(EQ.Range  - 50) && Game.CursorPos.Distance(enemy.ServerPosition) < 300))
+                {
+                    UseQe(enemy);
+                }
+            }
+
+            if (Menu.GetKey("InstantQEKey"))
+            {
+                Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+
+                var t = TargetSelector.GetTarget(EQ.Range, TargetSelector.DamageType.Magical);
+
+                if (t.IsValidTarget() && E.IsReady() && Q.IsReady())
+                {
+                    UseQe(t);
+                }
+            }
+        }
+
+        private static void ComboLogic()
+        {
+            /// 技能目標
+            var qTarget = TargetSelector.GetSelectedTarget()
+                ?? TargetSelector.GetTarget(Q.Range + (Q.Width / 3 / Q.Width), TargetSelector.DamageType.Magical);
+
+            var wTarget = TargetSelector.GetSelectedTarget()
+                ?? TargetSelector.GetTarget(W.Range + W.Width, TargetSelector.DamageType.Magical);
+
+            var QEtarget = TargetSelector.GetSelectedTarget()
+                ?? TargetSelector.GetTarget(EQ.Range, TargetSelector.DamageType.Magical);
+
+            var rTarget = TargetSelector.GetSelectedTarget()
+                ?? TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
+
+            /// 技能數據
+            var comboDamage = rTarget != null ? DamageCalculate.GetComboDamage(rTarget) : 0;
+
+            /// 技能 邏輯
+            if (qTarget != null && qTarget.IsValidTarget(Q.Range) && Menu.GetBool("UseQCombo"))
+            {
+                Q.CastTo(qTarget);
+            }
+
+            if (Menu.GetBool("UseWCombo"))
+            {
+                if (W.IsReady() && QEtarget != null)
+                {
+                    var objPos = GetGrabableObjectPos(wTarget == null);
+
+                    if (objPos.To2D().IsValid() && Utils.TickCount - W.LastCastAttemptT > Game.Ping + 300
+                        && Utils.TickCount - E.LastCastAttemptT > Game.Ping + 600)
+                    {
+                        W.Cast(objPos, true);
+                        W.LastCastAttemptT = Utils.TickCount;
+                    }
+                }
+                else if (wTarget != null && W.IsReady() && Utils.TickCount - W.LastCastAttemptT > Game.Ping + 100)
+                {
+                    if (Lib.Core.OrbManager.WObject(false) != null)
+                    {
+                        W.From = Lib.Core.OrbManager.WObject(false).ServerPosition;
+                        W.CastTo(wTarget);
+                    }
+                }
+            }
+
+            if (Menu.GetBool("UseECombo"))
+            {
+
+            }
+
+            if (Menu.GetBool("UseRCombo") && R.IsReady() && Menu.Item("DontUlt" + rTarget.ChampionName.ToLower()) != null && Menu.Item("DontUlt" + rTarget.ChampionName.ToLower()).GetValue<bool>() == false)
+            {
+                if (rTarget != null && comboDamage > rTarget.Health && !rTarget.IsZombie && !Q.IsReady())
+                {
+                    R.CastTo(rTarget);
+                }
+            }
+
+            /// 點燃邏輯
+            if (Menu.GetBool("UseIgniteCombo") && Ignite.IsReady())
+            {
+                var t = TargetSelector.GetSelectedTarget()
+                    ?? TargetSelector.GetTarget(IgniteRange, TargetSelector.DamageType.True);
+
+                if (DamageCalculate.GetIgniteDmage(t) > t.Health && t.IsValidTarget(IgniteRange))
+                {
+                    player.Spellbook.CastSpell(Ignite, t);
+                }
             }
         }
 
@@ -274,7 +355,7 @@
                         < EQ.Width + enemy.BoundingRadius)
                     {
                         E.Cast(orb);
-                        W.LastCastAttemptT = Variables.TickCount;
+                        W.LastCastAttemptT = Utils.TickCount;
                         return;
                     }
                 }
@@ -289,12 +370,14 @@
             if (prediction.Hitchance >= HitChance.High)
             {
                 Q.Cast(player.ServerPosition.To2D().Extend(prediction.CastPosition.To2D(), Q.Range - 100));
-                qeComboT = Variables.TickCount;
-                W.LastCastAttemptT = Variables.TickCount;
+                qeComboT = Utils.TickCount;
+                W.LastCastAttemptT = Utils.TickCount;
             }
         }
 
         #endregion
+
+        
 
         private static void OnEndScene(EventArgs args)
         {
@@ -328,11 +411,6 @@
             }
         }
 
-        private static double GetIgniteDamage(AIHeroClient target)
-        {
-            return 50 + 20 * GameObjects.Player.Level - (target.HPRegenRate / 5 * 3);
-        }
-
         private static Vector3 GetGrabableObjectPos(bool onlyOrbs)
         {
             if (!onlyOrbs)
@@ -343,20 +421,6 @@
                 }
             }
             return Lib.Core.OrbManager.GetOrbToGrab((int)W.Range);
-        }
-
-        private static float GetComboDamage(Obj_AI_Base enemy)
-        {
-            var damage = 0d;
-            damage += Q.IsReady(420) ? Q.GetDamage(enemy) : 0;
-            damage += W.IsReady() ? W.GetDamage(enemy) : 0;
-            damage += E.IsReady() ? E.GetDamage(enemy) : 0;
-
-            if (R.IsReady())
-            {
-                damage += Math.Min(7, player.Spellbook.GetSpell(SpellSlot.R).Ammo) * player.GetSpellDamage(enemy, SpellSlot.R);
-            }
-            return (float)damage;
         }
 
         private static void UseSpells(bool useQ, bool useW, bool useE, bool useR, bool useQe, bool useIgnite, bool isHarass)
@@ -564,6 +628,5 @@
         }
     }
     */
-
     }
 }

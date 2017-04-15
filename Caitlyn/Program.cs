@@ -107,7 +107,7 @@
             DrawMenu.AddItem(new MenuItem("RDraw", "R").SetValue(false));
             DrawMenu.AddItem(new MenuItem("RKill", "顯示R能擊殺目標").SetValue(true));
             DrawMenu.AddItem(new MenuItem("RMinMap", "顯示小地圖 R 範圍圈").SetValue(false));
-            DamageIndicator.AddToMenu(DrawMenu);
+            //DamageIndicator.AddToMenu(DrawMenu);
 
             Menu.AddItem(new MenuItem("EQKey", "EQ按鍵").SetValue(new
                KeyBind('G', KeyBindType.Press)));
