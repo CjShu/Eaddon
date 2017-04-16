@@ -260,7 +260,7 @@
 
         private static void QELogicKey()
         {
-            if (Menu.GetKey("CastQEKey", true) && E.IsReady() && Q.IsReady())
+            if (Menu.GetKey("CastQEKey") && E.IsReady() && Q.IsReady())
             {
                 foreach (var enemy in HeroManager.Enemies.Where(
                     enemy => enemy.IsValidTarget(EQ.Range  - 50) && Game.CursorPos.Distance(enemy.ServerPosition) < 300))
@@ -269,7 +269,7 @@
                 }
             }
 
-            if (Menu.GetKey("InstantQEKey", true))
+            if (Menu.GetKey("InstantQEKey"))
             {
                 Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
 
