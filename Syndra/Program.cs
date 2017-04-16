@@ -71,39 +71,40 @@
 
             /// 菜單名稱後擴充
             var ComboMenu = Menu.AddSubMenu(new Menu("連招設定", "ComboMenu"));
-            ComboMenu.AddItem(new MenuItem("UseQCombo", "使用 Q").SetValue(true));
-            ComboMenu.AddItem(new MenuItem("UseWCombo", "使用 W").SetValue(true));
-            ComboMenu.AddItem(new MenuItem("UseECombo", "使用 E").SetValue(true));
-            ComboMenu.AddItem(new MenuItem("UseQECombo", "使用 QE").SetValue(true));
-            ComboMenu.AddItem(new MenuItem("UseRCombo", "使用 R").SetValue(true));
-            ComboMenu.AddItem(new MenuItem("UseIgniteCombo", "連招使用點燃").SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseQCombo", "使用 Q", true).SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseWCombo", "使用 W", true).SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseECombo", "使用 E", true).SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseQECombo", "使用 QE", true).SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseRCombo", "使用 R", true).SetValue(true));
+            ComboMenu.AddItem(new MenuItem("UseIgniteCombo", "連招使用點燃", true).SetValue(true));
 
             var HarassMenu = Menu.AddSubMenu(new Menu("騷擾設定", "HarassMenu"));
-            HarassMenu.AddItem(new MenuItem("UseQHarass", "使用 Q").SetValue(true));
-            HarassMenu.AddItem(new MenuItem("UseWHarass", "使用 W").SetValue(true));
-            HarassMenu.AddItem(new MenuItem("UseEHarass", "使用 E").SetValue(true));
-            HarassMenu.AddItem(new MenuItem("UseQEHarass", "使用 QE").SetValue(true));
-            HarassMenu.AddItem(new MenuItem("HarassMana", "騷擾 最低魔力 > = %").SetValue(new
+            HarassMenu.AddItem(new MenuItem("UseQHarass", "使用 Q", true).SetValue(true));
+            HarassMenu.AddItem(new MenuItem("UseWHarass", "使用 W", true).SetValue(true));
+            HarassMenu.AddItem(new MenuItem("UseEHarass", "使用 E", true).SetValue(true));
+            HarassMenu.AddItem(new MenuItem("UseQEHarass", "使用 QE", true).SetValue(true));
+            HarassMenu.AddItem(new MenuItem("HarassMana", "騷擾 最低魔力 > = %", true).SetValue(new
                 Slider(40, 0, 100)));
-
+            ManaManager.AddSpellHarass(HarassMenu);
 
             var LaneClearMenu = Menu.AddSubMenu(new Menu("清線設定", "LaneClearMenu"));
             LaneClearMenu.AddItem(new MenuItem("UseQFarm", "Q 模式 :").SetValue(new
                 StringList(new[] { "控線", "清線", "兩者都開", "關閉" }, 2)));
-            LaneClearMenu.AddItem(new MenuItem("QMinMinions", "Q 最低命中小兵數量 >= x").SetValue(new
+            LaneClearMenu.AddItem(new MenuItem("QMinMinions", "Q 最低命中小兵數量 >= x", true).SetValue(new
                 Slider(3, 1, 4)));
 
             LaneClearMenu.AddItem(new MenuItem("UseWFarm", "W 模式 :").SetValue(new
                 StringList(new[] { "控線", "清線", "兩者都開", "關閉" }, 1)));
-            LaneClearMenu.AddItem(new MenuItem("WMinMinions", "W 最低命中小兵數量 >= x").SetValue(new
+            LaneClearMenu.AddItem(new MenuItem("WMinMinions", "W 最低命中小兵數量 >= x", true).SetValue(new
                 Slider(3, 1, 8)));
-            LaneClearMenu.AddItem(new MenuItem("LaneClearMana", "清線 最低魔力 > = %").SetValue(new
+            LaneClearMenu.AddItem(new MenuItem("LaneClearMana", "清線 最低魔力 > = %", true).SetValue(new
                 Slider(40, 0, 100)));
+            ManaManager.AddSpellFarm(LaneClearMenu);
 
             var JungleMenu = LaneClearMenu.AddSubMenu(new Menu("打野設定", "JungleMenu"));
-            JungleMenu.AddItem(new MenuItem("UseQJFarm", "使用 Q").SetValue(true));
-            JungleMenu.AddItem(new MenuItem("UseWJFarm", "使用 W").SetValue(true));
-            JungleMenu.AddItem(new MenuItem("UseEJFarm", "使用 E").SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseQJFarm", "使用 Q", true).SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseWJFarm", "使用 W", true).SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseEJFarm", "使用 E", true).SetValue(true));
 
             var PredMenu = Menu.AddSubMenu(new Menu("預測設定", "PredMenu"));
             PredMenu.AddItem(new MenuItem("2", "預測 選擇(切換後重新按 F5)"));
@@ -112,9 +113,9 @@
 
             var MiscMenu = Menu.AddSubMenu(new Menu("其他設定", "MiscMenu"));
             MiscMenu.AddItem(new MenuItem("InterruptSpells", "使用技能打斷目標").SetValue(true));
-            MiscMenu.AddItem(new MenuItem("CastQEKey", "使用 QE 鼠標位置").SetValue(new
+            MiscMenu.AddItem(new MenuItem("CastQEKey", "使用 QE 鼠標位置", true).SetValue(new
                 KeyBind('T', KeyBindType.Press)).SetTooltip("按鍵活性", Color.Red));
-            MiscMenu.AddItem(new MenuItem("InstantQEKey", "使用 QE 中斷目標").SetValue(new
+            MiscMenu.AddItem(new MenuItem("InstantQEKey", "使用 QE 中斷目標", true).SetValue(new
                 KeyBind('T', KeyBindType.Press)).SetTooltip("按鍵活性", Color.Red));
             MiscMenu.AddItem(new MenuItem("3", "不使用 R 在目標英雄上")).SetTooltip("敵人");
             if (HeroManager.Enemies.Any())
@@ -126,7 +127,7 @@
             }
 
             var QEMenu = Menu.AddSubMenu(new Menu("QE設定", "QEMenu"));
-            QEMenu.AddItem(new MenuItem("AntiGapcloserQE", "反突進QE").SetValue(true));
+            QEMenu.AddItem(new MenuItem("AntiGapcloserQE", "反突進QE", true).SetValue(true));
             QEMenu.AddItem(new MenuItem("QEGAPSCLRSF", "反突進QE 名單"));
             if (HeroManager.Enemies.Any())
             {
@@ -137,7 +138,7 @@
             }
 
             var LastMenu = Menu.AddSubMenu(new Menu("補刀設定", "LastMenu"));
-            LastMenu.AddItem(new MenuItem("LastHitQ", "補刀 Q").SetValue(true));
+            LastMenu.AddItem(new MenuItem("LastHitQ", "補刀 Q", true).SetValue(true));
 
             var DrawMenu = Menu.AddSubMenu(new Menu("顯示設定", "DrawMenu"));
             DrawMenu.AddItem(new MenuItem("QDraw", "Q 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
@@ -146,6 +147,7 @@
             DrawMenu.AddItem(new MenuItem("RDraw", "R 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
             DrawMenu.AddItem(new MenuItem("QEDraw", "QE 範圍").SetValue(new Circle(false, System.Drawing.Color.FromArgb(100, 255, 0, 255))));
             DamageIndicator.AddToMenu(DrawMenu);
+            ManaManager.AddDrawFarm(DrawMenu);
 
             Manager.WriteConsole(Player.Instance.ChampionName + "CjShu");
         }
@@ -214,6 +216,8 @@
             if (player.IsDead)
                 return;
 
+            QELogicKey();
+
             switch (Orbwalker.ActiveMode)
             {
                 case Orbwalking.OrbwalkingMode.Combo:
@@ -229,9 +233,6 @@
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     HarassLogic();
-                    break;
-                case Orbwalking.OrbwalkingMode.None:
-                    QELogicKey();
                     break;
             }
         }
@@ -259,7 +260,7 @@
 
         private static void QELogicKey()
         {
-            if (Menu.GetKey("CastQEKey") && E.IsReady() && Q.IsReady())
+            if (Menu.GetKey("CastQEKey", true) && E.IsReady() && Q.IsReady())
             {
                 foreach (var enemy in HeroManager.Enemies.Where(
                     enemy => enemy.IsValidTarget(EQ.Range  - 50) && Game.CursorPos.Distance(enemy.ServerPosition) < 300))
@@ -268,7 +269,7 @@
                 }
             }
 
-            if (Menu.GetKey("InstantQEKey"))
+            if (Menu.GetKey("InstantQEKey", true))
             {
                 Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
 
@@ -418,7 +419,7 @@
             {
                 if (mobs.Count > 0)
                 {
-                    Q.Cast(mob, true);
+                    Q.CastTo(mob);
                 }
             }
 
@@ -432,7 +433,7 @@
 
             if (Menu.GetBool("UseEJFarm") && E.IsReady())
             {
-                E.Cast(mob, true);
+                E.CastTo(mob);
             }
         }
 
@@ -482,7 +483,7 @@
             var prediction = EQ.GetPrediction(enemy);
             if (prediction.Hitchance >= HitChance.High)
             {
-                Q.Cast(player.ServerPosition.To2D().Extend(prediction.CastPosition.To2D(), Q.Range - 100));
+                Q.Cast(player.ServerPosition.To2D().Extend(prediction.CastPosition.To2D(), Q.Range - 100), true);
                 qeComboT = Utils.TickCount;
                 W.LastCastAttemptT = Utils.TickCount;
             }
