@@ -410,8 +410,7 @@
      
         private static void JungleClearLogic()
         {
-            var mobs = ObjectManager.Get<Obj_AI_Minion>().Where(x 
-                    => !x.IsDead && !x.IsZombie && x.Team == GameObjectTeam.Neutral && x.IsValidTarget(W.Range)).ToList();
+            var mobs = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, W.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
 
             var mob = mobs[0];
 
