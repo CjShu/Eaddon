@@ -361,6 +361,7 @@
                     if (gapcloser.Sender.IsMelee)
                     {
                         //E.Cast(true);
+                        return;
                     }
                 }
                 E.Cast(true);

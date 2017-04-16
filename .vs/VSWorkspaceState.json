@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Syndra"
+    "\\Caitlyn",
+    "\\Syndra",
+    "\\Syndra\\Tools"
   ],
-  "SelectedNode": "\\Syndra\\Syndra.sln",
+  "SelectedNode": "\\Syndra\\Tools\\AutoLevel.cs",
   "PreviewInSolutionExplorer": false
 }
