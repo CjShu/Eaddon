@@ -34,7 +34,7 @@
                 return;
             }
 
-            if (levelMenu.Item("LevelsAutoR").GetValue<bool>() && (ObjectManager.Player.Level == 6 || ObjectManager.Player.Level == 11 || ObjectManager.Player.Level == 16))
+            if (levelMenu.Item("LevelsAutoR").GetValue<bool>() && (ObjectManager.Player.Level == 5 || ObjectManager.Player.Level == 10 || ObjectManager.Player.Level == 15))
             {
                 ObjectManager.Player.Spellbook.LevelSpell(SpellSlot.R);
             }
@@ -43,7 +43,7 @@
             {
                 int Delay = levelMenu.Item("LevelsDelay").GetValue<Slider>().Value;
 
-                if (ObjectManager.Player.Level < 3)
+                if (ObjectManager.Player.Level < 2)
                 {
                     switch (levelMenu.Item("LevelsMode").GetValue<StringList>().SelectedIndex)
                     {
@@ -97,7 +97,7 @@
                             break;
                     }
                 }
-                else if (ObjectManager.Player.Level > 3)
+                else if (ObjectManager.Player.Level > 2)
                 {
                     switch (levelMenu.Item("LevelsMode").GetValue<StringList>().SelectedIndex)
                     {
