@@ -81,6 +81,7 @@
 
             var EMenu = Menu.AddSubMenu(new Menu("E 設置", "E"));
             EMenu.AddItem(new MenuItem("ComboE", "連招啟動").SetValue(true));
+            EMenu.AddItem(new MenuItem("ComboEnemyTurret", "連招敵人塔下禁止E").SetValue(true));
             EMenu.AddItem(new MenuItem("AntiGapcloserE", "反抗近戰").SetValue(true));
             EMenu.AddItem(new MenuItem("FleeE", "逃跑啟動").SetValue(true));
             EMenu.AddItem(new MenuItem("AntiRengar", "使用 E 對獅子").SetValue(true));
@@ -181,12 +182,12 @@
 
         private static void OnEnemyGapcloser(ActiveGapcloser args)
         {
-            if (Menu.Item("AntiGapcloserW").GetValue<bool>() && E.IsReady() && args.Sender.IsValidTarget(E.Range))
+            if (Menu.Item("AntiGapcloserE").GetValue<bool>() && E.IsReady() && args.Sender.IsValidTarget(E.Range))
             {
                 E.Cast(args.Sender.Position, true);
             }
 
-            if (Menu.Item("AntiGapcloserE").GetValue<bool>() && W.IsReady() && args.Sender.IsValidTarget(W.Range))
+            if (Menu.Item("AntiGapcloserW").GetValue<bool>() && W.IsReady() && args.Sender.IsValidTarget(W.Range))
             {
                 if (args.End.DistanceToPlayer() < 180)
                 {
@@ -450,6 +451,11 @@
             {
                 if (Menu.Item("ComboE").GetValue<bool>() && E.IsReady() && target.IsValidTarget(E.Range))
                 {
+                    if (player.UnderTurret(true) && Menu.Item("ComboEnemyTurret").GetValue<bool>())
+                    {
+                        return;
+                    }
+
                     if (target.IsValidTarget(target.IsFacing(player) ? E.Range - 200 : E.Range - 300) && E.GetPrediction(target).CollisionObjects.Count == 0)
                     {
                         E.Cast(target.Position, true);

@@ -66,10 +66,10 @@
   <ItemGroup>
     <Compile Include="Common\DamageCalculate.cs" />
     <Compile Include="Common\DamageIndicator.cs" />
+    <Compile Include="Common\ManaManager.cs" />
     <Compile Include="Common\MenuManager.cs" />
     <Compile Include="Common\Manager.cs" />
     <Compile Include="Common\YasuoCollsion.cs" />
-    <Compile Include="Lib\Core\Helper.cs" />
     <Compile Include="Lib\Core\OrbManager.cs" />
     <Compile Include="Tools\AutoLevel.cs" />
     <Compile Include="Tools\Potions.cs" />

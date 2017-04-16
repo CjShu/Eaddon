@@ -112,12 +112,6 @@
 
         public static float GetIgniteDmage(this Obj_AI_Base target)
         {
-            if (ObjectManager.Player.GetSpellSlot("SummonerDot") == SpellSlot.Unknown ||
-                !ObjectManager.Player.GetSpellSlot("SummonerDot").IsReady())
-            {
-                return 0f;
-            }
-
             return 50 + 20 * ObjectManager.Player.Level - target.HPRegenRate / 5 * 3;
         }
     }
