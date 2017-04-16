@@ -352,8 +352,8 @@
 
             if (ManaManager.HasEnoughMana(Menu.GetSlider("LaneClearMana")) && ManaManager.SpellFarm)
             {
-                var allMinionsQ = MinionManager.GetMinions(player.ServerPosition, Q.Range + Q.Width + 30);
-                var allMinionsW = MinionManager.GetMinions(player.ServerPosition, W.Range + W.Width + 30);
+                var allMinionsQ = MinionManager.GetMinions(player.ServerPosition, Q.Range + Q.Width + 30, MinionTypes.Ranged);
+                var allMinionsW = MinionManager.GetMinions(player.ServerPosition, W.Range + W.Width + 30, MinionTypes.Ranged);
                 var fll = Q.GetCircularFarmLocation(allMinionsQ, Q.Width);
 
                 if (useQ && Q.IsReady())
