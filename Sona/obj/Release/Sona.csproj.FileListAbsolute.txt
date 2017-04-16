@@ -1,0 +1,12 @@
+C:\Users\user\Source\Repos\Eaddon\Sona\obj\Release\Sona.csprojResolveAssemblyReference.cache
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\Sona.exe.config
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\Sona.exe
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\Sona.pdb
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\EloBuddy.dll
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\EloBuddy.SDK.dll
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\PortAIO.Common.dll
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\SharpDX.dll
+C:\Users\user\Source\Repos\Eaddon\Sona\bin\Release\Newtonsoft.Json.dll
+C:\Users\user\Source\Repos\Eaddon\Sona\obj\Release\Sona.exe
+C:\Users\user\Source\Repos\Eaddon\Sona\obj\Release\Sona.pdb
