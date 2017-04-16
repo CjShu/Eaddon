@@ -102,9 +102,9 @@
             ManaManager.AddSpellFarm(LaneClearMenu);
 
             var JungleMenu = LaneClearMenu.AddSubMenu(new Menu("打野設定", "JungleMenu"));
-            JungleMenu.AddItem(new MenuItem("UseQJFarm", "使用 Q", true).SetValue(true));
-            JungleMenu.AddItem(new MenuItem("UseWJFarm", "使用 W", true).SetValue(true));
-            JungleMenu.AddItem(new MenuItem("UseEJFarm", "使用 E", true).SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseQJFarm", "使用 Q").SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseWJFarm", "使用 W").SetValue(true));
+            JungleMenu.AddItem(new MenuItem("UseEJFarm", "使用 E").SetValue(true));
 
             var PredMenu = Menu.AddSubMenu(new Menu("預測設定", "PredMenu"));
             PredMenu.AddItem(new MenuItem("2", "預測 選擇(切換後重新按 F5)"));
@@ -410,29 +410,35 @@
      
         private static void JungleClearLogic()
         {
-            var mobs = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, W.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
+            var mobs = MinionManager.GetMinions(player.ServerPosition, W.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
 
             var mob = mobs[0];
 
-            if (Menu.GetBool("UseQJFarm") && Q.IsReady())
+            if (Menu.Item("UseQJFarm").GetValue<bool>() && Q.IsReady())
             {
                 if (mobs.Count > 0)
                 {
-                    Q.CastTo(mob);
+                    Q.Cast(mob);
                 }
             }
 
             if (Menu.GetBool("UseWJFarm") && W.IsReady())
             {
-                if (Utils.TickCount - Q.LastCastAttemptT > 790)
+                if (mobs.Count > 0)
                 {
-                    W.CastTo(mob);
+                    if (Utils.TickCount - Q.LastCastAttemptT > 790)
+                    {
+                        W.Cast(mob);
+                    }
                 }
             }
 
             if (Menu.GetBool("UseEJFarm") && E.IsReady())
             {
-                E.CastTo(mob);
+                if (mobs.Count > 0)
+                {
+                    E.Cast(mob);
+                }
             }
         }
 
