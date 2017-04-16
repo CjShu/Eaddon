@@ -410,32 +410,27 @@
      
         private static void JungleClearLogic()
         {
-            var mobs = MinionManager.GetMinions(player.ServerPosition, W.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
+            var useQ = Menu.Item("UseQJFarm").GetValue<bool>();
+            var useW = Menu.Item("UseWJFarm").GetValue<bool>();
+            var useE = Menu.Item("UseEJFarm").GetValue<bool>();
 
-            var mob = mobs[0];
+            var mobs = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, W.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
 
-            if (Menu.Item("UseQJFarm").GetValue<bool>() && Q.IsReady())
+            if (mobs.Count > 0)
             {
-                if (mobs.Count > 0)
+                var mob = mobs[0];
+
+                if (Q.IsReady() && useQ)
                 {
                     Q.Cast(mob);
                 }
-            }
 
-            if (Menu.GetBool("UseWJFarm") && W.IsReady())
-            {
-                if (mobs.Count > 0)
+                if (W.IsReady() && useW && Utils.TickCount - Q.LastCastAttemptT > 800)
                 {
-                    if (Utils.TickCount - Q.LastCastAttemptT > 790)
-                    {
-                        W.Cast(mob);
-                    }
+                    W.Cast(mob);
                 }
-            }
 
-            if (Menu.GetBool("UseEJFarm") && E.IsReady())
-            {
-                if (mobs.Count > 0)
+                if (useE && E.IsReady())
                 {
                     E.Cast(mob);
                 }
