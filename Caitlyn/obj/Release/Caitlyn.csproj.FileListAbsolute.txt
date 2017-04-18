@@ -3,7 +3,6 @@ C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\Caitlyn.exe
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\Caitlyn.pdb
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\EloBuddy.dll
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\EloBuddy.SDK.dll
-C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\PortAIO.Common.dll
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\SharpDX.Direct3D9.dll
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\SharpDX.dll
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\Newtonsoft.Json.dll
@@ -11,3 +10,4 @@ C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\EloBuddy.Sandbox.dll
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\obj\Release\Caitlyn.csprojResolveAssemblyReference.cache
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\obj\Release\Caitlyn.exe
 C:\Users\user\Source\Repos\Eaddon\Caitlyn\obj\Release\Caitlyn.pdb
+C:\Users\user\Source\Repos\Eaddon\Caitlyn\bin\Release\PortAIO.Common.dll

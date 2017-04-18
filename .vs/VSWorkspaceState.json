@@ -3,8 +3,9 @@
     "",
     "\\Caitlyn",
     "\\Syndra",
+    "\\Syndra\\Common",
     "\\Syndra\\Tools"
   ],
-  "SelectedNode": "\\Syndra\\Tools\\AutoLevel.cs",
+  "SelectedNode": "\\Syndra\\Common\\ManaManager.cs",
   "PreviewInSolutionExplorer": false
 }
