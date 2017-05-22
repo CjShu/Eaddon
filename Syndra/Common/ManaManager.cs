@@ -1,7 +1,9 @@
 ﻿namespace Syndra.Common
 {
     using EloBuddy;
-    using LeagueSharp.Common;
+    using TW.Common;
+    using TW.Common.Extensions;
+    using TW.Common.TargetSelector;
     using Color = System.Drawing.Color;
 
     public static class ManaManager

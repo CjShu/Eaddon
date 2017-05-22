@@ -2,12 +2,15 @@
 {
     using EloBuddy;
     using EloBuddy.SDK.Events;
-    using LeagueSharp.Common;
     using System;
     using System.Linq;
     using Common;
     using System.Collections.Generic;
     using SharpDX;
+    using TW.Common;
+    using TW.Common.Extensions;
+    using TW.Common.TargetSelector;
+
 
     public class Program
     {
@@ -273,7 +276,7 @@
             {
                 Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
 
-                var t = TargetSelector.GetTarget(EQ.Range, TargetSelector.DamageType.Magical);
+                var t = TargetSelector.GetTarget(EQ.Range, TW.Common.TargetSelector.DamageType.Magical);
 
                 if (t.IsValidTarget() && E.IsReady() && Q.IsReady())
                 {
@@ -530,8 +533,9 @@
         private static void QCast(bool useQ)
         {
             //目標選擇 Q範圍 寬度 數據為魔法傷害
-            var target = TargetSelector.GetSelectedTarget() ??
-                TargetSelector.GetTarget(Q.Range + Q.Width / 3 / Q.Width, TargetSelector.DamageType.Magical);
+            var target = TargetSelector.GetSelectedTarget() ?? TargetSelector.GetTarget(
+                             Q.Range + Q.Width / 3 / Q.Width,
+                             TW.Common.TargetSelector.DamageType.Magical);
 
             // 目標
             if (target != null && useQ)
@@ -547,8 +551,8 @@
         /// <param name="useW"></param>
         private static void WCast(bool useW)
         {
-            var target = TargetSelector.GetSelectedTarget() ??
-                TargetSelector.GetTarget(W.Range + Q.Width, TargetSelector.DamageType.Magical);
+            var target = TargetSelector.GetSelectedTarget()
+                         ?? TargetSelector.GetTarget(W.Range + Q.Width, TW.Common.TargetSelector.DamageType.Magical);
 
             if (useW)
             {
@@ -580,10 +584,10 @@
         /// <param name="useE"></param>
         private static void ECast(bool useE)
         {
-            var Wtarget = TargetSelector.GetSelectedTarget() ??
-                TargetSelector.GetTarget(W.Range + Q.Width, TargetSelector.DamageType.Magical);
+            var Wtarget = TargetSelector.GetSelectedTarget()
+                          ?? TargetSelector.GetTarget(W.Range + Q.Width, TW.Common.TargetSelector.DamageType.Magical);
             var QEtarget = TargetSelector.GetSelectedTarget() ??
-                TargetSelector.GetTarget(EQ.Range, TargetSelector.DamageType.Magical);
+                TargetSelector.GetTarget(EQ.Range, TW.Common.TargetSelector.DamageType.Magical);
 
             if (Utils.TickCount - W.LastCastAttemptT > Game.Ping + 150 && useE)
             {
@@ -616,7 +620,7 @@
         private static void RCast(bool useR, bool useIgnite)
         {
             var target = TargetSelector.GetSelectedTarget() ??
-                TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
+                TargetSelector.GetTarget(R.Range, TW.Common.TargetSelector.DamageType.Magical);
 
             var comboDmg = target != null ? Common.DamageCalculate.GetComboDamage(target) : 0;
 

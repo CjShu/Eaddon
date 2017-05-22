@@ -1,7 +1,9 @@
 ﻿namespace Syndra.Common
 {
     using EloBuddy;
-    using LeagueSharp.Common;
+    using TW.Common;
+    using TW.Common.Extensions;
+    using TW.Common.TargetSelector;
     using SharpDX;
     using System;
     using System.Collections.Generic;
@@ -117,40 +119,6 @@
                             Spells.Cast(predput.CastPosition);
                         }
                         else if (predInput.Aoe && predput.AoeTargetsHitCount > 1 && predput.Hitchance >= HitChance.High)
-                        {
-                            Spells.Cast(predput.CastPosition);
-                        }
-                    }
-                    break;
-                case 2:
-                    {
-                        LeagueSharp.SDK.Enumerations.SkillshotType CoreType2 = LeagueSharp.SDK.Enumerations.SkillshotType.SkillshotLine;
-
-                        var predInput = new LeagueSharp.SDK.PredictionInput
-                        {
-                            AoE = AOE,
-                            Collision = Spells.Collision,
-                            Delay = Spells.Delay,
-                            From = HeroManager.Player.ServerPosition,
-                            Radius = Spells.Width,
-                            Range = Spells.Range,
-                            Speed = Spells.Speed,
-                            Type = CoreType2,
-                            Unit = target
-                        };
-
-                        var predput = LeagueSharp.SDK.Movement.GetPrediction(predInput);
-
-                        if (Spells.Speed != float.MaxValue && YasuoWindWall.CollisionYasuo(HeroManager.Player.ServerPosition, predput.CastPosition))
-                        {
-                            return;
-                        }
-
-                        if (predput.Hitchance >= LeagueSharp.SDK.Enumerations.HitChance.VeryHigh)
-                        {
-                            Spells.Cast(predput.CastPosition);
-                        }
-                        else if (predInput.AoE && predput.AoeTargetsHitCount > 1 && predput.Hitchance >= LeagueSharp.SDK.Enumerations.HitChance.High)
                         {
                             Spells.Cast(predput.CastPosition);
                         }

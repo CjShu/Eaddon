@@ -1,7 +1,9 @@
 ﻿namespace Syndra.Tools
 {
     using Common;
-    using LeagueSharp.Common;
+    using TW.Common;
+    using TW.Common.Extensions;
+    using TW.Common.TargetSelector;
 
     public static class Tools
     {

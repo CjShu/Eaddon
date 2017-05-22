@@ -1,9 +1,11 @@
 ﻿namespace Syndra.Tools
 {
-    using EloBuddy;
-    using LeagueSharp.Common;
+    using EloBuddy;    
     using System;
-    using Utility = LeagueSharp.Common.Utility;
+    using Utility = TW.Common.Utility;
+    using TW.Common;
+    using TW.Common.Extensions;
+    using TW.Common.TargetSelector;
 
     internal class AutoLevel
     {

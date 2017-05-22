@@ -43,9 +43,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PortAIO.Common">
-      <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\PortAIO.Common.dll</HintPath>
-    </Reference>
     <Reference Include="SharpDX">
       <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\SharpDX.dll</HintPath>
     </Reference>
@@ -62,6 +59,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TW.Common">
+      <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\TW.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DamageCalculate.cs" />

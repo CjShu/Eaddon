@@ -1,9 +1,11 @@
 ﻿namespace Syndra.Tools
 {
     using EloBuddy;
-    using LeagueSharp.Common;
     using System;
     using System.Linq;
+    using TW.Common;
+    using TW.Common.Extensions;
+    using TW.Common.TargetSelector;
 
     internal class Potions
     {
