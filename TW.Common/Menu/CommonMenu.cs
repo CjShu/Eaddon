@@ -27,10 +27,10 @@
 
         public static void Initialize()
         {
-            //TargetSelector.Initialize();
-            //Prediction.Initialize();
-            //Hacks.Initialize();
-            //FakeClicks.Initialize();
+            TargetSelector.TargetSelector.Initialize();
+            Prediction.Initialize();
+            Hacks.Initialize();
+            FakeClicks.Initialize();
             //Language.Initialize();
 
             Instance.AddToMainMenu();
@@ -38,10 +38,10 @@
 
         public static void Shutdown()
         {
-            //TargetSelector.Shutdown();
-            //Prediction.Shutdown();
-            //Hacks.Shutdown();
-            //FakeClicks.Shutdown();
+            TargetSelector.TargetSelector.Shutdown();
+            Prediction.Shutdown();
+            Hacks.Shutdown();
+            FakeClicks.Shutdown();
 
             Menu.Remove(Instance);
         }

@@ -4,7 +4,6 @@
     using System.Linq;
     using EloBuddy;
     using SharpDX;
-    using EloBuddy.SDK;
 
     /// <summary>
     ///     Gets information about dashes, and provides events.
