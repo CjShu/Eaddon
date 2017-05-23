@@ -14,7 +14,7 @@
     {
         #region Static Fields
 
-        public static readonly Color ActiveBackgroundColor = Color.FromArgb(17, 59, 73);
+        public static readonly Color ActiveBackgroundColor = Color.FromArgb(206, 16, 26, 29);
 
         /// <summary>
         ///     The menu starting position.
@@ -127,6 +127,50 @@
                 DrawMenu = !DrawMenu;
             }
         }
+
+        //internal static uint ShowMenuPressKey { get; set; }
+
+        /*
+        internal static void OnWndMessage(Messages.WindowMessage args)
+        {
+            // Do not open the menu when the chat is open
+            if (!Chat.IsOpen)
+            {
+                // Shift key check
+                switch (args.Message)
+                {
+                    case WindowMessages.KeyDown:
+                    case WindowMessages.KeyUp:
+                        // Shift key
+                        if (args.Handle.WParam == 16)
+                        {
+                            if (args.Message == WindowMessages.KeyDown && ShowMenuPressKey == 16)
+                            {
+                                break;
+                            }
+                            DrawMenu = args.Message == WindowMessages.KeyDown;
+                        }
+                        break;
+                }
+
+                // Call key events for each control
+                switch (args.Message)
+                {
+                    case WindowMessages.KeyDown:
+                        if (ShowMenuPressKey != args.Handle.WParam)
+                        {
+                            ShowMenuPressKey = args.Handle.WParam;
+                            //Instance.OnKeyDown((Messages.KeyDown)args);
+                        }
+                        break;
+                    case WindowMessages.KeyUp:
+                        ShowMenuPressKey = 0;
+                        //Instance.OnKeyUp((Messages.KeyUp)args);
+                        break;
+                }
+            }
+        }
+        */
 
         #endregion
     }

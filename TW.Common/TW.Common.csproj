@@ -154,6 +154,7 @@
     <Compile Include="Utils\JsonFactory.cs" />
     <Compile Include="Utils\KeyboardEvents.cs" />
     <Compile Include="Utils\Keys.cs" />
+    <Compile Include="Utils\Messages.cs" />
     <Compile Include="Utils\MouseEvents.cs" />
     <Compile Include="Utils\NativeMethods.cs" />
     <Compile Include="Utils\ResourceFactory.cs" />

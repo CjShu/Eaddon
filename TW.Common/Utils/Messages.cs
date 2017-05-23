@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using SharpDX;
-using EloBuddy;
-
-namespace TW.Common
+﻿namespace TW.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using SharpDX;
+    using EloBuddy;
+
     public enum WindowMessages
     {
         LeftButtonDoubleClick = 0x203,

@@ -129,7 +129,7 @@
         /// </param>
         internal static void DrawArrow(string s, Vector2 position, MenuItem item, Color color)
         {
-            DrawBox(position, item.Height, item.Height, Color.FromArgb(17, 59, 73), 1, color);
+            DrawBox(position, item.Height, item.Height, Color.FromArgb(206, 16, 26, 29), 1, color);
             Font.DrawText(
                 null,
                 s,
@@ -224,9 +224,9 @@
                 position,
                 item.Height,
                 item.Height,
-                on ? Color.FromArgb(1, 255, 255) : Color.FromArgb(37, 37, 37),
+                on ? Color.FromArgb(20, 200, 230) : Color.FromArgb(40, 40, 40),
                 1,
-                Color.Black);
+                Color.FromArgb(255, 255, 180));
             var s = on ? "\u958b" : "\u95dc\u9589";
             Font.DrawText(
                 null,
@@ -298,15 +298,15 @@
             var percentage = 100 * (value - min) / (max - min);
             var x = position.X + 3 + (percentage * (width - 3)) / 100f;
             var x2D = 3 + (percentage * (width - 3)) / 100;
-            DrawLine(x - 2, position.Y, x - 2, position.Y + item.Height, 2, Color.FromArgb(0, 74, 103));
-            
+            DrawLine(x - 2, position.Y, x - 2, position.Y + item.Height, 2, Color.FromArgb(206, 16, 26, 29));
+
             DrawBox(
                 new Vector2(position.X, position.Y),
                 x2D - 2,
                 item.Height,
-                Color.FromArgb(17, 59, 73),
+                Color.FromArgb(50, 190, 230),
                 0,
-                Color.Black);
+                Color.FromArgb(255, 200, 205));
 
             if (drawText)
             {

@@ -80,7 +80,7 @@ namespace TW.Common
                 "xenzhaocombotarget", "yorickspectral", "reksaiq",
                 "itemtitanichydracleave", "masochism", "illaoiw",
                 "elisespiderw", "fiorae", "meditate", "sejuaninorthernwinds",
-                "asheq"
+                "asheq","camilleq", "camilleq2"
             };
 
         /// <summary>
@@ -148,6 +148,8 @@ namespace TW.Common
         /// </summary>
         private static bool _missileLaunched;
 
+        public static List<Obj_AI_Minion> AzirSoliders = new List<Obj_AI_Minion>();
+
         #endregion
 
         #region Constructors and Destructors
@@ -162,6 +164,7 @@ namespace TW.Common
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
             Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
             Spellbook.OnStopCast += SpellbookOnStopCast;
+            Obj_AI_Base.OnPlayAnimation += Obj_AI_Base_OnPlayAnimation;
 
             if (_championName == "Rengar")
             {
@@ -179,6 +182,58 @@ namespace TW.Common
                             LastAATick = Utils.GameTimeTickCount - Game.Ping / 2 + t;
                         }
                     };
+            }
+
+            if (_championName == "Azir")
+            {
+                AzirSoliders = ObjectManager.Get<Obj_AI_Minion>().Where(x
+                    => x.IsAlly && x.Name == "AzirSoldier" && x.HasBuff("azirwspawnsound")).ToList();
+
+                GameObject.OnCreate += OnCreate;
+                GameObject.OnDelete += OnDelete;
+            }
+        }
+
+
+        private static void OnCreate(GameObject sender, EventArgs args)
+        {
+            if (!(sender is Obj_AI_Minion))
+                return;
+
+            if (sender.Name == "AzirSoldier" && sender.IsAlly)
+            {
+                var soldier = (Obj_AI_Minion)sender;
+
+                if (soldier.BaseSkinName == "AzirSoldier")
+                    AzirSoliders.Add(soldier);
+            }
+        }
+
+        private static void OnDelete(GameObject sender, EventArgs args)
+        {
+            AzirSoliders.RemoveAll(s => s.NetworkId == sender.NetworkId);
+        }
+
+        private static void Obj_AI_Base_OnPlayAnimation(Obj_AI_Base sender, GameObjectPlayAnimationEventArgs args)
+        {
+            if (sender.IsMe)
+            {
+                if (args.Animation == "Attack1" ||
+                    args.Animation == "Crit" ||
+                    args.Animation == "Attack2" ||
+                    args.AnimationHash.ToString("x8") == "d7d89ccc" || // kali - passive
+                    (args.AnimationHash.ToString("x8") == "a75d185e" && (sender.Name.ToLower().Contains("master")) || sender.Name.ToLower().Contains("lucian")) || // universal passive hash
+                    args.AnimationHash.ToString("x8") == "58b1ec4a" || // yasuo - aa1
+                    args.AnimationHash.ToString("x8") == "53b1e46b" || // yasuo - aa2
+                    args.AnimationHash.ToString("x8") == "730fbce4" || // yasuo - aa3
+                    (args.AnimationHash.ToString("x8") == "b7f64047" && sender.Name.ToLower().Contains("twitch")) // twitch - R
+                )
+                {
+                    LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
+                    _missileLaunched = false;
+                    LastMoveCommandT = 0;
+                    _autoattackCounter++;
+                }
             }
         }
 
@@ -318,6 +373,22 @@ namespace TW.Common
             if (Player.ChampionName == "Jhin")
             {
                 if (Player.HasBuff("JhinPassiveReload"))
+                {
+                    return false;
+                }
+            }
+
+            if (Player.ChampionName == "Kalista")
+            {
+                if (Player.IsDashingLS())
+                {
+                    return false;
+                }
+            }
+
+            if (Player.ChampionName == "Darius")
+            {
+                if (Player.HasBuff("dariusqcast"))
                 {
                     return false;
                 }

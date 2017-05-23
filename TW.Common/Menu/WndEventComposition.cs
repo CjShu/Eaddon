@@ -51,7 +51,7 @@
         /// <param name="wndEventArgs">
         ///     The <see cref="WndEventArgs" />
         /// </param>
-        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public WndEventComposition(WndEventArgs wndEventArgs)
         {
             this.wndEventArgs = wndEventArgs;

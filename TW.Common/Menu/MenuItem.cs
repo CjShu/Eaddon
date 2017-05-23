@@ -677,14 +677,14 @@
         internal void OnDraw()
         {
             var s = (this.DisplayName);
-            
+
             MenuDrawHelper.DrawBox(
                 this.Position,
                 this.Width,
                 this.Height,
                 MenuSettings.BackgroundColor,
                 1,
-                System.Drawing.Color.Black);
+                System.Drawing.Color.FromArgb(255, 255, 180));
            
             if (this.DrawingTooltip)
             {
@@ -736,7 +736,7 @@
                             "[" + Utils.KeyToText(val.Key) + "]",
                             new Rectangle(x, (int)this.Position.Y, this.Width, this.Height),
                             FontDrawFlags.VerticalCenter,
-                            new ColorBGRA(1, 169, 234, 255));
+                            new ColorBGRA(207, 195, 149, 255));
                     }
 
                     if (val.SecondaryKey != 0)
@@ -758,7 +758,7 @@
                             "[" + Utils.KeyToText(val.SecondaryKey) + "]",
                             new Rectangle(x_secondary, (int)this.Position.Y, this.Width, this.Height),
                             FontDrawFlags.VerticalCenter,
-                            new ColorBGRA(1, 169, 234, 255));
+                            new ColorBGRA(207, 195, 149, 255));
                     }
                     
                     MenuDrawHelper.DrawOnOff(
@@ -776,19 +776,19 @@
                         intVal.ToString(),
                         new Rectangle((int)this.Position.X + 5, (int)this.Position.Y, this.Width, this.Height),
                         FontDrawFlags.VerticalCenter | FontDrawFlags.Right,
-                        new ColorBGRA(255, 255, 255, 255));
+                        new ColorBGRA(207, 195, 149, 255));
                     break;
 
                 case MenuValueType.Color:
                     var colorVal = this.GetValue<System.Drawing.Color>();
-                    
+
                     MenuDrawHelper.DrawBox(
                         this.Position + new Vector2(this.Width - this.Height, 0),
                         this.Height,
                         this.Height,
                         colorVal,
                         1,
-                        System.Drawing.Color.Black);
+                        System.Drawing.Color.FromArgb(255, 255, 180));
                     break;
 
                 case MenuValueType.Circle:
@@ -800,8 +800,8 @@
                         this.Height,
                         circleVal.Color,
                         1,
-                        System.Drawing.Color.Black);
-                    
+                        System.Drawing.Color.FromArgb(255, 255, 180));
+
                     MenuDrawHelper.DrawOnOff(
                         circleVal.Active,
                         new Vector2(this.Position.X + this.Width - this.Height, this.Position.Y),
@@ -817,13 +817,13 @@
                         "<<",
                         this.Position + new Vector2(this.Width - this.Height * 2, 0),
                         this,
-                        System.Drawing.Color.Black);
+                        System.Drawing.Color.FromArgb(255, 255, 180));
                     MenuDrawHelper.DrawArrow(
                         ">>",
                         this.Position + new Vector2(this.Width - this.Height, 0),
                         this,
-                        System.Drawing.Color.Black);
-                    
+                        System.Drawing.Color.FromArgb(255, 255, 180));
+
                     MenuDrawHelper.Font.DrawText(
                         null,
                         (t),
@@ -833,7 +833,7 @@
                             this.Width,
                             this.Height),
                         FontDrawFlags.VerticalCenter | FontDrawFlags.Right,
-                        new ColorBGRA(255, 255, 255, 255));
+                        new ColorBGRA(207, 195, 149, 255));
                     break;
             }
 

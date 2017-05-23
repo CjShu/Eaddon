@@ -605,20 +605,20 @@
                     ? MenuSettings.ActiveBackgroundColor
                     : MenuSettings.BackgroundColor,
                 1,
-                System.Drawing.Color.Black);
+                System.Drawing.Color.FromArgb(255, 255, 180));
 
             var style = this.Style;
             style &= ~FontStyle.Strikeout;
             style &= ~FontStyle.Underline;
 
             var font = MenuDrawHelper.GetFont(style);
-            
+
             font.DrawText(
                 null,
                 (this.DisplayName),
                 new Rectangle((int)this.Position.X + 5, (int)this.Position.Y, this.Width, this.Height),
                 FontDrawFlags.VerticalCenter,
-                Color.Yellow);
+                new ColorBGRA(207, 195, 149, 255));
             font.DrawText(
                 null,
                 "»",

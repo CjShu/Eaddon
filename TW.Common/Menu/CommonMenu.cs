@@ -30,7 +30,7 @@
             TargetSelector.TargetSelector.Initialize();
             Prediction.Initialize();
             Hacks.Initialize();
-            FakeClicks.Initialize();
+            //FakeClicks.Initialize();
             //Language.Initialize();
 
             Instance.AddToMainMenu();
@@ -41,7 +41,7 @@
             TargetSelector.TargetSelector.Shutdown();
             Prediction.Shutdown();
             Hacks.Shutdown();
-            FakeClicks.Shutdown();
+            //FakeClicks.Shutdown();
 
             Menu.Remove(Instance);
         }

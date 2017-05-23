@@ -27,73 +27,6 @@
 
         private static MenuItem MenuTowerRange;
 
-        public static bool AntiAFK
-        {
-            get
-            {
-                return EloBuddy.Hacks.AntiAFK;
-            }
-            set
-            {
-                if (value == EloBuddy.Hacks.AntiAFK)
-                {
-                    return;
-                }
-
-                EloBuddy.Hacks.AntiAFK = value;
-            }
-        }
-
-        public static bool DisableDrawings
-        {
-            get
-            {
-                return EloBuddy.Hacks.DisableDrawings;
-            }
-            set
-            {
-                if (value == EloBuddy.Hacks.DisableDrawings)
-                {
-                    return;
-                }
-
-                EloBuddy.Hacks.DisableDrawings = value;
-            }
-        }
-
-        public static bool DisableSay
-        {
-            get
-            {
-                return EloBuddy.Hacks.IngameChat;
-            }
-            set
-            {
-                if (value == EloBuddy.Hacks.IngameChat)
-                {
-                    return;
-                }
-
-                EloBuddy.Hacks.IngameChat = value;
-            }
-        }
-
-        public static bool TowerRanges
-        {
-            get
-            {
-                return EloBuddy.Hacks.TowerRanges;
-            }
-            set
-            {
-                if (value == EloBuddy.Hacks.TowerRanges)
-                {
-                    return;
-                }
-
-                EloBuddy.Hacks.TowerRanges = value;
-            }
-        }
 
         #endregion
 
@@ -118,22 +51,26 @@
                     menu = new Menu("Hacks", "Hacks");
 
                     MenuAntiAfk = menu.AddItem(new MenuItem("AfkHack", "Anti-AFK").SetValue(false));
-                    MenuAntiAfk.ValueChanged += (sender, args) => AntiAFK = args.GetNewValue<bool>();
+                    MenuAntiAfk.ValueChanged += 
+                    (sender, args) => EloBuddy.Hacks.AntiAFK = args.GetNewValue<bool>();
 
                     MenuDisableDrawings = menu.AddItem(new MenuItem("DrawingHack", "Disable Drawing").SetValue(false));
-                    MenuDisableDrawings.ValueChanged += (sender, args) => DisableDrawings = args.GetNewValue<bool>();
-                    MenuDisableDrawings.SetValue(DisableDrawings);
+                    MenuDisableDrawings.ValueChanged +=
+                        (sender, args) => EloBuddy.Hacks.DisableDrawings = args.GetNewValue<bool>();
+                    MenuDisableDrawings.SetValue(EloBuddy.Hacks.DisableDrawings);
 
                     MenuDisableSay = menu.AddItem(new MenuItem("SayHack", "Disable L# Send Chat").SetValue(false).SetTooltip("Block Game.Say from Assemblies"));
-                    MenuDisableSay.ValueChanged += (sender, args) => DisableSay = args.GetNewValue<bool>();
+                    MenuDisableSay.ValueChanged +=
+                    (sender, args) => EloBuddy.Hacks.IngameChat = args.GetNewValue<bool>();
 
                     MenuTowerRange = menu.AddItem(new MenuItem("TowerHack", "Show Tower Ranges").SetValue(false));
-                    MenuTowerRange.ValueChanged += (sender, args) => TowerRanges = args.GetNewValue<bool>();
+                    MenuTowerRange.ValueChanged +=
+                    (sender, args) => EloBuddy.Hacks.TowerRanges = args.GetNewValue<bool>();
 
-                    AntiAFK = MenuAntiAfk.GetValue<bool>();
-                    DisableDrawings = MenuDisableDrawings.GetValue<bool>();
-                    DisableSay = MenuDisableSay.GetValue<bool>();
-                    TowerRanges = MenuTowerRange.GetValue<bool>();
+                    EloBuddy.Hacks.AntiAFK = MenuAntiAfk.GetValue<bool>();
+                    EloBuddy.Hacks.DisableDrawings = MenuDisableDrawings.GetValue<bool>();
+                    EloBuddy.Hacks.IngameChat = !MenuDisableSay.GetValue<bool>();
+                    EloBuddy.Hacks.TowerRanges = MenuTowerRange.GetValue<bool>();
 
                     CommonMenu.Instance.AddSubMenu(menu);
 
