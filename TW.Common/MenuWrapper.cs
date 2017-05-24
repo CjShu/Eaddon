@@ -54,7 +54,7 @@
             {
                 // Target selector
                 this._targetSelectorMenu = new Menu("Target Selector", "ts");
-                TargetSelector.TargetSelector.AddToMenu(this._targetSelectorMenu);
+                TargetSelector.AddToMenu(this._targetSelectorMenu);
                 this._menu.AddSubMenu(this._targetSelectorMenu);
             }
 

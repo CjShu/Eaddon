@@ -3,8 +3,13 @@
     "",
     "\\Caitlyn",
     "\\Syndra\\Common",
-    "\\Syndra\\Tools"
+    "\\Syndra\\Tools",
+    "\\TW.Common",
+    "\\TW.Common\\Extensions",
+    "\\TW.Common\\Menu",
+    "\\TW.Common\\Properties",
+    "\\TW.Common\\TargetSelector"
   ],
-  "SelectedNode": "\\Sona",
+  "SelectedNode": "\\TW.Common\\TargetSelector\\TargetSelector.cs",
   "PreviewInSolutionExplorer": false
 }

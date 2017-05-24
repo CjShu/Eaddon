@@ -1212,7 +1212,7 @@ namespace TW.Common
 
                 if ((mode == OrbwalkingMode.Mixed || mode == OrbwalkingMode.LaneClear) && !_config.Item("PriorizeFarm").GetValue<bool>())
                 {
-                    var target = TargetSelector.TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
+                    var target = TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
 
                     if (target != null && this.InAutoAttackRange(target))
                     {
@@ -1378,7 +1378,7 @@ namespace TW.Common
                 {
                     if (mode != OrbwalkingMode.LaneClear || !this.ShouldWait())
                     {
-                        var target = TargetSelector.TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
+                        var target = TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
                         if (target.IsValidTarget() && this.InAutoAttackRange(target))
                         {
                             return target;

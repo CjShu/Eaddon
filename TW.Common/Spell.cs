@@ -984,7 +984,7 @@
         /// <returns>Obj_AI_Hero.</returns>
         public AIHeroClient GetTarget(float extraRange = 0, IEnumerable<AIHeroClient> champsToIgnore = null)
         {
-            return TargetSelector.TargetSelector.GetTarget(this.Range + extraRange, this.DamageType, true, champsToIgnore, this.From);
+            return TargetSelector.GetTarget(this.Range + extraRange, this.DamageType, true, champsToIgnore, this.From);
         }
 
         /// <summary>

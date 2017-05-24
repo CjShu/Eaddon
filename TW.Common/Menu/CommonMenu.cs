@@ -27,7 +27,7 @@
 
         public static void Initialize()
         {
-            TargetSelector.TargetSelector.Initialize();
+            TargetSelector.Initialize();
             Prediction.Initialize();
             Hacks.Initialize();
             //FakeClicks.Initialize();
@@ -38,7 +38,7 @@
 
         public static void Shutdown()
         {
-            TargetSelector.TargetSelector.Shutdown();
+            TargetSelector.Shutdown();
             Prediction.Shutdown();
             Hacks.Shutdown();
             //FakeClicks.Shutdown();

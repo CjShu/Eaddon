@@ -143,8 +143,6 @@
     <Compile Include="Render.cs" />
     <Compile Include="Shared.cs" />
     <Compile Include="Spell.cs" />
-    <Compile Include="TargetSelector\DamageType.cs" />
-    <Compile Include="TargetSelector\TargetingMode.cs" />
     <Compile Include="TargetSelector\TargetSelector.cs" />
     <Compile Include="ThirdParty\Clipper.cs" />
     <Compile Include="Utility.cs" />

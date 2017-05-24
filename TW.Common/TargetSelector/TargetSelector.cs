@@ -1,4 +1,4 @@
-﻿namespace TW.Common.TargetSelector
+﻿namespace TW.Common
 {
     using System;
     using System.Collections.Generic;
@@ -35,6 +35,40 @@
         #region Delegates
 
         public delegate bool TargetSelectionConditionDelegate(AIHeroClient target);
+
+        #endregion
+
+        #region Enum
+
+        public enum DamageType
+        {
+            Magical,
+
+            Physical,
+
+            True
+        }
+
+        public enum TargetingMode
+        {
+            AutoPriority,
+
+            LowHP,
+
+            MostAD,
+
+            MostAP,
+
+            Closest,
+
+            NearMouse,
+
+            LessAttack,
+
+            LessCast,
+
+            MostStack
+        }
 
         #endregion
 
@@ -546,7 +580,7 @@
 
         public static AIHeroClient _lastTarget;
 
-        private static DamageType _lastDamageType;
+        private static TargetSelector.DamageType _lastDamageType;
 
         #endregion
 
@@ -559,7 +593,7 @@
 
         public static AIHeroClient GetTarget(
             float range,
-            DamageType damageType,
+            TargetSelector.DamageType damageType,
             bool ignoreShield = true,
             IEnumerable<AIHeroClient> ignoredChamps = null,
             Vector3? rangeCheckFrom = null)

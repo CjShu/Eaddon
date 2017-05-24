@@ -279,7 +279,7 @@
             {
                 Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
 
-                var t = TargetSelector.GetTarget(EQ.Range, TW.Common.TargetSelector.DamageType.Magical);
+                var t = TargetSelector.GetTarget(EQ.Range, TargetSelector.DamageType.Magical);
 
                 if (t.IsValidTarget() && E.IsReady() && Q.IsReady())
                 {
@@ -551,7 +551,7 @@
             //目標選擇 Q範圍 寬度 數據為魔法傷害
             var target = TargetSelector.GetSelectedTarget() ?? TargetSelector.GetTarget(
                              Q.Range + (isHarass ? Q.Width / 3: Q.Width),
-                             TW.Common.TargetSelector.DamageType.Magical);
+                             TargetSelector.DamageType.Magical);
 
             // 目標
             if (target != null && useQ)
@@ -568,7 +568,7 @@
         private static void WCast(bool useW)
         {
             var target = TargetSelector.GetSelectedTarget()
-                         ?? TargetSelector.GetTarget(W.Range + 200 + W.Width, TW.Common.TargetSelector.DamageType.Magical);
+                         ?? TargetSelector.GetTarget(W.Range + 200 + W.Width, TargetSelector.DamageType.Magical);
             
 
             if (useW)
@@ -602,10 +602,10 @@
         private static void ECast(bool useE)
         {
             var Wtarget = TargetSelector.GetSelectedTarget()
-                          ?? TargetSelector.GetTarget(W.Range + W.Width, TW.Common.TargetSelector.DamageType.Magical);
+                          ?? TargetSelector.GetTarget(W.Range + W.Width, TargetSelector.DamageType.Magical);
 
             var QEtarget = TargetSelector.GetSelectedTarget() ??
-                TargetSelector.GetTarget(EQ.Range, TW.Common.TargetSelector.DamageType.Magical);
+                TargetSelector.GetTarget(EQ.Range, TargetSelector.DamageType.Magical);
 
             if (Utils.TickCount - W.LastCastAttemptT > Game.Ping + 150 && useE)
             {
@@ -640,7 +640,7 @@
         private static void RCast(bool useR, bool useIgnite)
         {
             var target = TargetSelector.GetSelectedTarget() ??
-                TargetSelector.GetTarget(R.Range, TW.Common.TargetSelector.DamageType.Magical);
+                TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
 
             var comboDmg = target != null ? Common.DamageCalculate.GetComboDamage(target) : 0;
 
@@ -667,8 +667,8 @@
 
         private static void QECast(bool useQe)
         {
-            var wTarget = TargetSelector.GetTarget(W.Range + W.Width, TW.Common.TargetSelector.DamageType.Magical);
-            var qeTarget = TargetSelector.GetTarget(EQ.Range, TW.Common.TargetSelector.DamageType.Magical);
+            var wTarget = TargetSelector.GetTarget(W.Range + W.Width, TargetSelector.DamageType.Magical);
+            var qeTarget = TargetSelector.GetTarget(EQ.Range, TargetSelector.DamageType.Magical);
 
             //QE
             if (wTarget == null && qeTarget != null && useQe)
