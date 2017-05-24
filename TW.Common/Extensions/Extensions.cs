@@ -45,14 +45,6 @@
         }
 
         /// <summary>
-        ///     Returns if the GameObject is valid
-        /// </summary>
-        public static bool IsValid<T>(this GameObject obj) where T : GameObject
-        {
-            return obj is T && obj.IsValid;
-        }
-
-        /// <summary>
         ///     Returns true if the buff is active and didn't expire.
         /// </summary>
         public static bool IsValidBuff(this BuffInstance buff)
