@@ -131,14 +131,14 @@
             }
 
             var QEMenu = Menu.AddSubMenu(new Menu("QE設定", "QEMenu"));
-            QEMenu.AddItem(new MenuItem("AntiGapcloserQE", "反突進QE", true).SetValue(true));
+            QEMenu.AddItem(new MenuItem("AntiGapcloserQE", "反突進QE").SetValue(true));
             QEMenu.AddItem(new MenuItem("QEGAPSCLRSF", "反突進QE 名單"));
             if (HeroManager.Enemies.Any())
             {
                 HeroManager.Enemies.ForEach(
                     i
                      => QEMenu.AddItem(new MenuItem("Egapcloser" + i.ChampionName.ToLower(),
-                     i.ChampionName, true).SetValue(false)));
+                     i.ChampionName.ToTw()).SetValue(true)));
             }
 
             var LastMenu = Menu.AddSubMenu(new Menu("補刀設定", "LastMenu"));
@@ -170,15 +170,15 @@
         {
             if (Menu.GetBool("AntiGapcloserQE") && E.IsReady())
             {
-                if (Menu.Item("Egapcloser" + target.Sender.ChampionName.ToLower(), true).GetValue<bool>())
+                if (Menu.Item("Egapcloser" + target.Sender.ChampionName.ToLower()).GetValue<bool>())
                 {
                     if (Q.IsReady())
                     {
-                        Q.Cast(target.End, true);
+                        Q.Cast(target.End);
                     }
                     else if (target.Sender.IsValidTarget(E.Range))
                     {
-                        E.Cast(target.End, true);
+                        E.Cast(target.Sender);
                     }
                 }
             }
@@ -215,10 +215,12 @@
 
         private static void OnUpdate(EventArgs args)
         {
-            R.Range = R.Level == 3 ? 750f : 675f;
-
-            if (player.IsDead)
+            if (player.IsDead && player.IsRecalling())
+            {
                 return;
+            }
+
+            R.Range = R.Level == 3 ? 750f : 675f;
 
             QELogicKey();
 
@@ -251,8 +253,8 @@
             }
             if (player.Distance(target) < E.Range && E.IsReady())
             {
-                Q.CastTo(target);
-                E.CastTo(target);
+                Q.Cast(target.ServerPosition);
+                E.Cast(target.ServerPosition);
             }
             else if (player.Distance(target) < EQ.Range && E.IsReady() && Q.IsReady())
             {
@@ -290,7 +292,7 @@
         {
             if (Q.IsReady())
             {
-                QCast(Menu.GetBool("UseQCombo"));
+                QCast(Menu.GetBool("UseQCombo"), false);
             }
 
             if (W.IsReady())
@@ -310,8 +312,7 @@
 
             if (Q.IsReady() && E.IsReady())
             {
-                QCast(Menu.GetBool("UseQECombo"));
-                ECast(Menu.GetBool("UseQECombo"));
+                QECast(Menu.GetBool("UseQECombo"));
             }
         }
 
@@ -321,7 +322,7 @@
             {
                 if (Q.IsReady())
                 {
-                    QCast(Menu.GetBool("UseQHarass"));
+                    QCast(Menu.GetBool("UseQHarass"), true);
                 }
 
                 if (W.IsReady())
@@ -336,8 +337,7 @@
 
                 if (Q.IsReady() && E.IsReady())
                 {
-                    QCast(Menu.GetBool("UseQEHarass"));
-                    ECast(Menu.GetBool("UseQEHarass"));
+                    QECast(Menu.GetBool("UseQEHarass"));
                 }
             }
         }
@@ -356,17 +356,25 @@
 
             if (ManaManager.HasEnoughMana(Menu.GetSlider("LaneClearMana")) && ManaManager.SpellFarm)
             {
-                var allMinionsQ = MinionManager.GetMinions(player.ServerPosition, Q.Range + Q.Width + 30, MinionTypes.Ranged);
-                var allMinionsW = MinionManager.GetMinions(player.ServerPosition, W.Range + W.Width + 30, MinionTypes.Ranged);
-                var fll = Q.GetCircularFarmLocation(allMinionsQ, Q.Width);
+                var rangedMinionsQ = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range + Q.Width + 30, MinionTypes.Ranged);
+                var allMinionsQ = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range + Q.Width + 30);
+                var rangedMinionsW = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, W.Range + W.Width + 30, MinionTypes.Ranged);
+                var allMinionsW = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, W.Range + W.Width + 30);
 
                 if (useQ && Q.IsReady())
                 {
                     if (laneClear)
                     {
-                        if (fll.MinionsHit >= Menu.GetSlider("QMinMinions"))
+                        var fl1 = Q.GetCircularFarmLocation(rangedMinionsQ, Q.Width);
+                        var fl2 = Q.GetCircularFarmLocation(allMinionsQ, Q.Width);
+
+                        if (fl1.MinionsHit >= Menu.GetSlider("QMinMinions"))
                         {
-                            Q.Cast(fll.Position, true);
+                            Q.Cast(fl1.Position, true);
+                        }
+                        else if (fl2.MinionsHit >= 2 || allMinionsQ.Count == 1)
+                        {
+                            Q.Cast(fl2.Position, true);
                         }
                     }
                     else
@@ -374,7 +382,7 @@
                         foreach (var minion in allMinionsQ.Where(minion
                             => !Orbwalking.InAutoAttackRange(minion) && minion.Health < 0.75 * Q.GetDamage(minion)))
                         {
-                            Q.CastTo(minion);
+                            Q.Cast(minion);
                         }
                     }
                 }
@@ -394,9 +402,16 @@
                         }
                         else if (player.Spellbook.GetSpell(SpellSlot.W).ToggleState != 1)
                         {
-                            if (fll.MinionsHit >= Menu.GetSlider("WMinMinions") && W.IsInRange(fll.Position.To3D()))
+                            var fl1 = Q.GetCircularFarmLocation(rangedMinionsW, W.Width);
+                            var fl2 = Q.GetCircularFarmLocation(allMinionsW, W.Width);
+
+                            if (fl1.MinionsHit >= Menu.GetSlider("WMinMinions") && W.IsInRange(fl1.Position.To3D()))
                             {
-                                W.Cast(fll.Position);
+                                W.Cast(fl1.Position);
+                            }
+                            else if (fl2.MinionsHit >= 1 && W.IsInRange(fl2.Position.To3D()) && fl1.MinionsHit <= 2)
+                            {
+                                W.Cast(fl2.Position);
                             }
                         }
                     }
@@ -531,18 +546,18 @@
         /// Q技能鑄造
         /// </summary>
         /// <param name="useQ"></param>
-        private static void QCast(bool useQ)
+        private static void QCast(bool useQ, bool isHarass)
         {
             //目標選擇 Q範圍 寬度 數據為魔法傷害
             var target = TargetSelector.GetSelectedTarget() ?? TargetSelector.GetTarget(
-                             Q.Range + Q.Width / 3 / Q.Width,
+                             Q.Range + (isHarass ? Q.Width / 3: Q.Width),
                              TW.Common.TargetSelector.DamageType.Magical);
 
             // 目標
             if (target != null && useQ)
             {
                 /// 鑄造 Q 對目標
-                Q.CastTo(target);
+                Q.Cast(target, true, true);
             }
         }
 
@@ -553,11 +568,12 @@
         private static void WCast(bool useW)
         {
             var target = TargetSelector.GetSelectedTarget()
-                         ?? TargetSelector.GetTarget(W.Range + Q.Width, TW.Common.TargetSelector.DamageType.Magical);
+                         ?? TargetSelector.GetTarget(W.Range + 200 + W.Width, TW.Common.TargetSelector.DamageType.Magical);
+            
 
             if (useW)
             {
-                if (player.Spellbook.GetSpell(SpellSlot.W).ToggleState == 1 && target.Check(EQ.Range))
+                if (player.Spellbook.GetSpell(SpellSlot.W).ToggleState == 1 && target != null)
                 {
                     var WPos = GetGrabableObjectPos(target == null);
 
@@ -573,7 +589,7 @@
                     if (Lib.Core.OrbManager.WObject(false) != null)
                     {
                         W.From = Lib.Core.OrbManager.WObject(false).ServerPosition;
-                        W.CastTo(target);
+                        W.Cast(target, true, true);
                     }
                 }
             }
@@ -586,7 +602,8 @@
         private static void ECast(bool useE)
         {
             var Wtarget = TargetSelector.GetSelectedTarget()
-                          ?? TargetSelector.GetTarget(W.Range + Q.Width, TW.Common.TargetSelector.DamageType.Magical);
+                          ?? TargetSelector.GetTarget(W.Range + W.Width, TW.Common.TargetSelector.DamageType.Magical);
+
             var QEtarget = TargetSelector.GetSelectedTarget() ??
                 TargetSelector.GetTarget(EQ.Range, TW.Common.TargetSelector.DamageType.Magical);
 
@@ -605,8 +622,10 @@
             {
                 EQ.Delay = E.Delay + Q.Range / W.Speed;
                 EQ.From = player.ServerPosition.To2D().Extend(QEtarget.ServerPosition.To2D(), Q.Range).To3D();
+
                 var prediction = EQ.GetPrediction(QEtarget);
-                if (prediction.Hitchance >= HitChance.High)
+
+                if (prediction.Hitchance >= HitChance.VeryHigh)
                 {
                     W.Cast(player.ServerPosition.To2D().Extend(prediction.CastPosition.To2D(), Q.Range - 100));
                     weComboT = Utils.TickCount;
@@ -633,7 +652,7 @@
 
             if (target != null && useR && comboDmg > target.Health && !target.IsZombie && !Q.IsReady())
             {
-                R.CastTo(target);
+                R.Cast(target);
             }
 
             // 點燃鑄造
@@ -643,6 +662,18 @@
                 {
                     player.Spellbook.CastSpell(Ignite, target);
                 }
+            }
+        }
+
+        private static void QECast(bool useQe)
+        {
+            var wTarget = TargetSelector.GetTarget(W.Range + W.Width, TW.Common.TargetSelector.DamageType.Magical);
+            var qeTarget = TargetSelector.GetTarget(EQ.Range, TW.Common.TargetSelector.DamageType.Magical);
+
+            //QE
+            if (wTarget == null && qeTarget != null && useQe)
+            {
+                UseQe(qeTarget);
             }
         }
     }
