@@ -3,7 +3,6 @@
     using EloBuddy;
     using TW.Common;
     using TW.Common.Extensions;
-    using TW.Common.TargetSelector;
     using System;
 
     public static class DamageCalculate

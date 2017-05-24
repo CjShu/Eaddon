@@ -5,7 +5,6 @@
     using Utility = TW.Common.Utility;
     using TW.Common;
     using TW.Common.Extensions;
-    using TW.Common.TargetSelector;
 
     internal class AutoLevel
     {

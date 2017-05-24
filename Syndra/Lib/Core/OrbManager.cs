@@ -3,7 +3,6 @@
     using EloBuddy;
     using TW.Common;
     using TW.Common.Extensions;
-    using TW.Common.TargetSelector;
     using SharpDX;
     using System.Linq;
     using System.Collections.Generic;

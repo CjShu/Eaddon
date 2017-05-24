@@ -5,7 +5,6 @@
     using System.Linq;
     using TW.Common;
     using TW.Common.Extensions;
-    using TW.Common.TargetSelector;
 
     internal class Potions
     {

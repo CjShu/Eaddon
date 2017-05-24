@@ -2,7 +2,6 @@
 {
     using TW.Common;
     using TW.Common.Extensions;
-    using TW.Common.TargetSelector;
     using System.Drawing;
 
     internal static class MenuManager

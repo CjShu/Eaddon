@@ -9,7 +9,6 @@
     using SharpDX;
     using TW.Common;
     using TW.Common.Extensions;
-    using TW.Common.TargetSelector;
 
 
     public class Program
