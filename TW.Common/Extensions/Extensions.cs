@@ -395,6 +395,22 @@
             return SpellSlot.Unknown;
         }
 
+        /// <summary>
+        ///     Checks if this spell is an autoattack
+        /// </summary>
+        public static bool IsAutoAttack(this SpellData spellData)
+        {
+            return Orbwalking.IsAutoAttack(spellData.Name);
+        }
+
+        /// <summary>
+        ///     Checks if this spell is an autoattack
+        /// </summary>
+        public static bool IsAutoAttack(this SpellDataInst spellData)
+        {
+            return Orbwalking.IsAutoAttack(spellData.Name);
+        }
+
         #endregion
 
         /// <summary>
