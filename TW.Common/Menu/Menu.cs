@@ -27,7 +27,7 @@
         /// <summary>
         ///     The menu settings, root menu alias.
         /// </summary>
-        public static readonly Menu Root = new Menu("Menu Settings", "Menu Settings");
+        public static readonly Menu Root = new Menu("\u4e3b\u83dc\u55ae\u8a2d\u5b9a", "Menu Settings");
 
         /// <summary>
         ///     The root menus.
@@ -116,25 +116,27 @@
         static Menu()
         {
             
-            Root.AddItem(new MenuItem("BackgroundAlpha", "Background Opacity")).SetValue(new Slider(165, 55, 255));
+            Root.AddItem(new MenuItem("BackgroundAlpha", "\u83dc\u55ae \u900f\u660e\u5ea6")).SetValue(new Slider(165, 55, 255));
             Root.AddItem(
-                new MenuItem("FontName", "Font Name:").SetValue(
-                    new StringList(new[] { "Tahoma", "Calibri", "Segoe UI" }, 1)));
-            Root.AddItem(new MenuItem("FontSize", "Font Size:").SetValue(new Slider(15, 12, 20)));
+                new MenuItem("FontName", "\u5b57\u9ad4\u540d\u7a31: ").SetValue(
+                    new StringList(new[] { "\u5927\u6cb3\u99ac\u5b57\u9ad4", "\u5b8b\u9ad4", "\u897f\u6587\u7121\u7e9c\u7dda\u9ad4" }, 1)));
+            Root.AddItem(new MenuItem("FontSize", "\u6587\u5b57\u5927\u5c0f: ").SetValue(new Slider(15, 12, 20)));
             Root.AddItem(
-                new MenuItem("FontQuality", "Font Quality").SetValue(
+                new MenuItem("FontQuality", "\u6587\u5b57\u91cf\u8cea").SetValue(
                     new StringList(
                         Enum.GetValues(typeof(FontQuality)).Cast<FontQuality>().Select(v => v.ToString()).ToArray(),
                         5)));
 
             Root.AddItem(
-                new MenuItem("TW.Common.TooltipDuration", "Tooltip Notification Duration").SetValue(
+                new MenuItem("TW.Common.TooltipDuration", "\u63d0\u793a\u901a\u77e5\u986f\u793a\u6642\u9593").SetValue(
                     new Slider(1500, 0, 5000)));
             Root.AddItem(
-             new MenuItem("Menu.Compact", "Compact Menu").SetValue(false));
+             new MenuItem("Menu.Compact", "\u7dca\u6e4a\u7684\u83dc\u55ae").SetValue(false));
 
             Root.AddItem(
-                new MenuItem("FontInfo", "Press F5 after your change").SetFontStyle(FontStyle.Bold, Color.Yellow));
+                new MenuItem("FontInfo", "\u9700\u8981\u6309\u4e0bF5 \u9032\u884c\u4fee\u6539").SetFontStyle(FontStyle.Bold, Color.Yellow));
+
+            Root.AddItem(new MenuItem("by", "\u7ffb\u8b6f\u4f5c\u8005 By: CjShu"));
 
             CommonMenu.Instance.AddSubMenu(Root); 
         }

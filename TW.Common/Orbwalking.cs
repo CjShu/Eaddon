@@ -333,6 +333,13 @@ namespace TW.Common
             Combo,
 
             /// <summary>
+            /// The orbwalker will only Flee Move.
+            /// </summary>
+            Flee,
+
+            Burst,
+
+            /// <summary>
             ///     The orbwalker will only last hit minions as late as possible.
             /// </summary>
             Freeze,
@@ -997,70 +1004,78 @@ namespace TW.Common
             {
                 _config = attachToMenu;
                 /* Drawings submenu */
-                var drawings = new Menu("Drawings", "drawings");
+                var drawings = new Menu("\u986f\u793a", "drawings");
                 drawings.AddItem(
-                    new MenuItem("AACircle", "AACircle").SetShared()
+                    new MenuItem("AACircle", "\u81ea\u5df1 AA \u7bc4\u570d").SetShared()
                         .SetValue(new Circle(true, Color.FromArgb(155, 255, 255, 0))));
                 drawings.AddItem(
-                    new MenuItem("AACircle2", "Enemy AA circle").SetShared()
+                    new MenuItem("AACircle2", "\u6575\u4eba AA \u7bc4\u570d").SetShared()
                         .SetValue(new Circle(false, Color.FromArgb(155, 255, 255, 0))));
                 drawings.AddItem(
-                    new MenuItem("HoldZone", "HoldZone").SetShared()
-                        .SetValue(new Circle(false, Color.FromArgb(155, 255, 255, 0))));
-                drawings.AddItem(new MenuItem("AALineWidth", "Line Width")).SetShared().SetValue(new Slider(2, 1, 6));
-                drawings.AddItem(new MenuItem("LastHitHelper", "Last Hit Helper").SetShared().SetValue(false));
+                    new MenuItem("HoldZone", "\u505c\u6b62\u4e0d\u52d5\u5340\u7bc4\u570d").SetShared()
+                        .SetValue(new Circle(true, Color.FromArgb(100, 255, 0))));
+                drawings.AddItem(new MenuItem("AALineWidth", "\u986f\u793a\u7dda\u5bec\u5ea6")).SetShared().SetValue(new Slider(3, 1, 6));
+                drawings.AddItem(new MenuItem("LastHitHelper", "\u958b\u555f\u81ea\u52d5\u88dc\u5200").SetShared().SetValue(false));
                 _config.AddSubMenu(drawings);
 
                 /* Misc options */
-                var misc = new Menu("Misc", "Misc");
+                var misc = new Menu("\u5176\u4ed6", "Misc");
                 misc.AddItem(
-                    new MenuItem("HoldPosRadius", "Hold Position Radius").SetShared().SetValue(new Slider(50, 50, 250)));
-                misc.AddItem(new MenuItem("PriorizeFarm", "Prioritize farm over harass").SetShared().SetValue(true));
-                misc.AddItem(new MenuItem("PrioritizeCasters", "Attack caster minions first").SetShared().SetValue(false));
-                misc.AddItem(new MenuItem("AttackWards", "Auto attack wards").SetShared().SetValue(false));
-                misc.AddItem(new MenuItem("AttackPetsnTraps", "Auto attack pets & traps").SetShared().SetValue(true));
+                    new MenuItem("HoldPosRadius", "\u4e0d\u52d5\u534a\u5f91\u8ddd\u96e2").SetShared().SetValue(new Slider(150, 50, 250)));
+                misc.AddItem(new MenuItem("PriorizeFarm", "\u9a37\u64fe\u512a\u5148\u88dc\u5175").SetShared().SetValue(true));
+                misc.AddItem(new MenuItem("PrioritizeCasters", "\u512a\u5148\u653b\u64ca\u9060\u7a0b\u5c0f\u5175").SetShared().SetValue(false));
+                misc.AddItem(new MenuItem("AttackWards", "\u81ea\u52d5\u653b\u64ca \u773c").SetShared().SetValue(false));
+                misc.AddItem(new MenuItem("AttackPetsnTraps", "\u81ea\u52d5\u653b\u64ca \u5bf5\u7269").SetShared().SetValue(true));
                 misc.AddItem(
-                    new MenuItem("AttackGPBarrel", "Auto attack gangplank barrel").SetShared()
-                        .SetValue(new StringList(new[] { "Combo and Farming", "Farming", "No" }, 1)));
-                misc.AddItem(new MenuItem("Smallminionsprio", "Jungle clear small first").SetShared().SetValue(false));
+                    new MenuItem("AttackGPBarrel", "\u81ea\u52d5\u653b\u64ca \u525b\u666e \u6876\u5b50").SetShared()
+                        .SetValue(new StringList(new[] { "\u9023\u62db \u548c \u6e05\u7dda", "\u6e05\u7dda", "\u95dc\u9589" }, 1)));
+                misc.AddItem(new MenuItem("Smallminionsprio", "\u6253\u91ce\u512a\u5148\u6e05\u5c0f\u602a").SetShared().SetValue(false));
                 misc.AddItem(
-                    new MenuItem("FocusMinionsOverTurrets", "Focus minions over objectives").SetShared()
+                    new MenuItem("FocusMinionsOverTurrets", "\u96c6\u4e2d \u5854\u4e0b\u5c0f\u5175").SetShared()
                         .SetValue(new KeyBind('M', KeyBindType.Toggle)));
 
                 _config.AddSubMenu(misc);
 
                 /* Missile check */
-                _config.AddItem(new MenuItem("MissileCheck", "Use Missile Check").SetShared().SetValue(true));
+                _config.AddItem(new MenuItem("MissileCheck", "\u4f7f\u7528\u5f48\u9053\u6aa2\u67e5").SetShared().SetValue(true));
 
                 /* Delay sliders */
                 _config.AddItem(
-                    new MenuItem("ExtraWindup", "Extra windup time").SetShared().SetValue(new Slider(80, 0, 200)));
-                _config.AddItem(new MenuItem("FarmDelay", "Farm delay").SetShared().SetValue(new Slider(0, 0, 200)));
+                    new MenuItem("ExtraWindup", "\u984d\u5916 \u8d70\u780d\u5f8c\u6416 \u5ef6\u9072").SetShared().SetValue(new Slider(80, 0, 200)));
+                _config.AddItem(new MenuItem("FarmDelay", "\u6e05\u7dda \u5ef6\u9072").SetShared().SetValue(new Slider(30, 0, 200)));
 
                 /*Load the menu*/
                 _config.AddItem(
-                    new MenuItem("LastHit", "Last hit").SetShared().SetValue(new KeyBind('X', KeyBindType.Press)));
+                    new MenuItem("LastHit", "\u88dc\u5200").SetShared().SetValue(new KeyBind('X', KeyBindType.Press)));
 
-                _config.AddItem(new MenuItem("Farm", "Mixed").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
-
-                _config.AddItem(
-                    new MenuItem("Freeze", "Freeze").SetShared().SetValue(new KeyBind('N', KeyBindType.Press)));
+                _config.AddItem(new MenuItem("Farm", "\u9a37\u64fe").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
 
                 _config.AddItem(
-                    new MenuItem("LaneClear", "LaneClear").SetShared().SetValue(new KeyBind('V', KeyBindType.Press)));
+                    new MenuItem("Freeze", "\u63a7\u7dda").SetShared().SetValue(new KeyBind('N', KeyBindType.Press)));
 
                 _config.AddItem(
-                    new MenuItem("Orbwalk", "Combo").SetShared().SetValue(new KeyBind(32, KeyBindType.Press)));
+                    new MenuItem("LaneClear", "\u6e05\u7dda").SetShared().SetValue(new KeyBind('V', KeyBindType.Press)));
 
                 _config.AddItem(
-                    new MenuItem("StillCombo", "Combo without moving").SetShared()
+                    new MenuItem("Orbwalk", "\u9023\u62db").SetShared().SetValue(new KeyBind(32, KeyBindType.Press)));
+
+                if (ObjectManager.Player.ChampionName == "Graves" || ObjectManager.Player.ChampionName == "Vayne"
+                    || ObjectManager.Player.ChampionName == "Yasuo" || ObjectManager.Player.ChampionName == "Riven")
+                {
+                    _config.AddItem(new MenuItem("Burst", "\u7206\u767c").SetShared().SetValue(new KeyBind('T', KeyBindType.Press)));
+                }
+
+                _config.AddItem(new MenuItem("Flee", "\u9003\u8dd1").SetShared().SetValue(new KeyBind('Z', KeyBindType.Press)));
+
+                _config.AddItem(
+                    new MenuItem("StillCombo", "\u9023\u62db\u4e0d\u52d5").SetShared()
                         .SetValue(new KeyBind('N', KeyBindType.Press)));
                 _config.Item("StillCombo").ValueChanged +=
                     (sender, args) => { Move = !args.GetNewValue<KeyBind>().Active; };
 
                 this.Player = ObjectManager.Player;
-                Game.OnUpdate += this.GameOnOnGameUpdate;
-                Drawing.OnDraw += this.DrawingOnOnDraw;
+                Game.OnUpdate += new GameUpdate(this.GameOnOnGameUpdate);
+                Drawing.OnDraw += new DrawingDraw(this.DrawingOnOnDraw);
                 Instances.Add(this);
             }
 
@@ -1123,8 +1138,17 @@ namespace TW.Common
                         return OrbwalkingMode.LastHit;
                     }
 
-                    if (_config.Item(this.CustomModeName) != null
-                        && _config.Item(this.CustomModeName).GetValue<KeyBind>().Active)
+                    if (_config.Item("Burst") != null && _config.Item("Burst").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.Burst;
+                    }
+
+                    if (_config.Item("Flee").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.Flee;
+                    }
+
+                    if (_config.Item(this.CustomModeName) != null && _config.Item(this.CustomModeName).GetValue<KeyBind>().Active)
                     {
                         return OrbwalkingMode.CustomMode;
                     }
@@ -1163,8 +1187,8 @@ namespace TW.Common
             public void Dispose()
             {
                 Menu.Remove(_config);
-                Game.OnUpdate -= this.GameOnOnGameUpdate;
-                Drawing.OnDraw -= this.DrawingOnOnDraw;
+                Game.OnUpdate -= new GameUpdate(this.GameOnOnGameUpdate);
+                Drawing.OnDraw -= new DrawingDraw(this.DrawingOnOnDraw);
                 Instances.Remove(this);
             }
 
@@ -1186,10 +1210,10 @@ namespace TW.Common
                 AttackableUnit result = null;
                 var mode = this.ActiveMode;
 
-                if ((mode == OrbwalkingMode.Mixed || mode == OrbwalkingMode.LaneClear)
-                    && !_config.Item("PriorizeFarm").GetValue<bool>())
+                if ((mode == OrbwalkingMode.Mixed || mode == OrbwalkingMode.LaneClear) && !_config.Item("PriorizeFarm").GetValue<bool>())
                 {
                     var target = TargetSelector.TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
+
                     if (target != null && this.InAutoAttackRange(target))
                     {
                         return target;
@@ -1590,14 +1614,14 @@ namespace TW.Common
                                 .Where(
                                     minion =>
                                         minion.IsValidTarget() && this.InAutoAttackRange(minion)
-                                        && this.ShouldAttackMinion(minion))
+                                        && this.ShouldAttackMinion(minion) && !minion.BaseSkinName.Contains("Plant"))
                             let predHealth =
                                 HealthPrediction.LaneClearHealthPrediction(
                                     minion,
                                     (int) (this.Player.AttackDelay*1000*LaneClearWaitTimeMod),
                                     this.FarmDelay)
                             where
-                                predHealth >= 2*this.Player.GetAutoAttackDamage(minion)
+                                predHealth >= 2 * this.Player.GetAutoAttackDamage(minion)
                                 || Math.Abs(predHealth - minion.Health) < float.Epsilon
                             select minion);
 
@@ -1673,6 +1697,11 @@ namespace TW.Common
             public void SetOrbwalkingPoint(Vector3 point)
             {
                 this._orbwalkingPoint = point;
+            }
+
+            public Vector3 GetOrbwalkingPoint()
+            {
+                return this._orbwalkingPoint;
             }
 
             /// <summary>

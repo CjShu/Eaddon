@@ -121,7 +121,7 @@
                         //_showMenuToggleHotkey = (byte)Keys.F9;
                         _showMenuToggleHotkey = _showMenuToggleHotkey == 0 ? (byte)120 : _showMenuToggleHotkey;
                         _showMenuToggleHotkey = Utils.FixVirtualKey(_showMenuToggleHotkey);
-                        Console.WriteLine(@"Menu toggle key set to {0}", _showMenuToggleHotkey);
+                        //Console.WriteLine(@"Menu toggle key set to {0}", _showMenuToggleHotkey);
                     }
                     catch
                     {

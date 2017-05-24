@@ -48,22 +48,22 @@
         {
             CustomEvents.Game.OnGameLoad += eventArgs =>
                 {
-                    menu = new Menu("Hacks", "Hacks");
+                    menu = new Menu("\u9ed1\u5ba2", "Hacks");
 
-                    MenuAntiAfk = menu.AddItem(new MenuItem("AfkHack", "Anti-AFK").SetValue(false));
+                    MenuAntiAfk = menu.AddItem(new MenuItem("AfkHack", "\u95dc\u9589\u639b\u7db2\u8b66\u544a").SetValue(false));
                     MenuAntiAfk.ValueChanged += 
                     (sender, args) => EloBuddy.Hacks.AntiAFK = args.GetNewValue<bool>();
 
-                    MenuDisableDrawings = menu.AddItem(new MenuItem("DrawingHack", "Disable Drawing").SetValue(false));
+                    MenuDisableDrawings = menu.AddItem(new MenuItem("DrawingHack", "\u95dc\u9589\u6240\u6709\u986f\u793a\u7bc4\u570d").SetValue(false));
                     MenuDisableDrawings.ValueChanged +=
                         (sender, args) => EloBuddy.Hacks.DisableDrawings = args.GetNewValue<bool>();
                     MenuDisableDrawings.SetValue(EloBuddy.Hacks.DisableDrawings);
 
-                    MenuDisableSay = menu.AddItem(new MenuItem("SayHack", "Disable L# Send Chat").SetValue(false).SetTooltip("Block Game.Say from Assemblies"));
+                    MenuDisableSay = menu.AddItem(new MenuItem("SayHack", "\u7981\u7528 \u767c\u9001\u804a\u5929").SetValue(false).SetTooltip("\u904a\u6232\u4e2d\u7684\u804a\u5929"));
                     MenuDisableSay.ValueChanged +=
                     (sender, args) => EloBuddy.Hacks.IngameChat = args.GetNewValue<bool>();
 
-                    MenuTowerRange = menu.AddItem(new MenuItem("TowerHack", "Show Tower Ranges").SetValue(false));
+                    MenuTowerRange = menu.AddItem(new MenuItem("TowerHack", "\u986f\u793a\u5854\u7bc4\u570d").SetValue(false));
                     MenuTowerRange.ValueChanged +=
                     (sender, args) => EloBuddy.Hacks.TowerRanges = args.GetNewValue<bool>();
 

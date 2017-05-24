@@ -101,7 +101,7 @@ namespace TW.Common
             Orbwalking.BeforeAttack -= BeforeAttackFake;
             Spellbook.OnCastSpell -= BeforeSpellCast;
             */
-            //Orbwalking.AfterAttack -= AfterAttack;
+            Orbwalking.AfterAttack -= AfterAttack;
             Player.OnIssueOrder -= OnIssueOrder;
 
             Menu.Remove(root);
@@ -221,7 +221,7 @@ namespace TW.Common
             Orbwalking.BeforeAttack += BeforeAttackFake;
             Spellbook.OnCastSpell += BeforeSpellCast;
             */
-            //Orbwalking.AfterAttack += AfterAttack;
+            Orbwalking.AfterAttack += AfterAttack;
             Player.OnIssueOrder += OnIssueOrder;
         }
 

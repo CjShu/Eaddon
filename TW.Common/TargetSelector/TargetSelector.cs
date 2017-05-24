@@ -76,7 +76,7 @@
 
         public static void AddToMenu(Menu config)
         {
-            config.AddItem(new MenuItem("Alert", "----Use TS in Common Menu----"));
+            config.AddItem(new MenuItem("Alert", "----\u4f7f\u7528 TW.Common \u83dc\u55ae----"));
         }
 
         /// <summary>
@@ -185,7 +185,7 @@
                             ignoredChamps.All(ignored => ignored.NetworkId != hero.NetworkId)
                             && IsValidTarget(hero, range, type, ignoreShieldSpells, rangeCheckFrom)
                             && (conditions == null || conditions(hero)));
-
+               
                 switch (Mode)
                 {
                     case TargetingMode.LowHP:
@@ -268,41 +268,41 @@
         {
             CustomEvents.Game.OnGameLoad += args =>
                 {
-                    var config = new Menu("Target Selector", "TargetSelector");
+                    var config = new Menu("\u76ee\u6a19\u9078\u64c7", "TargetSelector");
 
                     _configMenu = config;
 
-                    var focusMenu = new Menu("Focus Target Settings", "FocusTargetSettings");
+                    var focusMenu = new Menu("\u6307\u5b9a\u76ee\u6a19", "FocusTargetSettings");
 
-                    focusMenu.AddItem(new MenuItem("FocusSelected", "Focus selected target").SetShared().SetValue(true));
+                    focusMenu.AddItem(new MenuItem("FocusSelected", "\u6307\u5b9a\u76ee\u6a19\u756b\u5708").SetShared().SetValue(true));
                     focusMenu.AddItem(
-                        new MenuItem("SelTColor", "Focus selected target color").SetShared()
-                            .SetValue(new Circle(true, Color.Red)));
+                        new MenuItem("SelTColor", "\u6307\u5b9a\u76ee\u6a19\u7dda\u5708\u984f\u8272").SetShared()
+                            .SetValue(new Circle(true, Color.FromArgb(255, 0, 130))));
                     focusMenu.AddItem(
-                        new MenuItem("ForceFocusSelected", "Only attack selected target").SetShared().SetValue(false));
+                        new MenuItem("ForceFocusSelected", "\u53ea\u653b\u64ca\u5df2\u6307\u5b9a\u7684\u76ee\u6a19").SetShared().SetValue(false));
                     focusMenu.AddItem(new MenuItem("sep", ""));
                     focusMenu.AddItem(
-                        new MenuItem("ForceFocusSelectedKeys", "Enable only attack selected Keys").SetShared()
+                        new MenuItem("ForceFocusSelectedKeys", "\u555f\u52d5\u53ea\u653b\u64ca\u6307\u5b9a\u7684\u76ee\u6a19").SetShared()
                             .SetValue(false));
-                    focusMenu.AddItem(new MenuItem("ForceFocusSelectedK", "Only attack selected Key"))
+                    focusMenu.AddItem(new MenuItem("ForceFocusSelectedK", "\u53ea\u653b\u64ca\u6307\u5b9a\u76ee\u6a19\u6309\u9375"))
                         .SetValue(new KeyBind(32, KeyBindType.Press));
-                    focusMenu.AddItem(new MenuItem("ForceFocusSelectedK2", "Only attack selected Key 2"))
+                    focusMenu.AddItem(new MenuItem("ForceFocusSelectedK2", "\u53ea\u653b\u64ca\u6307\u5b9a\u76ee\u6a19\u6309\u9375 2"))
                         .SetValue(new KeyBind(32, KeyBindType.Press));
-                    focusMenu.AddItem(new MenuItem("ResetOnRelease", "Reset selected target upon release"))
+                    focusMenu.AddItem(new MenuItem("ResetOnRelease", "\u6307\u5b9a\u76ee\u6a19\u5f8c\u65bd\u653e"))
                         .SetValue(false);
 
                     config.AddSubMenu(focusMenu);
 
                     var autoPriorityItem =
-                        new MenuItem("AutoPriority", "Auto arrange priorities").SetShared()
+                        new MenuItem("AutoPriority", "\u81ea\u52d5\u6392\u5217\u512a\u5148\u7d1a\u6578").SetShared()
                             .SetValue(true)
-                            .SetTooltip("5 = Highest Priority");
+                            .SetTooltip("5 = \u6700\u9ad8\u512a\u5148 1 = \u6700\u5f8c\u512a\u5148");
                     autoPriorityItem.ValueChanged += autoPriorityItem_ValueChanged;
 
                     foreach (var enemy in HeroManager.Enemies)
                     {
                         config.AddItem(
-                            new MenuItem("TargetSelector" + enemy.ChampionName + "Priority", enemy.ChampionName)
+                            new MenuItem("TargetSelector" + enemy.ChampionName + "Priority", enemy.ChampionName.ToTw())
                                 .SetShared()
                                 .SetValue(
                                     new Slider(
@@ -321,8 +321,18 @@
                     }
                     config.AddItem(autoPriorityItem);
                     config.AddItem(
-                        new MenuItem("TargetingMode", "Target Mode").SetShared()
+                        new MenuItem("TargetingMode", "\u76ee\u6a19\u6a21\u5f0f").SetShared()
                             .SetValue(new StringList(Enum.GetNames(typeof(TargetingMode)))));
+
+                    config.AddItem(new MenuItem("t1", "AutoPriority = \u81ea\u52d5\u512a\u5148"));
+                    config.AddItem(new MenuItem("t2", "LowHP = \u4f4e HP"));
+                    config.AddItem(new MenuItem("t3", "MostAD = \u512a\u5148 \u7269\u88e1 AD"));
+                    config.AddItem(new MenuItem("t4", "MostAP = \u512a\u5148 \u9b54\u6cd5 AP"));
+                    config.AddItem(new MenuItem("t5", "Closest = \u512a\u5148\u6700\u8fd1\u76ee\u6a19"));
+                    config.AddItem(new MenuItem("t6", "NearMouse = \u512a\u5148\u63a5\u8fd1\u9f20\u6a19"));
+                    config.AddItem(new MenuItem("t7", "LessAttack = \u5982\u679c\u81ea\u5df1\u7269\u88e1\u50b7\u5bb3\u53ef\u4ee5\u5bb9\u6613 \u64ca\u6bba"));
+                    config.AddItem(new MenuItem("t8", "LessCast = \u5982\u679c\u81ea\u5df1\u9b54\u6cd5\u50b7\u5bb3\u53ef\u4ee5\u5bb9\u6613 \u64ca\u6bba"));
+                    config.AddItem(new MenuItem("t9", "MostStack = \u5982\u679c\u81ea\u5df1\u6709\u758a \u88ab\u52d5\u6548\u679c \u5982 \u6c4e \u514b\u9ece"));
 
                     CommonMenu.Instance.AddSubMenu(config);
                     Game.OnWndProc += GameOnOnWndProc;
@@ -455,7 +465,7 @@
             {
                 Render.Circle.DrawCircle(
                     _selectedTargetObjAiHero.Position,
-                    150,
+                    100,
                     _configMenu.Item("SelTColor").GetValue<Circle>().Color,
                     7,
                     true);

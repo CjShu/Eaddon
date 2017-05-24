@@ -298,15 +298,15 @@
             var percentage = 100 * (value - min) / (max - min);
             var x = position.X + 3 + (percentage * (width - 3)) / 100f;
             var x2D = 3 + (percentage * (width - 3)) / 100;
-            DrawLine(x - 2, position.Y, x - 2, position.Y + item.Height, 2, Color.FromArgb(206, 16, 26, 29));
+            DrawLine(x - 2, position.Y, x - 2, position.Y + item.Height, 2, Color.FromArgb(255, 255, 180));
 
             DrawBox(
                 new Vector2(position.X, position.Y),
-                x2D - 2,
+                x2D - 1,
                 item.Height,
-                Color.FromArgb(50, 190, 230),
+                Color.FromArgb(70, 250, 180, 130),
                 0,
-                Color.FromArgb(255, 200, 205));
+                Color.FromArgb(255, 255, 180));
 
             if (drawText)
             {

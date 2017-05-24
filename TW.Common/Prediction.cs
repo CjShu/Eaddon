@@ -421,8 +421,8 @@ namespace TW.Common
         {
             CustomEvents.Game.OnGameLoad += eventArgs =>
                 {
-                    _menu = new Menu("Prediction", "Prediction");
-                    var slider = new MenuItem("PredMaxRange", "Max Range %").SetValue(new Slider(100, 70, 100));
+                    _menu = new Menu("Common \u9810\u6e2c", "Prediction");
+                    var slider = new MenuItem("PredMaxRange", "\u9810\u6e2c \u6700\u5927\u7bc4\u570d %").SetValue(new Slider(100, 70, 100));
                     _menu.AddItem(slider);
                     CommonMenu.Instance.AddSubMenu(_menu);
                 };

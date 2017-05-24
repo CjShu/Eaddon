@@ -18,8 +18,6 @@
 
         LessCast,
 
-        MostStack,
-
-        EasiestToKill
+        MostStack
     }
 }

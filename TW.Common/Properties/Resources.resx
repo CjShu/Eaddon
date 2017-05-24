@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChineseJson" xml:space="preserve">
+  <data name="ChineseTraditionalJson" xml:space="preserve">
     <value>{
 	"\u003c": "\u003c",
 	"yasuo": "\u72bd\u5bbf",
