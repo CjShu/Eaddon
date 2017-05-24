@@ -204,8 +204,8 @@
         /// </summary>
         private static void CreateMenu()
         {
-            placetosave = new Menu("PermaShow", "Permashow");
-            var enablepermashow = new MenuItem("enablepermashow", "Enable PermaShow").SetValue(true);
+            placetosave = new Menu("\u72c0\u614b\u986f\u793a", "Permashow");
+            var enablepermashow = new MenuItem("enablepermashow", "\u555f\u52d5 \u72c0\u614b\u986f\u793a").SetValue(true);
             placetosave.AddItem(enablepermashow);
             var xvalue = new MenuItem("X", "X").SetValue(new Slider((int)DefaultPosition.X, 0, Drawing.Width));
             var yvalue = new MenuItem("Y", "Y").SetValue(new Slider((int)DefaultPosition.Y, 0, Drawing.Height));
@@ -214,17 +214,17 @@
             placetosave.AddItem(xvalue);
             placetosave.AddItem(yvalue);
 
-            var bigwidth = new MenuItem("bwidth", "Width").SetValue(new Slider((int)DefaultPermaShowWidth, 100, 400));
+            var bigwidth = new MenuItem("bwidth", "\u5bec\u5ea6").SetValue(new Slider((int)DefaultPermaShowWidth, 100, 400));
             var smallwidth =
-                new MenuItem("swidth", "Indicator Width").SetValue(new Slider((int)DefaultSmallBoxWidth, 30, 90));
+                new MenuItem("swidth", "\u4f4d\u7f6e\u5bec\u5ea6").SetValue(new Slider((int)DefaultSmallBoxWidth, 30, 90));
 
-            var moveable = new MenuItem("moveable", "Moveable").SetValue(true);
+            var moveable = new MenuItem("moveable", "\u958b\u555f\u53ef\u79fb\u52d5").SetValue(true);
 
             placetosave.AddItem(moveable);
             placetosave.AddItem(bigwidth);
             placetosave.AddItem(smallwidth);
 
-            var def = new MenuItem("defaults", "Default").SetValue(false);
+            var def = new MenuItem("defaults", "\u9810\u8a2d").SetValue(false);
             def.ValueChanged += (sender, args) =>
                 {
                     if (args.GetNewValue<bool>())
