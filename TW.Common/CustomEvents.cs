@@ -31,7 +31,7 @@
             ///     The end game called
             /// </summary>
             private static bool _endGameCalled;
-
+          
             #endregion
 
             #region Constructors and Destructors
@@ -48,30 +48,14 @@
 
             #region Delegates
 
-            /// <summary>
-            ///     The delegate for <see cref="Game.OnGameEnd" />
-            /// </summary>
-            /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             public delegate void OnGameEnded(EventArgs args);
-
-            /// <summary>
-            ///     The delegate for <see cref="Game.OnGameLoad" />
-            /// </summary>
-            /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             public delegate void OnGameLoaded(EventArgs args);
 
             #endregion
 
             #region Public Events
 
-            /// <summary>
-            ///     Occurs when the game ends. This is meant as a better replacement to <see cref="LeagueSharp.Game.OnEnd" />.
-            /// </summary>
             public static event OnGameEnded OnGameEnd;
-
-            /// <summary>
-            ///     Occurs when the game loads. This will be fired if the game is already loaded.
-            /// </summary>
             public static event OnGameLoaded OnGameLoad;
 
             #endregion
@@ -91,7 +75,7 @@
                 if (EloBuddy.Game.Mode == GameMode.Running)
                 {
                     //Otherwise the .ctor didn't return yet and no callback will occur
-                    Utility.DelayAction.Add(100, () => { Game_OnGameStart(new EventArgs()); });
+                    Utility.DelayAction.Add(500, () => { Game_OnGameStart(new EventArgs()); });
                 }
                 else
                 {
@@ -102,7 +86,7 @@
             #endregion
 
             #region Methods
-        
+
             /// <summary>
             ///     Fired when the game is started.
             /// </summary>
