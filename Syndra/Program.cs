@@ -25,8 +25,9 @@
         static void Main(string[] args)
         {
             /// 注入接口
-            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            CustomEvents.Game.OnGameLoad += Loading_OnLoadingComplete;
         }
+
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
