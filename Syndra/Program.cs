@@ -127,7 +127,7 @@
                 HeroManager.Enemies.ForEach(
                     i
                      => MiscMenu.AddItem(new MenuItem("DontUlt" + i.ChampionName.ToLower(),
-                     i.ChampionName, true).SetValue(false)));
+                     i.ChampionName.ToTw()).SetValue(false)));
             }
 
             var QEMenu = Menu.AddSubMenu(new Menu("QE設定", "QEMenu"));

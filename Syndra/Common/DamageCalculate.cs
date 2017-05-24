@@ -15,7 +15,9 @@
             damage += Program.Q.IsReady(420) ? Program.Q.GetDamage(target) : 0;
             damage += Program.W.IsReady() ? Program.W.GetDamage(target) : 0;
             damage += Program.E.IsReady() ? Program.E.GetDamage(target) : 0;
-            
+
+            var attackDMG = Program.player.GetAutoAttackDamage(target);
+
             if (Program.R.IsReady())
             {
                 damage += Math.Min(7, Program.player.Spellbook.GetSpell(SpellSlot.R).Ammo) * Program.player.GetSpellDamage(target, SpellSlot.R, 1);
