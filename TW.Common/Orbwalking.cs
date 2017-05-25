@@ -1632,7 +1632,8 @@ namespace TW.Common
                                 .Where(
                                     minion =>
                                         minion.IsValidTarget() && this.InAutoAttackRange(minion)
-                                        && this.ShouldAttackMinion(minion))
+                                        && this.ShouldAttackMinion(minion) && !minion.BaseSkinName.Contains("PlantSatchel")
+                                        && !minion.BaseSkinName.Contains("PlantVision") && !minion.BaseSkinName.Contains("PlantHealth"))
 
                             let predHealth =
                                 HealthPrediction.LaneClearHealthPrediction(
