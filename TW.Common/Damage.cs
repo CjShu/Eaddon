@@ -88,12 +88,12 @@ namespace TW.Common
             #region Aatrox
 
             p = new PassiveDamage
-            {
-                ChampionName = "Aatrox",
-                IsActive =
-                    (source, target) => (source.HasBuff("AatroxWPower") && source.HasBuff("AatroxWONHPowerBuff")),
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.W)),
-            };
+                    {
+                        ChampionName = "Aatrox",
+                        IsActive =
+                            (source, target) => (source.HasBuff("AatroxWPower") && source.HasBuff("AatroxWONHPowerBuff")),
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.W)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -101,26 +101,26 @@ namespace TW.Common
             #region Akali
 
             p = new PassiveDamage
-            {
-                ChampionName = "Akali",
-                IsActive = (source, target) => true,
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                (0.06 + Math.Abs(source.TotalMagicalDamage/100)*0.16667)*source.TotalAttackDamage)
-            };
+                    {
+                        ChampionName = "Akali",
+                        IsActive = (source, target) => true,
+                        GetDamage =
+                            (source, target) =>
+                                (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    (0.06 + Math.Abs(source.TotalMagicalDamage / 100) * 0.16667) * source.TotalAttackDamage)
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Akali",
-                IsActive = (source, target) => target.HasBuff("AkaliMota"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q, 1)
-            };
+                    {
+                        ChampionName = "Akali",
+                        IsActive = (source, target) => target.HasBuff("AkaliMota"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q, 1)
+                    };
 
             AttackPassives.Add(p);
 
@@ -128,44 +128,30 @@ namespace TW.Common
 
             #region Alistar
 
-            p = new PassiveDamage
-            {
-                ChampionName = "Alistar",
-                IsActive = (source, target) => (source.HasBuff("alistartrample")),
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                40d + source.Level*10d + 0.1d*source.TotalMagicalDamage),
-            };
-            AttackPassives.Add(p);
-
             #endregion
 
             #region Ashe
 
             p = new PassiveDamage
-            {
-                ChampionName = "Ashe",
-                IsActive = (source, target) => target.HasBuff("ashepassiveslow"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            source.TotalAttackDamage*(0.1 + (source.Crit*(1 + source.CritDamageMultiplier))))
-            };
+                    {
+                        ChampionName = "Ashe",
+                        IsActive = (source, target) => target.HasBuff("ashepassiveslow"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    source.TotalAttackDamage * (0.1 + (source.Crit * (1 + source.CritDamageMultiplier))))
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Ashe",
-                IsActive = (source, target) => source.HasBuff("asheqattack"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Ashe",
+                        IsActive = (source, target) => source.HasBuff("asheqattack"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -174,20 +160,20 @@ namespace TW.Common
             #region Bard
 
             p = new PassiveDamage
-            {
-                ChampionName = "Bard",
-                IsActive = (source, target) => source.GetBuffCount("bardpspiritammocount") > 0,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            new[] {30, 55, 80, 110, 140, 175, 210, 245, 280, 315, 345, 375, 400, 425, 445, 465}[
-                                Math.Min(source.GetBuffCount("bardpdisplaychimecount")/10, 15)]
-                            + (source.GetBuffCount("bardpdisplaychimecount") > 150
-                                ? Math.Truncate((source.GetBuffCount("bardpdisplaychimecount") - 150)/5d)*20
-                                : 0) + 0.3*source.TotalMagicalDamage)
-            };
+                    {
+                        ChampionName = "Bard",
+                        IsActive = (source, target) => source.GetBuffCount("bardpspiritammocount") > 0,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    new[] { 30, 55, 80, 110, 140, 175, 210, 245, 280, 315, 345, 375, 400, 425, 445, 465 }[
+                                        Math.Min(source.GetBuffCount("bardpdisplaychimecount") / 10, 15)]
+                                    + (source.GetBuffCount("bardpdisplaychimecount") > 150
+                                           ? Math.Truncate((source.GetBuffCount("bardpdisplaychimecount") - 150) / 5d) * 20
+                                           : 0) + 0.3 * source.TotalMagicalDamage)
+                    };
 
             AttackPassives.Add(p);
 
@@ -196,11 +182,11 @@ namespace TW.Common
             #region Blatzcrink
 
             p = new PassiveDamage
-            {
-                ChampionName = "Blitzcrank",
-                IsActive = (source, target) => source.HasBuff("PowerFist"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
-            };
+                    {
+                        ChampionName = "Blitzcrank",
+                        IsActive = (source, target) => source.HasBuff("PowerFist"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
+                    };
 
             AttackPassives.Add(p);
 
@@ -209,26 +195,26 @@ namespace TW.Common
             #region Braum
 
             p = new PassiveDamage
-            {
-                ChampionName = "Braum",
-                IsActive = (source, target) => source.HasBuff("braummarkstunreduction"),
-                GetDamage =
-                    (source, target) => source.CalcDamage(target, DamageType.Magical, 6.4 + (1.6*source.Level))
-            };
+                    {
+                        ChampionName = "Braum",
+                        IsActive = (source, target) => source.HasBuff("braummarkstunreduction"),
+                        GetDamage =
+                            (source, target) => source.CalcDamage(target, DamageType.Magical, 6.4 + (1.6 * source.Level))
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = string.Empty,
-                IsActive = (source, target) => target.GetBuffCount("braummark") == 3,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            32 + (8*((AIHeroClient) target.GetBuff("braummark").Caster).Level))
-            };
+                    {
+                        ChampionName = string.Empty,
+                        IsActive = (source, target) => target.GetBuffCount("braummark") == 3,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    32 + (8 * ((AIHeroClient)target.GetBuff("braummark").Caster).Level))
+                    };
 
             AttackPassives.Add(p);
 
@@ -237,17 +223,17 @@ namespace TW.Common
             #region Caitlyn
 
             p = new PassiveDamage
-            {
-                ChampionName = "Caitlyn",
-                IsActive = (source, target) => (source.HasBuff("caitlynheadshot")),
-                GetDamage =
-                    (source, target) =>
-                        ((float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                1.5d*(source.BaseAttackDamage + source.FlatPhysicalDamageMod))),
-            };
+                    {
+                        ChampionName = "Caitlyn",
+                        IsActive = (source, target) => (source.HasBuff("caitlynheadshot")),
+                        GetDamage =
+                            (source, target) =>
+                                ((float)
+                                    source.CalcDamage(
+                                        target,
+                                        DamageType.Physical,
+                                        1.5d * source.TotalAttackDamage)),
+                    };
 
             AttackPassives.Add(p);
 
@@ -255,22 +241,22 @@ namespace TW.Common
 
             #region Camille
             p = new PassiveDamage
-            {
-                ChampionName = "Camille",
-                IsActive = (source, target) => source.HasBuff("camiller"),
-                GetDamage =
-                    (source, target) => source.GetSpellDamage(target, SpellSlot.R)
-            };
+                    {
+                        ChampionName = "Camille",
+                        IsActive = (source, target) => source.HasBuff("camiller"),
+                        GetDamage =
+                            (source, target) => source.GetSpellDamage(target, SpellSlot.R)
+                    };
             #endregion
 
             #region ChoGath
 
             p = new PassiveDamage
-            {
-                ChampionName = "ChoGath",
-                IsActive = (source, target) => source.HasBuff("VorpalSpikes"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
-            };
+                    {
+                        ChampionName = "ChoGath",
+                        IsActive = (source, target) => source.HasBuff("VorpalSpikes"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
+                    };
 
             AttackPassives.Add(p);
 
@@ -279,27 +265,27 @@ namespace TW.Common
             #region Darius
 
             p = new PassiveDamage
-            {
-                ChampionName = "Darius",
-                IsActive = (source, target) => true,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            ((9 + source.Level + (source.FlatPhysicalDamageMod*0.3))
-                             *Math.Min(target.GetBuffCount("dariushemo") + 1, 5))
-                            *(target.Type == GameObjectType.obj_AI_Minion ? 0.25 : 1))
-            };
+                    {
+                        ChampionName = "Darius",
+                        IsActive = (source, target) => true,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    ((9 + source.Level + (source.FlatPhysicalDamageMod * 0.3))
+                                     * Math.Min(target.GetBuffCount("dariushemo") + 1, 5))
+                                    * (target.Type == GameObjectType.obj_AI_Minion ? 0.25 : 1))
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Darius",
-                IsActive = (source, target) => source.HasBuff("DariusNoxianTacticsONH"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Darius",
+                        IsActive = (source, target) => source.HasBuff("DariusNoxianTacticsONH"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -308,33 +294,33 @@ namespace TW.Common
             #region Dianna
 
             p = new PassiveDamage
-            {
-                ChampionName = "Diana",
-                IsActive = (source, target) => source.HasBuff("dianaarcready"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            15
-                            + ((source.Level < 6
-                                ? 5
-                                : (source.Level < 11
-                                    ? 10
-                                    : (source.Level < 14 ? 15 : (source.Level < 16 ? 20 : 25))))*source.Level)
-                            + (source.TotalMagicalDamage*0.8))
-            };
+                    {
+                        ChampionName = "Diana",
+                        IsActive = (source, target) => source.HasBuff("dianaarcready"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    15
+                                    + ((source.Level < 6
+                                            ? 5
+                                            : (source.Level < 11
+                                                   ? 10
+                                                   : (source.Level < 14 ? 15 : (source.Level < 16 ? 20 : 25)))) * source.Level)
+                                    + (source.TotalMagicalDamage * 0.8))
+                    };
 
             #endregion
 
             #region DrMundo
 
             p = new PassiveDamage
-            {
-                ChampionName = "DrMundo",
-                IsActive = (source, target) => source.HasBuff("Masochism"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
-            };
+                    {
+                        ChampionName = "DrMundo",
+                        IsActive = (source, target) => source.HasBuff("Masochism"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
+                    };
 
             AttackPassives.Add(p);
 
@@ -343,17 +329,17 @@ namespace TW.Common
             #region Draven
 
             p = new PassiveDamage
-            {
-                ChampionName = "Draven",
-                IsActive = (source, target) => (source.HasBuff("DravenSpinning")),
-                GetDamage =
-                    (source, target) =>
-                        ((float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                0.45d*(source.BaseAttackDamage + source.FlatPhysicalDamageMod))),
-            };
+                    {
+                        ChampionName = "Draven",
+                        IsActive = (source, target) => (source.HasBuff("DravenSpinning")),
+                        GetDamage =
+                            (source, target) =>
+                                ((float)
+                                    source.CalcDamage(
+                                        target,
+                                        DamageType.Physical,
+                                        0.45d * source.TotalAttackDamage)),
+                    };
 
             AttackPassives.Add(p);
 
@@ -362,37 +348,37 @@ namespace TW.Common
             #region Ekko
 
             p = new PassiveDamage
-            {
-                ChampionName = "Ekko",
-                IsActive = (source, target) => (target.GetBuffCount("EkkoStacks") == 2),
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                10 + (source.Level*10) + (source.TotalMagicalDamage*0.8)),
-            };
+                    {
+                        ChampionName = "Ekko",
+                        IsActive = (source, target) => (target.GetBuffCount("EkkoStacks") == 2),
+                        GetDamage =
+                            (source, target) =>
+                                (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    10 + (source.Level * 10) + (source.TotalMagicalDamage * 0.8)),
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Ekko",
-                IsActive = (source, target) => (target.HealthPercent < 30),
-                GetDamage = (source, target) =>
-                {
-                    var dmg =
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                (target.MaxHealth - target.Health)
-                                *(5 + Math.Floor(source.TotalMagicalDamage/100)*2.2f)/100);
-                    if (!(target is AIHeroClient) && dmg > 150f) dmg = 150f;
-                    return dmg;
-                }
-            };
+                    {
+                        ChampionName = "Ekko",
+                        IsActive = (source, target) => (target.HealthPercent < 30),
+                        GetDamage = (source, target) =>
+                            {
+                                var dmg =
+                                    (float)
+                                    source.CalcDamage(
+                                        target,
+                                        DamageType.Magical,
+                                        (target.MaxHealth - target.Health)
+                                        * (5 + Math.Floor(source.TotalMagicalDamage / 100) * 2.2f) / 100);
+                                if (!(target is AIHeroClient) && dmg > 150f) dmg = 150f;
+                                return dmg;
+                            }
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -400,20 +386,20 @@ namespace TW.Common
             #region Fizz
 
             p = new PassiveDamage
-            {
-                ChampionName = "Fizz",
-                IsActive = (source, target) => source.GetSpell(SpellSlot.W).Level > 0,
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)/6
-            };
+                    {
+                        ChampionName = "Fizz",
+                        IsActive = (source, target) => source.GetSpell(SpellSlot.W).Level > 0,
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W) / 6
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Fizz",
-                IsActive = (source, target) => source.HasBuff("FizzSeastonePassive"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Fizz",
+                        IsActive = (source, target) => source.HasBuff("FizzSeastonePassive"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -442,11 +428,11 @@ namespace TW.Common
             #region Garen
 
             p = new PassiveDamage
-            {
-                ChampionName = "Garen",
-                IsActive = (source, target) => source.HasBuff("GarenQ"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Garen",
+                        IsActive = (source, target) => source.HasBuff("GarenQ"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -455,11 +441,11 @@ namespace TW.Common
             #region Gnar
 
             p = new PassiveDamage
-            {
-                ChampionName = "Gnar",
-                IsActive = (source, target) => (target.GetBuffCount("gnarwproc") == 2),
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.W)),
-            };
+                    {
+                        ChampionName = "Gnar",
+                        IsActive = (source, target) => (target.GetBuffCount("gnarwproc") == 2),
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.W)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -467,11 +453,11 @@ namespace TW.Common
             #region Gragas
 
             p = new PassiveDamage
-            {
-                ChampionName = "Gragas",
-                IsActive = (source, target) => source.HasBuff("gragaswattackbuff"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Gragas",
+                        IsActive = (source, target) => source.HasBuff("gragaswattackbuff"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -480,16 +466,16 @@ namespace TW.Common
             #region Graves
 
             p = new PassiveDamage
-            {
-                ChampionName = "Graves",
-                IsActive = (source, target) => true,
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            (((72 + 3*source.Level)/100f)
-                             *source.CalcDamage(target, DamageType.Physical, source.TotalAttackDamage)
-                             - source.CalcDamage(target, DamageType.Physical, source.TotalAttackDamage)),
-            };
+                    {
+                        ChampionName = "Graves",
+                        IsActive = (source, target) => true,
+                        GetDamage =
+                            (source, target) =>
+                                (float)
+                                (((72 + 3 * source.Level) / 100f)
+                                 * source.CalcDamage(target, DamageType.Physical, source.TotalAttackDamage)
+                                 - source.CalcDamage(target, DamageType.Physical, source.TotalAttackDamage)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -497,11 +483,11 @@ namespace TW.Common
             #region Hecarim
 
             p = new PassiveDamage
-            {
-                ChampionName = "Hecarim",
-                IsActive = (source, target) => source.HasBuff("hecarimrampspeed"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
-            };
+                    {
+                        ChampionName = "Hecarim",
+                        IsActive = (source, target) => source.HasBuff("hecarimrampspeed"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
+                    };
 
             AttackPassives.Add(p);
 
@@ -510,11 +496,11 @@ namespace TW.Common
             #region Illaoi
 
             p = new PassiveDamage
-            {
-                ChampionName = "Illaoi",
-                IsActive = (source, target) => source.HasBuff("IllaoiW"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Illaoi",
+                        IsActive = (source, target) => source.HasBuff("IllaoiW"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -523,11 +509,11 @@ namespace TW.Common
             #region Irelia
 
             p = new PassiveDamage
-            {
-                ChampionName = "Irelia",
-                IsActive = (source, target) => source.HasBuff("ireliahitenstylecharged"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Irelia",
+                        IsActive = (source, target) => source.HasBuff("ireliahitenstylecharged"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -536,11 +522,11 @@ namespace TW.Common
             #region Ivern
 
             p = new PassiveDamage
-            {
-                ChampionName = "Ivern",
-                IsActive = (source, target) => source.HasBuff("ivernwpassive"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Ivern",
+                        IsActive = (source, target) => source.HasBuff("ivernwpassive"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -549,13 +535,13 @@ namespace TW.Common
             #region JarvanIV
 
             p = new PassiveDamage
-            {
-                ChampionName = "JarvanIV",
-                IsActive = (source, target) => !target.HasBuff("jarvanivmartialcadencecheck"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(target, DamageType.Physical, Math.Min(target.Health*0.1, 400))
-            };
+                    {
+                        ChampionName = "JarvanIV",
+                        IsActive = (source, target) => !target.HasBuff("jarvanivmartialcadencecheck"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(target, DamageType.Physical, Math.Min(target.Health * 0.1, 400))
+                    };
 
             AttackPassives.Add(p);
 
@@ -564,11 +550,11 @@ namespace TW.Common
             #region Jax
 
             p = new PassiveDamage
-            {
-                ChampionName = "Jax",
-                IsActive = (source, target) => source.HasBuff("JaxEmpowerTwo"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Jax",
+                        IsActive = (source, target) => source.HasBuff("JaxEmpowerTwo"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -577,37 +563,37 @@ namespace TW.Common
             #region Jayce
 
             p = new PassiveDamage
-            {
-                ChampionName = "Jayce",
-                IsActive =
-                    (source, target) =>
-                        Math.Abs(source.Crit - 1) < float.Epsilon && !source.HasBuff("jaycehypercharge"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            source.GetCritMultiplier()*source.TotalAttackDamage)
-            };
+                    {
+                        ChampionName = "Jayce",
+                        IsActive =
+                            (source, target) =>
+                                Math.Abs(source.Crit - 1) < float.Epsilon && !source.HasBuff("jaycehypercharge"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    source.GetCritMultiplier() * source.TotalAttackDamage)
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Jayce",
-                IsActive = (source, target) => source.HasBuff("jaycehypercharge"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W, 1)
-            };
+                    {
+                        ChampionName = "Jayce",
+                        IsActive = (source, target) => source.HasBuff("jaycehypercharge"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W, 1)
+                    };
 
             AttackPassives.Add(p);
 
             //R aa buff thingy
             p = new PassiveDamage
-            {
-                ChampionName = "Jayce",
-                IsActive = (source, target) => source.HasBuff("jaycepassivemeleeattack"),
-                GetDamage = (source, target) => source.TotalAttackDamage*1.4
-            };
+                    {
+                        ChampionName = "Jayce",
+                        IsActive = (source, target) => source.HasBuff("jaycepassivemeleeattack"),
+                        GetDamage = (source, target) => source.TotalAttackDamage * 1.4
+                    };
 
             AttackPassives.Add(p);
 
@@ -616,38 +602,38 @@ namespace TW.Common
             #region Jhin
 
             p = new PassiveDamage
-            {
-                ChampionName = "Jhin",
-                IsActive = (source, target) => (source.HasBuff("jhinpassiveattackbuff")),
-                GetDamage =
-                    (source, target) =>
-                        ((float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                source.TotalAttackDamage*0.5f
-                                + (target.MaxHealth - target.Health)
-                                *new float[] {0.15f, 0.20f, 0.25f}[Math.Min(2, (source.Level - 1)/5)])),
-            };
+                    {
+                        ChampionName = "Jhin",
+                        IsActive = (source, target) => (source.HasBuff("jhinpassiveattackbuff")),
+                        GetDamage =
+                            (source, target) =>
+                                ((float)
+                                    source.CalcDamage(
+                                        target,
+                                        DamageType.Physical,
+                                        source.TotalAttackDamage * 0.5f
+                                        + (target.MaxHealth - target.Health)
+                                        * new float[] { 0.15f, 0.20f, 0.25f }[Math.Min(2, (source.Level - 1) / 5)])),
+                    };
             AttackPassives.Add(p);
 
             p = new PassiveDamage()
-            {
-                ChampionName = "Jhin",
-                IsActive = (source, target) => Math.Abs(source.Crit - 1) < float.Epsilon,
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                (Items.HasItem((int) ItemId.Infinity_Edge, source) ? 0.875 : 0.5)
-                                *(source.TotalAttackDamage
-                                  *(1
-                                    + (new[] {2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40}[
-                                        source.Level - 1] + (Math.Floor(source.Crit*100/10)*4)
-                                       + (Math.Floor((source.AttackSpeedMod - 1)*100/10)*2.5))/100)))
-            };
+                    {
+                        ChampionName = "Jhin",
+                        IsActive = (source, target) => Math.Abs(source.Crit - 1) < float.Epsilon,
+                        GetDamage =
+                            (source, target) =>
+                                (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    (Items.HasItem((int)ItemId.Infinity_Edge, source) ? 0.875 : 0.5)
+                                    * (source.TotalAttackDamage
+                                       * (1
+                                          + (new[] { 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40 }[
+                                                 source.Level - 1] + (Math.Floor(source.Crit * 100 / 10) * 4)
+                                             + (Math.Floor((source.AttackSpeedMod - 1) * 100 / 10) * 2.5)) / 100)))
+                    };
 
             AttackPassives.Add(p);
 
@@ -656,17 +642,17 @@ namespace TW.Common
             #region Jinx
 
             p = new PassiveDamage
-            {
-                ChampionName = "Jinx",
-                IsActive = (source, target) => (source.HasBuff("JinxQ")),
-                GetDamage =
-                    (source, target) =>
-                        ((float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                0.1d*(source.BaseAttackDamage + source.FlatPhysicalDamageMod))),
-            };
+                    {
+                        ChampionName = "Jinx",
+                        IsActive = (source, target) => (source.HasBuff("JinxQ")),
+                        GetDamage =
+                            (source, target) =>
+                                ((float)
+                                    source.CalcDamage(
+                                        target,
+                                        DamageType.Physical,
+                                        0.1d * source.TotalAttackDamage)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -674,26 +660,26 @@ namespace TW.Common
             #region Kalista
 
             p = new PassiveDamage
-            {
-                ChampionName = "Kalista",
-                IsActive = (source, target) => target.HasBuff("kalistacoopstrikemarkally"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Kalista",
+                        IsActive = (source, target) => target.HasBuff("kalistacoopstrikemarkally"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = string.Empty,
-                IsActive =
-                    (source, target) =>
-                        target.HasBuff("kalistacoopstrikemarkbuff") && source.HasBuff("kalistacoopstrikeally"),
-                GetDamage =
-                    (source, target) =>
-                        ((AIHeroClient) target.GetBuff("kalistacoopstrikemarkbuff").Caster).GetSpellDamage(
-                            target,
-                            SpellSlot.W)
-            };
+                    {
+                        ChampionName = string.Empty,
+                        IsActive =
+                            (source, target) =>
+                                target.HasBuff("kalistacoopstrikemarkbuff") && source.HasBuff("kalistacoopstrikeally"),
+                        GetDamage =
+                            (source, target) =>
+                                ((AIHeroClient)target.GetBuff("kalistacoopstrikemarkbuff").Caster).GetSpellDamage(
+                                    target,
+                                    SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -702,24 +688,24 @@ namespace TW.Common
             #region Kassadin
 
             p = new PassiveDamage
-            {
-                ChampionName = "Kassadin",
-                IsActive = (source, target) => source.GetSpell(SpellSlot.W).Level > 0,
-                GetDamage =
-                    (source, target) =>
-                        source.GetSpellDamage(target, SpellSlot.W, source.HasBuff("NetherBlade") ? 1 : 0)
-            };
+                    {
+                        ChampionName = "Kassadin",
+                        IsActive = (source, target) => source.GetSpell(SpellSlot.W).Level > 0,
+                        GetDamage =
+                            (source, target) =>
+                                source.GetSpellDamage(target, SpellSlot.W, source.HasBuff("NetherBlade") ? 1 : 0)
+                    };
 
             #endregion
 
             #region Katarina
 
             p = new PassiveDamage
-            {
-                ChampionName = "Katarina",
-                IsActive = (source, target) => (target.HasBuff("katarinaqmark")),
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.Q, 1)),
-            };
+                    {
+                        ChampionName = "Katarina",
+                        IsActive = (source, target) => (target.HasBuff("katarinaqmark")),
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.Q, 1)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -727,11 +713,11 @@ namespace TW.Common
             #region Kayle
 
             p = new PassiveDamage
-            {
-                ChampionName = "Kayle",
-                IsActive = (source, target) => source.GetSpell(SpellSlot.E).Level > 0,
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
-            };
+                    {
+                        ChampionName = "Kayle",
+                        IsActive = (source, target) => source.GetSpell(SpellSlot.E).Level > 0,
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
+                    };
 
             AttackPassives.Add(p);
 
@@ -740,11 +726,11 @@ namespace TW.Common
             #region Kennen
 
             p = new PassiveDamage
-            {
-                ChampionName = "Kennen",
-                IsActive = (source, target) => source.HasBuff("kennendoublestrikelive"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Kennen",
+                        IsActive = (source, target) => source.HasBuff("kennendoublestrikelive"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -753,20 +739,20 @@ namespace TW.Common
             #region KhaZix
 
             p = new PassiveDamage
-            {
-                ChampionName = "KhaZix",
-                IsActive =
-                    (source, target) =>
-                        source.HasBuff("khazixpdamage") && target.Type == GameObjectType.AIHeroClient,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            10
-                            + ((source.Level < 6 ? 5 : (source.Level < 11 ? 10 : (source.Level < 14 ? 15 : 20)))
-                               *source.Level) + (0.5*source.TotalMagicalDamage))
-            };
+                    {
+                        ChampionName = "KhaZix",
+                        IsActive =
+                            (source, target) =>
+                                source.HasBuff("khazixpdamage") && target.Type == GameObjectType.AIHeroClient,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    10
+                                    + ((source.Level < 6 ? 5 : (source.Level < 11 ? 10 : (source.Level < 14 ? 15 : 20)))
+                                       * source.Level) + (0.5 * source.TotalMagicalDamage))
+                    };
 
             AttackPassives.Add(p);
 
@@ -775,23 +761,23 @@ namespace TW.Common
             #region Kindred
 
             p = new PassiveDamage
-            {
-                ChampionName = "Kindred",
-                IsActive =
-                    (source, target) =>
-                        source.HasBuff("KindredLegendPassive")
-                        && source.GetBuffCount("kindredmarkofthekindredstackcounter") > 0,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            Math.Min(
-                                (0.125*source.GetBuffCount("kindredmarkofthekindredstackcounter"))*target.Health,
-                                target is Obj_AI_Minion
-                                    ? 75 + (10*source.GetBuffCount("kindredmarkofthekindredstackcounter"))
-                                    : target.MaxHealth))
-            };
+                    {
+                        ChampionName = "Kindred",
+                        IsActive =
+                            (source, target) =>
+                                source.HasBuff("KindredLegendPassive")
+                                && source.GetBuffCount("kindredmarkofthekindredstackcounter") > 0,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    Math.Min(
+                                        (0.125 * source.GetBuffCount("kindredmarkofthekindredstackcounter")) * target.Health,
+                                        target is Obj_AI_Minion
+                                            ? 75 + (10 * source.GetBuffCount("kindredmarkofthekindredstackcounter"))
+                                            : target.MaxHealth))
+                    };
 
             AttackPassives.Add(p);
 
@@ -800,11 +786,11 @@ namespace TW.Common
             #region KogMaw
 
             p = new PassiveDamage
-            {
-                ChampionName = "KogMaw",
-                IsActive = (source, target) => (source.HasBuff("KogMawBioArcaneBarrage")),
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.W)),
-            };
+                    {
+                        ChampionName = "KogMaw",
+                        IsActive = (source, target) => (source.HasBuff("KogMawBioArcaneBarrage")),
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.W)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -812,31 +798,31 @@ namespace TW.Common
             #region Leona
 
             p = new PassiveDamage
-            {
-                ChampionName = string.Empty,
-                IsActive =
-                    (source, target) =>
-                        target.HasBuff("leonasunlight")
-                        && target.GetBuff("leonasunlight").Caster.NetworkId != source.NetworkId,
-                GetDamage = (source, target) =>
-                {
-                    var lvl = ((AIHeroClient) target.GetBuff("leonasunlight").Caster).Level - 1;
-                    if ((lvl/2)%1 > 0)
                     {
-                        lvl -= 1;
-                    }
-                    return source.CalcDamage(target, DamageType.Magical, 20 + (15*lvl/2));
-                }
-            };
+                        ChampionName = string.Empty,
+                        IsActive =
+                            (source, target) =>
+                                target.HasBuff("leonasunlight")
+                                && target.GetBuff("leonasunlight").Caster.NetworkId != source.NetworkId,
+                        GetDamage = (source, target) =>
+                            {
+                                var lvl = ((AIHeroClient)target.GetBuff("leonasunlight").Caster).Level - 1;
+                                if ((lvl / 2) % 1 > 0)
+                                {
+                                    lvl -= 1;
+                                }
+                                return source.CalcDamage(target, DamageType.Magical, 20 + (15 * lvl / 2));
+                            }
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Leona",
-                IsActive = (source, target) => source.HasBuff("LeonaShieldOfDaybreak"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Leona",
+                        IsActive = (source, target) => source.HasBuff("LeonaShieldOfDaybreak"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -845,21 +831,21 @@ namespace TW.Common
             #region Lucian
 
             p = new PassiveDamage
-            {
-                ChampionName = "Lucian",
-                IsActive = (source, target) => source.HasBuff("lucianpassivebuff"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            ((target.Type == GameObjectType.obj_AI_Minion
-                                ? 1
-                                : (source.Level < 6
-                                    ? 0.3
-                                    : (source.Level < 11 ? 0.4 : (source.Level < 16 ? 0.5 : 0.6))))
-                             *source.TotalAttackDamage)*source.GetCritMultiplier(true))
-            };
+                    {
+                        ChampionName = "Lucian",
+                        IsActive = (source, target) => source.HasBuff("lucianpassivebuff"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    ((target.Type == GameObjectType.obj_AI_Minion
+                                          ? 1
+                                          : (source.Level < 6
+                                                 ? 0.3
+                                                 : (source.Level < 11 ? 0.4 : (source.Level < 16 ? 0.5 : 0.6))))
+                                     * source.TotalAttackDamage) * source.GetCritMultiplier(true))
+                    };
 
             AttackPassives.Add(p);
 
@@ -868,16 +854,16 @@ namespace TW.Common
             #region Lux
 
             p = new PassiveDamage
-            {
-                ChampionName = "Lux",
-                IsActive = (source, target) => target.HasBuff("LuxIlluminatingFraulein"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            10 + (8*source.Level) + (0.2*source.TotalMagicalDamage))
-            };
+                    {
+                        ChampionName = "Lux",
+                        IsActive = (source, target) => target.HasBuff("LuxIlluminatingFraulein"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    10 + (8 * source.Level) + (0.2 * source.TotalMagicalDamage))
+                    };
 
             AttackPassives.Add(p);
 
@@ -886,11 +872,11 @@ namespace TW.Common
             #region Malphite
 
             p = new PassiveDamage
-            {
-                ChampionName = "Malphite",
-                IsActive = (source, target) => source.HasBuff("malphitecleave"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Malphite",
+                        IsActive = (source, target) => source.HasBuff("malphitecleave"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -899,16 +885,16 @@ namespace TW.Common
             #region MasterYi
 
             p = new PassiveDamage
-            {
-                ChampionName = "MasterYi",
-                IsActive = (source, target) => source.HasBuff("doublestrike"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            (0.5*source.TotalAttackDamage)*source.GetCritMultiplier(true))
-            };
+                    {
+                        ChampionName = "MasterYi",
+                        IsActive = (source, target) => source.HasBuff("doublestrike"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    (0.5 * source.TotalAttackDamage) * source.GetCritMultiplier(true))
+                    };
 
             AttackPassives.Add(p);
 
@@ -917,11 +903,11 @@ namespace TW.Common
             #region MonkeyKing
 
             p = new PassiveDamage
-            {
-                ChampionName = "MonkeyKing",
-                IsActive = (source, target) => source.HasBuff("MonkeyKingDoubleAttack"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "MonkeyKing",
+                        IsActive = (source, target) => source.HasBuff("MonkeyKingDoubleAttack"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -930,11 +916,11 @@ namespace TW.Common
             #region Mordekaiser
 
             p = new PassiveDamage
-            {
-                ChampionName = "Mordekaiser",
-                IsActive = (source, target) => source.Buffs.Any(x => x.Name.Contains("mordekaisermaceofspades")),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Mordekaiser",
+                        IsActive = (source, target) => source.Buffs.Any(x => x.Name.Contains("mordekaisermaceofspades")),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -943,18 +929,18 @@ namespace TW.Common
             #region Nami
 
             p = new PassiveDamage
-            {
-                ChampionName = string.Empty,
-                IsActive = (source, target) => source.HasBuff("NamiE"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            new[] {25, 40, 55, 70, 85}[
-                                ((AIHeroClient) source.GetBuff("NamiE").Caster).Spellbook.GetSpell(SpellSlot.E).Level
-                                - 1] + (0.2*((AIHeroClient) source.GetBuff("NamiE").Caster).TotalMagicalDamage))
-            };
+                    {
+                        ChampionName = string.Empty,
+                        IsActive = (source, target) => source.HasBuff("NamiE"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    new[] { 25, 40, 55, 70, 85 }[
+                                        ((AIHeroClient)source.GetBuff("NamiE").Caster).Spellbook.GetSpell(SpellSlot.E).Level
+                                        - 1] + (0.2 * ((AIHeroClient)source.GetBuff("NamiE").Caster).TotalMagicalDamage))
+                    };
 
             AttackPassives.Add(p);
 
@@ -963,11 +949,11 @@ namespace TW.Common
             #region Nasus
 
             p = new PassiveDamage
-            {
-                ChampionName = "Nasus",
-                IsActive = (source, target) => (source.HasBuff("NasusQ")),
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.Q)),
-            };
+                    {
+                        ChampionName = "Nasus",
+                        IsActive = (source, target) => (source.HasBuff("NasusQ")),
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.Q)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -975,24 +961,24 @@ namespace TW.Common
             #region Nautilus
 
             p = new PassiveDamage
-            {
-                ChampionName = "Nautilus",
-                IsActive = (source, target) => !target.HasBuff("nautiluspassivecheck"),
-                GetDamage =
-                    (source, target) => source.CalcDamage(target, DamageType.Magical, 2 + (6*source.Level))
-            };
+                    {
+                        ChampionName = "Nautilus",
+                        IsActive = (source, target) => !target.HasBuff("nautiluspassivecheck"),
+                        GetDamage =
+                            (source, target) => source.CalcDamage(target, DamageType.Magical, 2 + (6 * source.Level))
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Nautilus",
-                IsActive = (source, target) => source.HasBuff("nautiluspiercinggazeshield"),
-                GetDamage =
-                    (source, target) =>
-                        source.GetSpellDamage(target, SpellSlot.W)
-                        /(target.Type == GameObjectType.AIHeroClient ? 1 : 2)
-            };
+                    {
+                        ChampionName = "Nautilus",
+                        IsActive = (source, target) => source.HasBuff("nautiluspiercinggazeshield"),
+                        GetDamage =
+                            (source, target) =>
+                                source.GetSpellDamage(target, SpellSlot.W)
+                                / (target.Type == GameObjectType.AIHeroClient ? 1 : 2)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1001,11 +987,11 @@ namespace TW.Common
             #region Nidalee
 
             p = new PassiveDamage
-            {
-                ChampionName = "Nidalee",
-                IsActive = (source, target) => source.HasBuff("Takedown"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q, 1)
-            };
+                    {
+                        ChampionName = "Nidalee",
+                        IsActive = (source, target) => source.HasBuff("Takedown"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q, 1)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1014,13 +1000,13 @@ namespace TW.Common
             #region Noctune
 
             p = new PassiveDamage
-            {
-                ChampionName = "Nocturne",
-                IsActive = (source, target) => source.HasBuff("nocturneumbrablades"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(target, DamageType.Physical, 0.2*source.TotalAttackDamage)
-            };
+                    {
+                        ChampionName = "Nocturne",
+                        IsActive = (source, target) => source.HasBuff("nocturneumbrablades"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(target, DamageType.Physical, 0.2 * source.TotalAttackDamage)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1029,12 +1015,12 @@ namespace TW.Common
             #region Nunu
 
             p = new PassiveDamage
-            {
-                ChampionName = "Nunu",
-                IsActive = (source, target) => source.HasBuff("nunuqbufflizard"),
-                GetDamage =
-                    (source, target) => source.CalcDamage(target, DamageType.Magical, 0.01*source.MaxHealth)
-            };
+                    {
+                        ChampionName = "Nunu",
+                        IsActive = (source, target) => source.HasBuff("nunuqbufflizard"),
+                        GetDamage =
+                            (source, target) => source.CalcDamage(target, DamageType.Magical, 0.01 * source.MaxHealth)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1043,19 +1029,19 @@ namespace TW.Common
             #region Orianna
 
             p = new PassiveDamage
-            {
-                ChampionName = "Orianna",
-                IsActive = (source, target) => (source.HasBuff("orianaspellsword")),
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                (float) 0.15*source.TotalMagicalDamage
-                                + new float[] {10, 10, 10, 18, 18, 18, 26, 26, 26, 34, 34, 34, 42, 42, 42, 50, 50, 50}[
-                                    source.Level - 1]),
-            };
+                    {
+                        ChampionName = "Orianna",
+                        IsActive = (source, target) => (source.HasBuff("orianaspellsword")),
+                        GetDamage =
+                            (source, target) =>
+                                (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    (float)0.15 * source.TotalMagicalDamage
+                                    + new float[] { 10, 10, 10, 18, 18, 18, 26, 26, 26, 34, 34, 34, 42, 42, 42, 50, 50, 50 }[
+                                        source.Level - 1]),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -1063,19 +1049,19 @@ namespace TW.Common
             #region Pantheon
 
             p = new PassiveDamage
-            {
-                ChampionName = "Pantheon",
-                IsActive =
-                    (source, target) =>
-                        (target.HealthPercent < 15 && source.Spellbook.GetSpell(SpellSlot.E).Level > 0)
-                        || Math.Abs(source.Crit - 1) < float.Epsilon,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            source.GetCritMultiplier()*source.TotalAttackDamage)
-            };
+                    {
+                        ChampionName = "Pantheon",
+                        IsActive =
+                            (source, target) =>
+                                (target.HealthPercent < 15 && source.Spellbook.GetSpell(SpellSlot.E).Level > 0)
+                                || Math.Abs(source.Crit - 1) < float.Epsilon,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    source.GetCritMultiplier() * source.TotalAttackDamage)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1084,12 +1070,12 @@ namespace TW.Common
             #region Poppy
 
             p = new PassiveDamage
-            {
-                ChampionName = "Poppy",
-                IsActive = (source, target) => source.HasBuff("PoppyPassiveBuff"),
-                GetDamage =
-                    (source, target) => source.CalcDamage(target, DamageType.Physical, 10 + (10*source.Level))
-            };
+                    {
+                        ChampionName = "Poppy",
+                        IsActive = (source, target) => source.HasBuff("PoppyPassiveBuff"),
+                        GetDamage =
+                            (source, target) => source.CalcDamage(target, DamageType.Physical, 10 + (10 * source.Level))
+                    };
 
             AttackPassives.Add(p);
 
@@ -1098,13 +1084,13 @@ namespace TW.Common
             #region Quinn
 
             p = new PassiveDamage
-            {
-                ChampionName = "Quinn",
-                IsActive = (source, target) => (target.HasBuff("quinnw")),
-                GetDamage =
-                    (source, target) =>
-                        ((float) source.CalcDamage(target, DamageType.Physical, 0.5d*source.TotalAttackDamage)),
-            };
+                    {
+                        ChampionName = "Quinn",
+                        IsActive = (source, target) => (target.HasBuff("quinnw")),
+                        GetDamage =
+                            (source, target) =>
+                                ((float)source.CalcDamage(target, DamageType.Physical, 0.5d * source.TotalAttackDamage)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -1112,11 +1098,11 @@ namespace TW.Common
             #region RekSai
 
             p = new PassiveDamage
-            {
-                ChampionName = "RekSai",
-                IsActive = (source, target) => source.HasBuff("RekSaiq"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "RekSai",
+                        IsActive = (source, target) => source.HasBuff("RekSaiq"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1125,11 +1111,11 @@ namespace TW.Common
             #region Renekton
 
             p = new PassiveDamage
-            {
-                ChampionName = "Renekton",
-                IsActive = (source, target) => source.HasBuff("RenektonPreExecute"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Renekton",
+                        IsActive = (source, target) => source.HasBuff("RenektonPreExecute"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1159,28 +1145,28 @@ namespace TW.Common
             #region Riven
 
             p = new PassiveDamage
-            {
-                ChampionName = "Riven",
-                IsActive = (source, target) => source.GetBuffCount("rivenpassiveaaboost") > 0,
-                GetDamage =
-                    (source, target) =>
-                        ((float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                (source.Level < 3
-                                    ? 0.25
-                                    : (source.Level < 6
-                                        ? 0.29167
-                                        : (source.Level < 9
-                                            ? 0.3333
-                                            : (source.Level < 12
-                                                ? 0.375
-                                                : (source.Level < 15
-                                                    ? 0.4167
-                                                    : (source.Level < 18 ? 0.4583 : 0.5))))))
-                                *source.TotalAttackDamage)),
-            };
+                    {
+                        ChampionName = "Riven",
+                        IsActive = (source, target) => source.GetBuffCount("rivenpassiveaaboost") > 0,
+                        GetDamage =
+                            (source, target) =>
+                                ((float)
+                                    source.CalcDamage(
+                                        target,
+                                        DamageType.Physical,
+                                        (source.Level < 3
+                                             ? 0.25
+                                             : (source.Level < 6
+                                                    ? 0.29167
+                                                    : (source.Level < 9
+                                                           ? 0.3333
+                                                           : (source.Level < 12
+                                                                  ? 0.375
+                                                                  : (source.Level < 15
+                                                                         ? 0.4167
+                                                                         : (source.Level < 18 ? 0.4583 : 0.5))))))
+                                        * source.TotalAttackDamage)),
+                    };
 
             AttackPassives.Add(p);
 
@@ -1189,16 +1175,16 @@ namespace TW.Common
             #region Rumble
 
             p = new PassiveDamage
-            {
-                ChampionName = "Rumble",
-                IsActive = (source, target) => source.HasBuff("rumbleoverheat"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            0 + (5*source.Level) + (0.3*source.TotalMagicalDamage))
-            };
+                    {
+                        ChampionName = "Rumble",
+                        IsActive = (source, target) => source.HasBuff("rumbleoverheat"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    0 + (5 * source.Level) + (0.3 * source.TotalMagicalDamage))
+                    };
 
             AttackPassives.Add(p);
 
@@ -1207,11 +1193,11 @@ namespace TW.Common
             #region Sejuani
 
             p = new PassiveDamage
-            {
-                ChampionName = "Sejuani",
-                IsActive = (source, target) => source.HasBuff("sejuaninorthernwindsenrage"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Sejuani",
+                        IsActive = (source, target) => source.HasBuff("sejuaninorthernwindsenrage"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1220,42 +1206,42 @@ namespace TW.Common
             #region Shaco
 
             p = new PassiveDamage
-            {
-                ChampionName = "Shaco",
-                IsActive =
-                    (source, target) => Math.Abs(source.Crit - 1) < float.Epsilon && !source.HasBuff("Deceive"),
-                GetDamage = (source, target) => source.GetCritMultiplier()*source.TotalAttackDamage
-            };
+                    {
+                        ChampionName = "Shaco",
+                        IsActive =
+                            (source, target) => Math.Abs(source.Crit - 1) < float.Epsilon && !source.HasBuff("Deceive"),
+                        GetDamage = (source, target) => source.GetCritMultiplier() * source.TotalAttackDamage
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Shaco",
-                IsActive = (source, target) => source.IsFacing(target) && !source.IsFacing(target),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            (source.TotalAttackDamage*0.2)*source.GetCritMultiplier(true))
-            };
+                    {
+                        ChampionName = "Shaco",
+                        IsActive = (source, target) => source.IsFacing(target) && !source.IsFacing(target),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    (source.TotalAttackDamage * 0.2) * source.GetCritMultiplier(true))
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Shaco",
-                IsActive = (source, target) => source.HasBuff("Deceive"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            (source.GetCritMultiplier()
-                             + new[] {-0.6, -0.4, -0.2, 0, 0.2}[source.Spellbook.GetSpell(SpellSlot.Q).Level - 1])
-                            *source.TotalAttackDamage)
-            };
+                    {
+                        ChampionName = "Shaco",
+                        IsActive = (source, target) => source.HasBuff("Deceive"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    (source.GetCritMultiplier()
+                                     + new[] { -0.6, -0.4, -0.2, 0, 0.2 }[source.Spellbook.GetSpell(SpellSlot.Q).Level - 1])
+                                    * source.TotalAttackDamage)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1264,23 +1250,23 @@ namespace TW.Common
             #region Shen
 
             p = new PassiveDamage
-            {
-                ChampionName = "Shen",
-                IsActive = (source, target) => source.HasBuff("shenqbuff"),
-                GetDamage = (source, target) =>
-                {
-                    double dmg = 0;
-                    if (source.HasBuff("shenqbuffweak"))
                     {
-                        dmg = source.GetSpellDamage(target, SpellSlot.Q);
-                    }
-                    if (source.HasBuff("shenqbuffstrong"))
-                    {
-                        dmg = source.GetSpellDamage(target, SpellSlot.Q, 1);
-                    }
-                    return dmg;
-                }
-            };
+                        ChampionName = "Shen",
+                        IsActive = (source, target) => source.HasBuff("shenqbuff"),
+                        GetDamage = (source, target) =>
+                            {
+                                double dmg = 0;
+                                if (source.HasBuff("shenqbuffweak"))
+                                {
+                                    dmg = source.GetSpellDamage(target, SpellSlot.Q);
+                                }
+                                if (source.HasBuff("shenqbuffstrong"))
+                                {
+                                    dmg = source.GetSpellDamage(target, SpellSlot.Q, 1);
+                                }
+                                return dmg;
+                            }
+                    };
 
             AttackPassives.Add(p);
 
@@ -1289,31 +1275,31 @@ namespace TW.Common
             #region Shyvana
 
             p = new PassiveDamage
-            {
-                ChampionName = "Shyvana",
-                IsActive = (source, target) => source.HasBuff("ShyvanaDoubleAttack"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Shyvana",
+                        IsActive = (source, target) => source.HasBuff("ShyvanaDoubleAttack"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Shyvana",
-                IsActive =
-                    (source, target) =>
-                        source.HasBuff("ShyvanaImmolationAura") || source.HasBuff("shyvanaimmolatedragon"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)/4
-            };
+                    {
+                        ChampionName = "Shyvana",
+                        IsActive =
+                            (source, target) =>
+                                source.HasBuff("ShyvanaImmolationAura") || source.HasBuff("shyvanaimmolatedragon"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W) / 4
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Shyvana",
-                IsActive = (source, target) => target.HasBuff("ShyvanaFireballMissile"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E, 1)
-            };
+                    {
+                        ChampionName = "Shyvana",
+                        IsActive = (source, target) => target.HasBuff("ShyvanaFireballMissile"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E, 1)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1322,18 +1308,18 @@ namespace TW.Common
             #region Sion
 
             p = new PassiveDamage
-            {
-                ChampionName = "Sion",
-                IsActive = (source, target) => source.HasBuff("sionpassivezombie"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            Math.Min(
-                                0.1*target.MaxHealth,
-                                target.Type == GameObjectType.obj_AI_Minion ? 75 : target.MaxHealth))
-            };
+                    {
+                        ChampionName = "Sion",
+                        IsActive = (source, target) => source.HasBuff("sionpassivezombie"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    Math.Min(
+                                        0.1 * target.MaxHealth,
+                                        target.Type == GameObjectType.obj_AI_Minion ? 75 : target.MaxHealth))
+                    };
 
             AttackPassives.Add(p);
 
@@ -1342,11 +1328,11 @@ namespace TW.Common
             #region Skarner
 
             p = new PassiveDamage
-            {
-                ChampionName = "Skarner",
-                IsActive = (source, target) => target.HasBuff("skarnerpassivebuff"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E, 1)
-            };
+                    {
+                        ChampionName = "Skarner",
+                        IsActive = (source, target) => target.HasBuff("skarnerpassivebuff"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E, 1)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1355,40 +1341,40 @@ namespace TW.Common
             #region Sona
 
             p = new PassiveDamage
-            {
-                ChampionName = "Sona",
-                IsActive = (source, target) => source.HasBuff("SonaPassiveReady"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            (6
-                             + ((source.Level < 4
-                                 ? 7
-                                 : (source.Level < 6 ? 8 : (source.Level < 7 ? 9 : (source.Level < 15 ? 10 : 15))))
-                                *source.Level)) + (0.2*target.TotalMagicalDamage))
-            };
+                    {
+                        ChampionName = "Sona",
+                        IsActive = (source, target) => source.HasBuff("SonaPassiveReady"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    (6
+                                     + ((source.Level < 4
+                                             ? 7
+                                             : (source.Level < 6 ? 8 : (source.Level < 7 ? 9 : (source.Level < 15 ? 10 : 15))))
+                                        * source.Level)) + (0.2 * target.TotalMagicalDamage))
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Sona",
-                IsActive = (source, target) => source.HasBuff("SonaQProcAttacker"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            new[] {20, 30, 40, 50, 60}[
-                                ((AIHeroClient) source.GetBuff("SonaQProcAttacker").Caster).Spellbook.GetSpell(
-                                    SpellSlot.Q).Level - 1]
-                            + (0.2*((AIHeroClient) source.GetBuff("SonaQProcAttacker").Caster).TotalMagicalDamage)
-                            + new[] {0, 10, 20, 30}[
-                                ((AIHeroClient) source.GetBuff("SonaQProcAttacker").Caster).Spellbook.GetSpell(
-                                    SpellSlot.R).Level])
-            };
+                    {
+                        ChampionName = "Sona",
+                        IsActive = (source, target) => source.HasBuff("SonaQProcAttacker"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    new[] { 20, 30, 40, 50, 60 }[
+                                        ((AIHeroClient)source.GetBuff("SonaQProcAttacker").Caster).Spellbook.GetSpell(
+                                            SpellSlot.Q).Level - 1]
+                                    + (0.2 * ((AIHeroClient)source.GetBuff("SonaQProcAttacker").Caster).TotalMagicalDamage)
+                                    + new[] { 0, 10, 20, 30 }[
+                                        ((AIHeroClient)source.GetBuff("SonaQProcAttacker").Caster).Spellbook.GetSpell(
+                                            SpellSlot.R).Level])
+                    };
 
             AttackPassives.Add(p);
 
@@ -1397,11 +1383,11 @@ namespace TW.Common
             #region TahmKench
 
             p = new PassiveDamage
-            {
-                ChampionName = "TahmKench",
-                IsActive = (source, target) => source.GetSpell(SpellSlot.R).Level > 0,
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.R)
-            };
+                    {
+                        ChampionName = "TahmKench",
+                        IsActive = (source, target) => source.GetSpell(SpellSlot.R).Level > 0,
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.R)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1410,19 +1396,19 @@ namespace TW.Common
             #region Talon
 
             p = new PassiveDamage
-            {
-                ChampionName = "Talon",
-                IsActive =
-                    (source, target) =>
-                        target.HasBuffOfType(BuffType.Slow) || target.HasBuffOfType(BuffType.Stun)
-                        || target.HasBuffOfType(BuffType.Snare) || target.HasBuffOfType(BuffType.Suppression),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            (source.TotalAttackDamage*0.1)*source.GetCritMultiplier(true))
-            };
+                    {
+                        ChampionName = "Talon",
+                        IsActive =
+                            (source, target) =>
+                                target.HasBuffOfType(BuffType.Slow) || target.HasBuffOfType(BuffType.Stun)
+                                || target.HasBuffOfType(BuffType.Snare) || target.HasBuffOfType(BuffType.Suppression),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    (source.TotalAttackDamage * 0.1) * source.GetCritMultiplier(true))
+                    };
 
             AttackPassives.Add(p);
 
@@ -1431,11 +1417,11 @@ namespace TW.Common
             #region Taric
 
             p = new PassiveDamage
-            {
-                ChampionName = "Taric",
-                IsActive = (source, target) => source.HasBuff("taricgemcraftbuff"),
-                GetDamage = (source, target) => source.CalcDamage(target, DamageType.Magical, source.Armor*0.2)
-            };
+                    {
+                        ChampionName = "Taric",
+                        IsActive = (source, target) => source.HasBuff("taricgemcraftbuff"),
+                        GetDamage = (source, target) => source.CalcDamage(target, DamageType.Magical, source.Armor * 0.2)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1444,17 +1430,17 @@ namespace TW.Common
             #region Teemo
 
             p = new PassiveDamage
-            {
-                ChampionName = "Teemo",
-                IsActive = (source, target) => (source.HasBuff("ToxicShot")),
-                GetDamage =
-                    (source, target) =>
-                        ((float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                source.Spellbook.GetSpell(SpellSlot.E).Level*10 + source.TotalMagicalDamage*0.3)),
-            };
+                    {
+                        ChampionName = "Teemo",
+                        IsActive = (source, target) => (source.HasBuff("ToxicShot")),
+                        GetDamage =
+                            (source, target) =>
+                                ((float)
+                                    source.CalcDamage(
+                                        target,
+                                        DamageType.Magical,
+                                        source.Spellbook.GetSpell(SpellSlot.E).Level * 10 + source.TotalMagicalDamage * 0.3)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -1462,11 +1448,11 @@ namespace TW.Common
             #region Thresh
 
             p = new PassiveDamage
-            {
-                ChampionName = "Thresh",
-                IsActive = (source, target) => source.Buffs.Any(x => x.Name.Contains("threshqpassive")),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E, 1)
-            };
+                    {
+                        ChampionName = "Thresh",
+                        IsActive = (source, target) => source.Buffs.Any(x => x.Name.Contains("threshqpassive")),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E, 1)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1475,11 +1461,11 @@ namespace TW.Common
             #region Tristana
 
             p = new PassiveDamage
-            {
-                ChampionName = "Tristana",
-                IsActive = (source, target) => target.GetBuffCount("tristanaecharge") == 3,
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
-            };
+                    {
+                        ChampionName = "Tristana",
+                        IsActive = (source, target) => target.GetBuffCount("tristanaecharge") == 3,
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.E)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1488,11 +1474,11 @@ namespace TW.Common
             #region Trundle
 
             p = new PassiveDamage
-            {
-                ChampionName = "Trundle",
-                IsActive = (source, target) => source.HasBuff("TrundleTrollSmash"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Trundle",
+                        IsActive = (source, target) => source.HasBuff("TrundleTrollSmash"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1501,56 +1487,56 @@ namespace TW.Common
             #region TwistedFate
 
             p = new PassiveDamage
-            {
-                ChampionName = "TwistedFate",
-                IsActive = (source, target) => (source.HasBuff("bluecardpreattack")),
-                GetDamage =
-                    (source, target) =>
-                        (float) source.GetSpellDamage(target, SpellSlot.W)
-                        - (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                (source.BaseAttackDamage + source.FlatPhysicalDamageMod)) - 10f,
-            };
+                    {
+                        ChampionName = "TwistedFate",
+                        IsActive = (source, target) => (source.HasBuff("bluecardpreattack")),
+                        GetDamage =
+                            (source, target) =>
+                                (float)source.GetSpellDamage(target, SpellSlot.W)
+                                - (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    source.TotalAttackDamage) - 10f,
+                    };
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "TwistedFate",
-                IsActive = (source, target) => (source.HasBuff("redcardpreattack")),
-                GetDamage =
-                    (source, target) =>
-                        (float) source.GetSpellDamage(target, SpellSlot.W, 2)
-                        - (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                (source.BaseAttackDamage + source.FlatPhysicalDamageMod)) - 10f,
-            };
+                    {
+                        ChampionName = "TwistedFate",
+                        IsActive = (source, target) => (source.HasBuff("redcardpreattack")),
+                        GetDamage =
+                            (source, target) =>
+                                (float)source.GetSpellDamage(target, SpellSlot.W, 2)
+                                - (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    source.TotalAttackDamage) - 10f,
+                    };
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "TwistedFate",
-                IsActive = (source, target) => (source.HasBuff("goldcardpreattack")),
-                GetDamage =
-                    (source, target) =>
-                        (float) source.GetSpellDamage(target, SpellSlot.W, 3)
-                        - (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Physical,
-                                (source.BaseAttackDamage + source.FlatPhysicalDamageMod)) - 10f,
-            };
+                    {
+                        ChampionName = "TwistedFate",
+                        IsActive = (source, target) => (source.HasBuff("goldcardpreattack")),
+                        GetDamage =
+                            (source, target) =>
+                                (float)source.GetSpellDamage(target, SpellSlot.W, 3)
+                                - (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    source.TotalAttackDamage) - 10f,
+                    };
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "TwistedFate",
-                IsActive = (source, target) => (source.HasBuff("cardmasterstackparticle")),
-                GetDamage = (source, target) => (float) source.GetSpellDamage(target, SpellSlot.E),
-            };
+                    {
+                        ChampionName = "TwistedFate",
+                        IsActive = (source, target) => (source.HasBuff("cardmasterstackparticle")),
+                        GetDamage = (source, target) => (float)source.GetSpellDamage(target, SpellSlot.E),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -1582,11 +1568,11 @@ namespace TW.Common
             #region Udyr
 
             p = new PassiveDamage
-            {
-                ChampionName = "Udyr",
-                IsActive = (source, target) => source.HasBuff("UdyrTigerStance"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Udyr",
+                        IsActive = (source, target) => source.HasBuff("UdyrTigerStance"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1595,11 +1581,11 @@ namespace TW.Common
             #region Varus
 
             p = new PassiveDamage
-            {
-                ChampionName = "Varus",
-                IsActive = (source, target) => (source.HasBuff("VarusW")),
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.W)),
-            };
+                    {
+                        ChampionName = "Varus",
+                        IsActive = (source, target) => (source.HasBuff("VarusW")),
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.W)),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -1607,20 +1593,20 @@ namespace TW.Common
             #region Vayne
 
             p = new PassiveDamage
-            {
-                ChampionName = "Vayne",
-                IsActive = (source, target) => (source.HasBuff("vaynetumblebonus")),
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.Q)),
-            };
+                    {
+                        ChampionName = "Vayne",
+                        IsActive = (source, target) => (source.HasBuff("vaynetumblebonus")),
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.Q)),
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Vayne",
-                IsActive = (source, target) => source.GetBuffCount("vaynesilvereddebuff") == 2,
-                GetDamage = (source, target) => ((float) source.GetSpellDamage(target, SpellSlot.W)),
-            };
+                    {
+                        ChampionName = "Vayne",
+                        IsActive = (source, target) => source.GetBuffCount("vaynesilvereddebuff") == 2,
+                        GetDamage = (source, target) => ((float)source.GetSpellDamage(target, SpellSlot.W)),
+                    };
 
             AttackPassives.Add(p);
 
@@ -1629,20 +1615,20 @@ namespace TW.Common
             #region Vi
 
             p = new PassiveDamage
-            {
-                ChampionName = "Vi",
-                IsActive = (source, target) => target.GetBuffCount("viwproc") == 2,
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Vi",
+                        IsActive = (source, target) => target.GetBuffCount("viwproc") == 2,
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Vi",
-                IsActive = (source, target) => source.HasBuff("ViE"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
-            };
+                    {
+                        ChampionName = "Vi",
+                        IsActive = (source, target) => source.HasBuff("ViE"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.W)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1651,20 +1637,20 @@ namespace TW.Common
             #region Viktor
 
             p = new PassiveDamage
-            {
-                ChampionName = "Viktor",
-                IsActive = (source, target) => (source.HasBuff("viktorpowertransferreturn")),
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                (float) 0.5d*source.TotalMagicalDamage
-                                + new float[]
-                                {20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80, 90, 110, 130, 150, 170, 190, 210}[
-                                    source.Level - 1]),
-            };
+                    {
+                        ChampionName = "Viktor",
+                        IsActive = (source, target) => (source.HasBuff("viktorpowertransferreturn")),
+                        GetDamage =
+                            (source, target) =>
+                                (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    (float)0.5d * source.TotalMagicalDamage
+                                    + new float[]
+                                          {20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80, 90, 110, 130, 150, 170, 190, 210}[
+                                        source.Level - 1]),
+                    };
             AttackPassives.Add(p);
 
             #endregion
@@ -1672,20 +1658,20 @@ namespace TW.Common
             #region Volibear
 
             p = new PassiveDamage
-            {
-                ChampionName = "Volibear",
-                IsActive = (source, target) => source.HasBuff("VolibearQ"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "Volibear",
+                        IsActive = (source, target) => source.HasBuff("VolibearQ"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
             p = new PassiveDamage
-            {
-                ChampionName = "Volibear",
-                IsActive = (source, target) => source.HasBuff("volibearrapllicator"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.R)
-            };
+                    {
+                        ChampionName = "Volibear",
+                        IsActive = (source, target) => source.HasBuff("volibearrapllicator"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.R)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1694,16 +1680,16 @@ namespace TW.Common
             #region Warwick
 
             p = new PassiveDamage
-            {
-                ChampionName = "Warwick",
-                IsActive = (source, target) => true,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            2.5 + (source.Level < 10 ? 0.5 : 1)*source.Level)
-            };
+                    {
+                        ChampionName = "Warwick",
+                        IsActive = (source, target) => true,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    8 + (2 * source.Level))
+                    };
 
             AttackPassives.Add(p);
 
@@ -1712,16 +1698,16 @@ namespace TW.Common
             #region Yasuo
 
             p = new PassiveDamage
-            {
-                ChampionName = "Yasuo",
-                IsActive = (source, target) => Math.Abs(source.Crit - 1) < float.Epsilon,
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            (Items.HasItem((int) ItemId.Infinity_Edge, source) ? 1.25 : 0.8)*source.TotalAttackDamage)
-            };
+                    {
+                        ChampionName = "Yasuo",
+                        IsActive = (source, target) => Math.Abs(source.Crit - 1) < float.Epsilon,
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    (Items.HasItem((int)ItemId.Infinity_Edge, source) ? 1.25 : 0.8) * source.TotalAttackDamage)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1730,24 +1716,24 @@ namespace TW.Common
             #region Yorick
 
             p = new PassiveDamage
-            {
-                ChampionName = "Yorick",
-                IsActive = (source, target) => source.HasBuff("YorickUnholySymbiosis"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Physical,
-                            (0.05
-                             *MinionManager.GetMinions(float.MaxValue)
-                                 .Count(
-                                     g =>
-                                         g.Team == source.Team
-                                         && (g.Name.Equals("Clyde") || g.Name.Equals("Inky") || g.Name.Equals("Blinky")
-                                             || (g.HasBuff("yorickunholysymbiosis")
-                                                 && g.GetBuff("yorickunholysymbiosis").Caster.NetworkId
-                                                 == source.NetworkId))))*source.TotalAttackDamage)
-            };
+                    {
+                        ChampionName = "Yorick",
+                        IsActive = (source, target) => source.HasBuff("YorickUnholySymbiosis"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Physical,
+                                    (0.05
+                                     * MinionManager.GetMinions(float.MaxValue)
+                                         .Count(
+                                             g =>
+                                                 g.Team == source.Team
+                                                 && (g.Name.Equals("Clyde") || g.Name.Equals("Inky") || g.Name.Equals("Blinky")
+                                                     || (g.HasBuff("yorickunholysymbiosis")
+                                                         && g.GetBuff("yorickunholysymbiosis").Caster.NetworkId
+                                                         == source.NetworkId)))) * source.TotalAttackDamage)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1756,16 +1742,16 @@ namespace TW.Common
             #region Zed
 
             p = new PassiveDamage
-            {
-                ChampionName = "Zed",
-                IsActive = (source, target) => target.HealthPercent < 50 && !target.HasBuff("ZedPassiveCD"),
-                GetDamage =
-                    (source, target) =>
-                        source.CalcDamage(
-                            target,
-                            DamageType.Magical,
-                            (source.Level < 7 ? 0.06 : (source.Level < 17 ? 0.08 : 0.1))*target.MaxHealth)
-            };
+                    {
+                        ChampionName = "Zed",
+                        IsActive = (source, target) => target.HealthPercent < 50 && !target.HasBuff("ZedPassiveCD"),
+                        GetDamage =
+                            (source, target) =>
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    (source.Level < 7 ? 0.06 : (source.Level < 17 ? 0.08 : 0.1)) * target.MaxHealth)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1774,20 +1760,20 @@ namespace TW.Common
             #region Ziggs
 
             p = new PassiveDamage
-            {
-                ChampionName = "Ziggs",
-                IsActive = (source, target) => (source.HasBuff("ziggsshortfuse")),
-                GetDamage =
-                    (source, target) =>
-                        (float)
-                            source.CalcDamage(
-                                target,
-                                DamageType.Magical,
-                                (float) 0.3d*source.TotalMagicalDamage
-                                + new float[]
-                                {20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160}[
-                                    source.Level - 1]),
-            };
+                    {
+                        ChampionName = "Ziggs",
+                        IsActive = (source, target) => (source.HasBuff("ziggsshortfuse")),
+                        GetDamage =
+                            (source, target) =>
+                                (float)
+                                source.CalcDamage(
+                                    target,
+                                    DamageType.Magical,
+                                    (float)0.3d * source.TotalMagicalDamage
+                                    + new float[]
+                                          {20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160}[
+                                        source.Level - 1]),
+                    };
 
             AttackPassives.Add(p);
 
@@ -1796,11 +1782,11 @@ namespace TW.Common
             #region XinZhao
 
             p = new PassiveDamage
-            {
-                ChampionName = "XinZhao",
-                IsActive = (source, target) => source.HasBuff("XenZhaoComboTarget"),
-                GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
-            };
+                    {
+                        ChampionName = "XinZhao",
+                        IsActive = (source, target) => source.HasBuff("XenZhaoComboTarget"),
+                        GetDamage = (source, target) => source.GetSpellDamage(target, SpellSlot.Q)
+                    };
 
             AttackPassives.Add(p);
 
@@ -1815,5807 +1801,5909 @@ namespace TW.Common
             Spells.Add(
                 "Aatrox",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.6*source.FlatPhysicalDamageMod
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 95, 130, 165, 200}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 110, 145, 180, 215}[level]
-                                + 0.6*source.TotalMagicalDamage
-                                + 0.6*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 300, 400}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 35, 60, 95, 120}[level]
+                                        + 1.1 * source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 60, 90, 120, 150}[level]
+                                        + 0.75 * source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                                        + 0.7*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 300, 400}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Ahri",
                 new List<DamageSpell>
-                {
-                    //Normal Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 65, 90, 115, 140}[level]
-                                + 0.35*source.TotalMagicalDamage
-                    },
-                    //Q Return
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 65, 90, 115, 140}[level]
-                                + 0.35*source.TotalMagicalDamage
-                    },
-                    //W => First FF to target
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 65, 90, 115, 140}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //W => Additional FF to already FF target
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {12, 19.5, 27, 34.5, 42}[level]
-                                + 0.12*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 95, 130, 165, 200}[level]
-                                + 0.50*source.TotalMagicalDamage
-                    },
-                    //R, per dash
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                });
+                        //Normal Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 65, 90, 115, 140}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                        //Q Return
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 65, 90, 115, 140}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                        //W => First FF to target
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 65, 90, 115, 140}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //W => Additional FF to already FF target
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {12, 19.5, 27, 34.5, 42}[level]
+                                        + 0.12*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 95, 130, 165, 200}[level]
+                                        + 0.50*source.TotalMagicalDamage
+                            },
+                        //R, per dash
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Akali",
                 new List<DamageSpell>
-                {
-                    //Q Initial
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {35, 55, 75, 95, 115}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //Q Detonation
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {45, 70, 95, 120, 145}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 100, 130, 160, 190}[level]
-                                + 0.5*source.TotalMagicalDamage
-                                + 0.7*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 100, 150}[level]
-                                + 0.25*source.TotalMagicalDamage
-                    },
-                });
+                        //Q Initial
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {35, 55, 75, 95, 115}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //Q Detonation
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {45, 70, 95, 120, 145}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 100, 130, 160, 190}[level]
+                                        + 0.6 * source.TotalMagicalDamage + 0.8 * source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 100, 150}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Alistar",
                 new List<DamageSpell>
-                {
-                    //Q Initial
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {55, 110, 165, 220, 275}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //E -- per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 25, 50, 75, 100}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                });
+                        //Q Initial
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {55, 110, 165, 220, 275}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100,125,150,175,200}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Amumu",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 130, 180, 230, 280}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //W - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {8, 12, 16, 20, 24}[level]
-                                + (new[] {0.01, 0.015, 0.02, 0.025, 0.03}[level]
-                                   + 0.01*source.TotalMagicalDamage/100)*target.MaxHealth
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 100, 125, 150, 175}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 130, 180, 230, 280}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //W - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {8, 12, 16, 20, 24}[level]
+                                        + (new[] {0.01, 0.015, 0.02, 0.025, 0.03}[level]
+                                           + 0.01*source.TotalMagicalDamage/100)*target.MaxHealth
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 100, 125, 150, 175}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Anivia",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 85, 110, 135, 160}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //Q - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]*2
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {50, 75, 100, 125, 150}[level]
-                                 + 0.5*source.TotalMagicalDamage)
-                                *(target.HasBuff("chilled") ? 2 : 1)
-                    },
-                    //R - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 60, 80}[level]
-                                + 0.125*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 85, 110, 135, 160}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //Q - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]*2
+                                        + source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {50, 75, 100, 125, 150}[level]
+                                         + 0.5*source.TotalMagicalDamage)
+                                        *(target.HasBuff("chilled") ? 2 : 1)
+                            },
+                        //R - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 60, 80}[level]
+                                        + 0.125*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Annie",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 115, 150, 185, 220}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.85*source.TotalMagicalDamage
-                    },
-                    //R - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 275, 400}[level]
-                                + new double[] {10, 15, 20}[level] /* Aura */
-                                + new double[] {50, 75, 100}[level] /* Tibbers ʕ•͡ᴥ•ʔ */
-                                + (0.65 + 0.1 + 0.15)*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 115, 150, 185, 220}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.85*source.TotalMagicalDamage
+                            },
+                        //R - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 275, 400}[level]
+                                        + new double[] {10, 15, 20}[level] /* Aura */
+                                        + new double[] {50, 75, 100}[level] /* Tibbers ʕ•͡ᴥ•ʔ */
+                                        + (0.65 + 0.1 + 0.15)*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Ashe",
                 new List<DamageSpell>
-                {
-                    //W
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 35, 50, 65, 80}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 400, 600}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R - Min
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {250, 425, 600}[level]
-                                 + 1*source.TotalMagicalDamage)/2
-                    },
-                });
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 35, 50, 65, 80}[level]
+                                        + source.TotalAttackDamage
+                            },
+                        //R - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {250, 425, 600}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //R - Min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {200, 400, 600}[level]
+                                         + source.TotalMagicalDamage)/2
+                            },
+                    });
 
             Spells.Add(
                 "AurelionSol",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.65*source.TotalMagicalDamage
-                    },
-                    //W -- per aoshin blob thingy
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
+                        //Q
+                        new DamageSpell
                             {
-                                //Obj_AI_Base doesnt have a level property
-                                //safe to assume aurelion sol is of Obj_AI_Hero type
-                                var aurelionLevel = ((AIHeroClient) source).Level;
-                                return 30d + (aurelionLevel - 1)*6 +
-                                       new double[] {7.5, 15, 22.5, 25, 37.5}[level]
-                                       + (25.5d + 1.5*(aurelionLevel - 1))*source.TotalMagicalDamage;
-                            }
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.65*source.TotalMagicalDamage
+                            },
+                        //W -- per aoshin blob thingy
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        {
+                                            //Obj_AI_Base doesnt have a level property
+                                            //safe to assume aurelion sol is of AIHeroClient type
+                                            var aurelionLevel = ((AIHeroClient) source).Level;
+                                            return 30d + (aurelionLevel - 1)*6 +
+                                                   new double[] {7.5, 15, 22.5, 25, 37.5}[level]
+                                                   + (25.5d + 1.5*(aurelionLevel - 1))*source.TotalMagicalDamage;
+                                        }
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Azir",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 85, 105, 125, 145}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W - Soldier auto attacks
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {55, 60, 75, 80, 90}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 225, 300}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 85, 105, 125, 145}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W - Soldier auto attacks
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {55, 60, 75, 80, 90}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 225, 300}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Blitzcrank",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 135, 190, 245, 300}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {250, 375, 500}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 135, 190, 245, 300}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        source.TotalAttackDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {250, 375, 500}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Bard",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + 0.65*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 125, 170, 215, 260}[level]
+                                        + 0.65*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Brand",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 110, 140, 170, 200}[level]
-                                + 0.55*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 120, 165, 210, 255}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 90, 110, 130, 150}[level]
-                                + 0.35*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 200, 300}[level]
-                                + 0.25*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 110, 140, 170, 200}[level]
+                                        + 0.55*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 120, 165, 210, 255}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 90, 110, 130, 150}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 200, 300}[level]
+                                        + 0.25*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Braum",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.025*source.MaxHealth
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.025*source.MaxHealth
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Caitlyn",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 70, 110, 150, 190}[level]
-                                + new double[] {1.3, 1.4, 1.5, 1.6, 1.7}[level]
-                                *(source.TotalAttackDamage)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {250, 475, 700}[level]
-                                + 2*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 70, 110, 150, 190}[level]
+                                        + new double[] {1.3, 1.4, 1.5, 1.6, 1.7}[level]
+                                        *(source.TotalAttackDamage)
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {250, 475, 700}[level]
+                                        + 2*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Camille",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 25, 30, 35, 40}[level]/100
-                                *(source.TotalAttackDamage)
-                    },
-                    //Q2
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 50, 60, 70, 80}[level]/100
-                                *(source.TotalAttackDamage)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 95, 125, 155, 185}[level] +
-                                0.6*(source.TotalAttackDamage)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.75*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {5, 10, 15}[level]
-                                + new double[] {4, 6, 8}[level]/100*target.Health
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {0.2, 0.25, 0.3, 0.35, 0.4}[level]
+                                        *(source.TotalAttackDamage)
+                            },
+                        //Q2
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 50, 60, 70, 80}[level]/100
+                                        *(source.TotalAttackDamage)
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 95, 125, 155, 185}[level] +
+                                        0.6*(source.TotalAttackDamage)
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {5, 10, 15}[level]
+                                        + new double[] {0.04, 0.06, 0.08}[level] * target.Health
+                            },
+                    });
 
             Spells.Add(
                 "Cassiopeia",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 120, 165, 210, 255}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 35, 50, 65, 80}[level]
-                                + 0.15*source.TotalMagicalDamage
-                    },
-                    //E 
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (48 + 4*((AIHeroClient) source).Level)
-                                + 0.1*source.TotalMagicalDamage
-                                + (target.HasBuffOfType(BuffType.Poison)
-                                    ? new double[] {10, 40, 70, 100, 130}[level]
-                                      + 0.35*source.TotalMagicalDamage
-                                    : 0)
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 120, 165, 210, 255}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 35, 50, 65, 80}[level]
+                                        + 0.15*source.TotalMagicalDamage
+                            },
+                        //E 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (48 + 4*((AIHeroClient) source).Level)
+                                        + 0.1*source.TotalMagicalDamage
+                                        + (target.HasBuffOfType(BuffType.Poison)
+                                               ? new double[] {10, 40, 70, 100, 130}[level]
+                                                 + 0.35*source.TotalMagicalDamage
+                                               : 0)
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "ChoGath",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 135, 190, 245, 305}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 125, 175, 225, 275}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 35, 50, 65, 80}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {300, 475, 650}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 135, 190, 245, 305}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 125, 175, 225, 275}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 35, 50, 65, 80}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {300, 475, 650}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Corki",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 150, 205, 250}[level]
-                                + 0.5*source.TotalMagicalDamage
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                    //W 
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 150, 205, 250}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                        //W 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
 
-                    //W - Burn
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Stage = 1,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 45, 60, 75, 90}[level]
-                                + (1.5*source.FlatPhysicalDamageMod)
-                                + 0.2*source.TotalMagicalDamage
-                    },
+                        //W - Burn
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Stage = 1,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 45, 60, 75, 90}[level]
+                                        + (1.5*source.FlatPhysicalDamageMod)
+                                        + 0.2*source.TotalMagicalDamage
+                            },
 
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 32, 44, 56, 68}[level]
-                                + 0.4*source.FlatPhysicalDamageMod
-                    },
-                    //R - Normal missile
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 130, 160}[level]
-                                + 0.3*source.TotalMagicalDamage
-                                + new double[] {20, 50, 80}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R - Big missile
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 195, 240}[level]
-                                + 0.45*source.TotalMagicalDamage
-                                + new double[] {30, 75, 120}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                });
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 32, 44, 56, 68}[level]
+                                        + 0.4*source.FlatPhysicalDamageMod
+                            },
+                        //R - Normal missile
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 100, 125}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                                        + new double[] {15, 45, 75}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                        //R - Big missile
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 200, 250}[level]
+                                        + 0.40*source.TotalMagicalDamage
+                                        + new double[] {30, 75, 120}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                    });
 
             Spells.Add(
                 "Darius",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {40, 70, 100, 130, 160}[level]
-                                + (new[] {0.5, 1.1, 1.2, 1.3, 1.4}[level]
-                                   *source.TotalAttackDamage)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                source.TotalAttackDamage + (0.4*source.TotalAttackDamage)
-                    },
-                    //R 
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 200, 300}[level]
-                                + 0.75*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {40, 70, 100, 130, 160}[level]
+                                        + (new[] {0.5, 1.1, 1.2, 1.3, 1.4}[level]
+                                           *source.TotalAttackDamage)
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        source.TotalAttackDamage + (0.4*source.TotalAttackDamage)
+                            },
+                        //R 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 200, 300}[level]
+                                        + 0.75*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Diana",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 95, 130, 165, 200}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {22, 34, 46, 58, 70}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //R - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 160, 220}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 95, 130, 165, 200}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {22, 34, 46, 58, 70}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //R - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 160, 220}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "DrMundo",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage = (source, target, level) =>
-                        {
-                            if (target is Obj_AI_Minion)
+                        //Q
+                        new DamageSpell
                             {
-                                return
-                                    Math.Min(
-                                        new double[] {300, 350, 400, 450, 500}[level],
-                                        Math.Max(
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage = (source, target, level) =>
+                                    {
+                                        if (target is Obj_AI_Minion)
+                                        {
+                                            return
+                                                Math.Min(
+                                                    new double[] {300, 350, 400, 450, 500}[level],
+                                                    Math.Max(
+                                                        new double[] {80, 130, 180, 230, 280}[level],
+                                                        new double[] {15, 17.5, 20, 22.5, 25}[level]
+                                                        /100*target.Health));
+                                        }
+                                        return Math.Max(
                                             new double[] {80, 130, 180, 230, 280}[level],
-                                            new double[] {15, 17.5, 20, 22.5, 25}[level]
-                                            /100*target.Health));
-                            }
-                            return Math.Max(
-                                new double[] {80, 130, 180, 230, 280}[level],
-                                new double[] {15, 17.5, 20, 22.5, 25}[level]/100
-                                *target.Health);
-                        }
-                    },
-                    //W - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {35, 50, 65, 80, 95}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
+                                            new double[] {15, 17.5, 20, 22.5, 25}[level]/100
+                                            *target.Health);
+                                    }
+                            },
+                        //W - per second
+                        new DamageSpell
                             {
-                                var roughDmg = new double[] {3, 3.5, 4, 4.5, 5}[level]*source.MaxHealth;
-                                var minDmg = new double[] {30, 50, 70, 90, 110}[level];
-                                var maxDmg = new double[] {60, 100, 140, 180, 220}[level];
-                                if (roughDmg < minDmg)
-                                {
-                                    return minDmg;
-                                }
-                                if (roughDmg < maxDmg)
-                                {
-                                    return roughDmg;
-                                }
-                                return maxDmg;
-                            }
-                    },
-                });
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {35, 50, 65, 80, 95}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        {
+                                            var roughDmg = new double[] {3, 3.5, 4, 4.5, 5}[level]*source.MaxHealth;
+                                            var minDmg = new double[] {30, 50, 70, 90, 110}[level];
+                                            var maxDmg = new double[] {60, 100, 140, 180, 220}[level];
+                                            if (roughDmg < minDmg)
+                                            {
+                                                return minDmg;
+                                            }
+                                            if (roughDmg < maxDmg)
+                                            {
+                                                return roughDmg;
+                                            }
+                                            return maxDmg;
+                                        }
+                            },
+                    });
 
             Spells.Add(
                 "Draven",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {45, 55, 65, 75, 85}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 105, 140, 175, 210}[level]
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {175, 275, 375}[level]
-                                + 1.1*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 35, 40, 45, 50}[level]
+                                        + new double[]{65, 75, 85, 95, 105}[level] / 100 * source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 105, 140, 175, 210}[level]
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {175, 275, 375}[level]
+                                        + 1.1*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Ekko",
                 new List<DamageSpell>
-                {
-                    // Q - Outgoing
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 75, 90, 105, 120}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    // Q - Incoming
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 85, 110, 135, 160}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    // W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 195, 240, 285, 330}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    // E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 80, 110, 140, 170}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    // R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 350, 500}[level]
-                                + 1.3*source.TotalMagicalDamage
-                    }
-                });
+                        // Q - Outgoing
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 75, 90, 105, 120}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        // Q - Incoming
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 65, 90, 115, 140}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        // W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 195, 240, 285, 330}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        // E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 80, 110, 140, 170}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        // R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 300, 450}[level]
+                                        + 1.5*source.TotalMagicalDamage
+                            }
+                    });
 
             Spells.Add(
                 "Elise",
                 new List<DamageSpell>
-                {
-                    //Q - Human
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 75, 110, 145, 180}[level]
-                                + (0.08 + 0.03/100*source.TotalMagicalDamage)*target.Health
-                    },
-                    //Q - Spider
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 100, 140, 180, 220}[level]
-                                + (0.08 + 0.03/100*source.TotalMagicalDamage)
-                                *(target.MaxHealth - target.Health)
-                    },
-                    //W - Human
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 125, 175, 225, 275}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - Human
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 75, 110, 145, 180}[level]
+                                        + (0.08 + 0.03/100*source.TotalMagicalDamage)*target.Health
+                            },
+                        //Q - Spider
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level]
+                                        + (0.08 + 0.03/100*source.TotalMagicalDamage)
+                                        *(target.MaxHealth - target.Health)
+                            },
+                        //W - Human
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 125, 175, 225, 275}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Evelynn",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 50, 60, 70, 80}[level]
-                                + new double[] {35, 40, 45, 50, 55}[level]/100
-                                *source.TotalMagicalDamage
-                                + new double[] {50, 55, 60, 65, 70}[level]/100
-                                *source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 1*source.TotalMagicalDamage + 1*source.FlatPhysicalDamageMod
-                    },
-                    //R - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new[] {0.15, 0.20, 0.25}[level]
-                                 + 0.01/100*source.TotalMagicalDamage)*target.Health
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 50, 60, 70, 80}[level]
+                                        + new double[] {35, 40, 45, 50, 55}[level]/100
+                                        *source.TotalMagicalDamage
+                                        + new double[] {50, 55, 60, 65, 70}[level]/100
+                                        *source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + source.TotalMagicalDamage + source.FlatPhysicalDamageMod
+                            },
+                        //R - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new[] {0.15, 0.20, 0.25}[level]
+                                         + 0.01/100*source.TotalMagicalDamage)*target.Health
+                            },
+                    });
 
             Spells.Add(
                 "Ezreal",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {35, 55, 75, 95, 115}[level]
-                                + 0.4*source.TotalMagicalDamage
-                                + 1.1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 125, 175, 225, 275}[level]
-                                + 0.75*source.TotalMagicalDamage
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {350, 500, 650}[level]
-                                + 0.9*source.TotalMagicalDamage + 1*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {35, 55, 75, 95, 115}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                                        + 1.1*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 125, 175, 225, 275}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {350, 500, 650}[level]
+                                        + 0.9*source.TotalMagicalDamage + source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Fiddlesticks",
                 new List<DamageSpell>
-                {
-                    //W - Per second
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 105, 130, 155, 180}[level]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                    //E - Per bounce
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 85, 105, 125, 145}[level]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                    //R - Per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {125, 225, 325}[level]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                });
+                        //W - Per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 105, 130, 155, 180}[level]
+                                        + 0.45*source.TotalMagicalDamage
+                            },
+                        //E - Per bounce
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 85, 105, 125, 145}[level]
+                                        + 0.45*source.TotalMagicalDamage
+                            },
+                        //R - Per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {125, 225, 325}[level]
+                                        + 0.45*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Fiora",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 75, 85, 95, 105}[level]
-                                + new[] {0.95, 1, 1.05, 1.1, 1.15}[level]
-                                *source.FlatPhysicalDamageMod
-                    },
-                    //W 
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {90, 130, 170, 210, 250}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 75, 85, 95, 105}[level]
+                                        + new[] {0.95, 1, 1.05, 1.1, 1.15}[level]
+                                        *source.FlatPhysicalDamageMod
+                            },
+                        //W 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {90, 130, 170, 210, 250}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Fizz",
                 new List<DamageSpell>
-                {
-                    //Q - AA excluded.
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 25, 40, 55, 70}[level]
-                                + 0.35*source.TotalMagicalDamage
-                    },
-                    //W - Per attack
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 40, 55, 70, 85}[level]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 120, 170, 220, 270}[level]
-                                + 0.75*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {225, 325, 425}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - AA excluded.
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 25, 40, 55, 70}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                        //W - Per attack
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 30, 40, 50, 60}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 120, 170, 220, 270}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                            },
+                        //R - Guppy
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.6 *source.TotalMagicalDamage
+                            },
+                        //R - Chomper
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {225, 325, 425}[level]
+                                        + 0.8 *source.TotalMagicalDamage
+                            },
+                        //R - GIGALODON 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 2,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {300, 400, 500}[level]
+                                        + 1.2 *source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Galio",
                 new List<DamageSpell>
-                {
-                    //Q 
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 135, 190, 245, 300}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //R - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {360, 540, 720}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 135, 190, 245, 300}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //R - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {360, 540, 720}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "GangPlank",
                 new List<DamageSpell>
-                {
-                    //Q 
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 45, 70, 95, 120}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R - per cannonball
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {35, 50, 65}[level] + 0.1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 45, 70, 95, 120}[level]
+                                        + source.TotalAttackDamage
+                            },
+                        //R - per cannonball
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {35, 60, 85}[level] + 0.1*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Garen",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 55, 80, 105, 130}[level]
-                                + 1.4*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E 
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 45, 70, 95, 120}[level]
-                                + new double[] {70, 80, 90, 100, 110}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R - Max damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {175, 350, 525}[level]
-                                + new[] {28.57, 33.33, 40}[level]/100
-                                *(target.MaxHealth - target.Health)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 55, 80, 105, 130}[level]
+                                        + 1.4*source.TotalAttackDamage
+                            },
+                        //E 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 45, 70, 95, 120}[level]
+                                        + new double[] {70, 80, 90, 100, 110}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                        //R - Max damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {175, 350, 525}[level]
+                                        + new[] {28.57, 33.33, 40}[level]/100
+                                        *(target.MaxHealth - target.Health)
+                            },
+                    });
 
             Spells.Add(
                 "Gnar",
                 new List<DamageSpell>
-                {
-                    //Q - mini
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {5, 35, 65, 95, 125}[level]
-                                + 1.15*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //Q - big
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {5, 45, 85, 125, 165}[level]
-                                + 1.2*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W - mini
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 20, 30, 40, 50}[level]
-                                + 1*source.TotalMagicalDamage
-                                + new double[] {6, 8, 10, 12, 14}[level]/100*target.MaxHealth
-                    },
-                    //W - big
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 45, 65, 85, 105}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E - mini
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 60, 100, 140, 180}[level]
-                                + source.MaxHealth*0.06
-                    },
-                    //E - big
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 60, 100, 140, 180}[level]
-                                + source.MaxHealth*0.06
-                    },
-                    //R - Max damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 300, 400}[level]
-                                + 0.5*source.TotalMagicalDamage
-                                + 0.2*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q - mini
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {5, 35, 65, 95, 125}[level]
+                                        + 1.15*source.TotalAttackDamage
+                            },
+                        //Q - big
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {5, 45, 85, 125, 165}[level]
+                                        + 1.2*source.TotalAttackDamage
+                            },
+                        //W - mini
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 20, 30, 40, 50}[level]
+                                        + source.TotalMagicalDamage
+                                        + new double[] {6, 8, 10, 12, 14}[level]/100*target.MaxHealth
+                            },
+                        //W - big
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {25, 45, 65, 85, 105}[level]
+                                        + source.TotalAttackDamage
+                            },
+                        //E - mini
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 60, 100, 140, 180}[level]
+                                        + source.MaxHealth*0.06
+                            },
+                        //E - big
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 60, 100, 140, 180}[level]
+                                        + source.MaxHealth*0.06
+                            },
+                        //R - Max damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 300, 400}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                                        + 0.2*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Gragas",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 50, 80, 110, 140}[level]
-                                + 8/100f*target.MaxHealth + 0.3*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 130, 180, 230, 280}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 300, 400}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 50, 80, 110, 140}[level]
+                                        + 8/100f*target.MaxHealth + 0.3*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 130, 180, 230, 280}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 300, 400}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Graves",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {55, 70, 85, 100, 115}[level]
-                                + 0.75*source.FlatPhysicalDamageMod
-                    },
-                    //Q
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + new double[] {0.4, 0.6, 0.8, 1, 1.2}[level]
-                                *source.FlatPhysicalDamageMod
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 110, 160, 210, 260}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R - Max damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {250, 400, 550}[level]
-                                + 1.5*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 55, 70, 85, 100}[level]
+                                        + 0.8*source.FlatPhysicalDamageMod
+                            },
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 110, 140, 170, 200}[level]
+                                        + new double[] {0.4, 0.7, 1.0, 1.3, 1.6}[level]
+                                        *source.FlatPhysicalDamageMod
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 110, 160, 210, 260}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R - Max damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {250, 400, 550}[level]
+                                        + 1.5*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Hecarim",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 95, 130, 165, 200}[level]
-                                + 0.6*source.FlatPhysicalDamageMod
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 30, 40, 50, 60}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 75, 110, 145, 180}[level]
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 85, 120, 155, 190}[level]
+                                        + 0.6*source.FlatPhysicalDamageMod
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 30, 40, 50, 60}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 75, 110, 145, 180}[level]
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Heimerdinger",
                 new List<DamageSpell>
-                {
-                    //W
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {135, 180, 225}[
-                                    source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 100, 140, 180, 220}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 200, 250}[
-                                    source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.45*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {135, 180, 225}[
+                                            source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
+                                        + 0.45*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 200, 250}[
+                                            source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Irelia",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 50, 80, 110, 140}[level]
-                                + 1.2*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {15, 30, 45, 60, 75}[level]
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //R - per blade
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160}[level]
-                                + 0.5*source.TotalMagicalDamage
-                                + 0.6*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 50, 80, 110, 140}[level]
+                                        + 1.2*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {15, 30, 45, 60, 75}[level]
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //R - per blade
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                                        + 0.6*source.FlatPhysicalDamageMod
+                            },
+                    });
             Spells.Add(
                 "Ivern",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //W -- attack modifier
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 30, 40, 50, 60}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 125, 170, 215, 260}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //W -- attack modifier
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 30, 40, 50, 60}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
             Spells.Add(
                 "Janna",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 85, 110, 135, 160}[level]
-                                + 0.35*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 115, 170, 225, 280}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 85, 110, 135, 160}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 115, 170, 225, 280}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "JarvanIV",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 1.2*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 325, 450}[level]
-                                + 1.5*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 1.2*source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 325, 450}[level]
+                                        + 1.5*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Jax",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 1*source.FlatPhysicalDamageMod + 0.6*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 75, 110, 145, 180}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 75, 100, 125, 150}[level]
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 160, 220}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + source.FlatPhysicalDamageMod + 0.6*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 75, 110, 145, 180}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 75, 100, 125, 150}[level]
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 160, 220}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Jayce",
                 new List<DamageSpell>
-                {
-                    //Q 
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 120, 170, 220, 270, 320}[level]
-                                + 1.2*source.FlatPhysicalDamageMod
-                    },
-                    //Q - Melee
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 70, 110, 150, 190, 230}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                    //W - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {25, 40, 55, 70, 85, 100}[level]
-                                + 0.25*source.TotalMagicalDamage
-                    },
+                        //Q 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 120, 170, 220, 270, 320}[level]
+                                        + 1.2*source.FlatPhysicalDamageMod
+                            },
+                        //Q - Melee
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {35, 70, 105, 140, 175, 210}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //W - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {25, 40, 55, 70, 85, 100}[level]
+                                        + 0.25*source.TotalMagicalDamage
+                            },
 
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new[] {8, 10.4, 12.8, 15.2, 17.6, 20}[level]/100)
-                                *target.MaxHealth + 1*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new[] {8, 10.4, 12.8, 15.2, 17.6, 20}[level]/100)
+                                        *target.MaxHealth + source.FlatPhysicalDamageMod
+                            },
+
+                        //R - Bonus AA Damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {20, 60, 100, 140}[level] + 0.25 * source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Jhin",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 75, 100, 125, 150}[level]
-                                + new double[] {0.3, 0.35, 0.4, 0.45, 0.5}[level]
-                                *source.FlatPhysicalDamageMod + 0.6*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 85, 120, 155, 190}[level]
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 80, 140, 200, 260}[level]
-                                + 1.20*source.FlatPhysicalDamageMod
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R - Normal Shot
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 100, 160}[level]
-                                + 0.2*source.FlatPhysicalDamageMod
-                                *(1 + (100 - target.HealthPercent)*1.025)
-                    },
-                    //R - Final Shot
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 100, 160}[level]
-                                + 0.2*source.FlatPhysicalDamageMod
-                                *(1 + (100 - target.HealthPercent)*1.025)*2
-                                + 0.01*source.FlatCritDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 75, 100, 125, 150}[level]
+                                        + new double[] {0.3, 0.35, 0.4, 0.45, 0.5}[level]
+                                        *source.FlatPhysicalDamageMod + 0.6*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 85, 120, 155, 190}[level]
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 80, 140, 200, 260}[level]
+                                        + 1.20*source.FlatPhysicalDamageMod
+                                        + source.TotalMagicalDamage
+                            },
+                        //R - Normal Shot
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 100, 160}[level]
+                                        + 0.2*source.FlatPhysicalDamageMod
+                                        *(1 + (100 - target.HealthPercent)*1.025)
+                            },
+                        //R - Final Shot
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 100, 160}[level]
+                                        + 0.2*source.FlatPhysicalDamageMod
+                                        *(1 + (100 - target.HealthPercent)*1.025)*2
+                                        + 0.01*source.FlatCritDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Jinx",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage = (source, target, level) => 0.1*source.TotalAttackDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 60, 110, 160, 210}[level]
-                                + 1.4*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 120, 170, 220, 270}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R - Min
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 35, 45}[level]
-                                + new double[] {25, 30, 35}[level]/100
-                                *(target.MaxHealth - target.Health)
-                                + 0.15*source.FlatPhysicalDamageMod
-                    },
-                    //R - Max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {250, 350, 450}[level]
-                                + new double[] {25, 30, 35}[level]/100
-                                *(target.MaxHealth - target.Health)
-                                + 1.5*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage = (source, target, level) => 0.1*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 60, 110, 160, 210}[level]
+                                        + 1.4*source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 120, 170, 220, 270}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //R - Min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {25, 35, 45}[level]
+                                        + new double[] {25, 30, 35}[level]/100
+                                        *(target.MaxHealth - target.Health)
+                                        + 0.15*source.FlatPhysicalDamageMod
+                            },
+                        //R - Max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {250, 350, 450}[level]
+                                        + new double[] {25, 30, 35}[level]/100
+                                        *(target.MaxHealth - target.Health)
+                                        + 1.5*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Karma",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //Q - mantra
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + new double[] {25, 75, 125, 175}[
-                                    source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
-                                + 0.9*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 110, 160, 210, 260}[level]
-                                + 0.9*source.TotalMagicalDamage
-                    },
-                    //W - mantra
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 110, 160, 210, 260}[level]
-                                + 0.9*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 125, 170, 215, 260}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //Q - mantra
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 125, 170, 215, 260}[level]
+                                        + new double[] {25, 75, 125, 175}[
+                                            source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
+                                        + 0.9*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 110, 160, 210, 260}[level]
+                                        + 0.9*source.TotalMagicalDamage
+                            },
+                        //W - mantra
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 110, 160, 210, 260}[level]
+                                        + 0.9*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Karthus",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {40, 60, 80, 100, 120}[level]
-                                 + 0.3*source.TotalMagicalDamage)*2
-                    },
-                    //Q - Multi-target
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 60, 80, 100, 120}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 50, 70, 90, 110}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {250, 400, 550}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {40, 60, 80, 100, 120}[level]
+                                         + 0.3*source.TotalMagicalDamage)*2
+                            },
+                        //Q - Multi-target
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 60, 80, 100, 120}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 50, 70, 90, 110}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {250, 400, 550}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Kassadin",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 95, 120, 145, 170}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 65, 90, 115, 140}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //W - pasive
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage = (source, target, level) => 20 + 0.1*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 105, 130, 155, 180}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //R - Base
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 100, 120}[level] + 0.02*source.MaxMana
-                    },
-                    //R - Per Stack
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 50, 60}[level] + 0.01*source.MaxMana
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 95, 125, 155, 185}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 65, 90, 115, 140}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //W - pasive
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage = (source, target, level) => 20 + 0.1*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 105, 130, 155, 180}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //R - Base
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 100, 120}[level] + 0.02*source.MaxMana
+                            },
+                        //R - Per Stack
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 50, 60}[level] + 0.01*source.MaxMana
+                            },
+                    });
 
             Spells.Add(
                 "Katarina",
                 new List<DamageSpell>
-                {
-                    //Q - dagger
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 105, 135, 165, 195}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 75, 110, 145, 180}[level]
-                                + 0.6*source.FlatPhysicalDamageMod
-                                + 0.25*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 70, 100, 130, 160}[level]
-                                + 0.25*source.TotalMagicalDamage + 0.65*source.TotalAttackDamage
-                    },
-                    //R - per dagger
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {35, 37.5, 50}[level]
-                                 + 0.22*source.FlatPhysicalDamageMod
-                                 + 0.19*source.TotalMagicalDamage)/10
-                    },
-                    //R - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {375, 550, 750}[level]
-                                + 3.3*source.FlatPhysicalDamageMod
-                                + 2.85*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - dagger
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 105, 135, 165, 195}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 45, 60, 75, 90}[level]
+                                        + 0.25*source.TotalMagicalDamage + 0.5*source.TotalAttackDamage
+                            },
+                        //R - per dagger
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {25, 37.5, 50}[level]
+                                         + 0.22*source.FlatPhysicalDamageMod
+                                         + 0.19*source.TotalMagicalDamage)/10
+                            },
+                        //R - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {375, 562.5, 750}[level]
+                                        + 3.3*source.FlatPhysicalDamageMod
+                                        + 2.85*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Kayle",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 110, 160, 210, 260}[level]
-                                + 1*source.FlatPhysicalDamageMod + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                source.HasBuff("judicatorrighteousfury")
-                                    ? new double[] {20, 30, 40, 50, 60}[level]
-                                      + 0.30*source.TotalMagicalDamage
-                                    : new double[] {10, 15, 20, 25, 30}[level]
-                                      + 0.15*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 110, 160, 210, 260}[level]
+                                        + source.FlatPhysicalDamageMod + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        source.HasBuff("judicatorrighteousfury")
+                                            ? new double[] {20, 30, 40, 50, 60}[level]
+                                              + 0.30*source.TotalMagicalDamage
+                                            : new double[] {10, 15, 20, 25, 30}[level]
+                                              + 0.15*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Kennen",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 115, 155, 195, 235}[level]
-                                + 0.75*source.TotalMagicalDamage
-                    },
-                    //W - Passive
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 50, 60, 70, 80}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W - Active
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 95, 125, 155, 185}[level]
-                                + 0.55*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {85, 125, 165, 205, 245}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 145, 210}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 115, 155, 195, 235}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                            },
+                        //W - Passive
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 50, 60, 70, 80}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                        //W - Active
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 95, 125, 155, 185}[level]
+                                        + 0.55*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {85, 125, 165, 205, 245}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 75, 110}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "KhaZix",
                 new List<DamageSpell>
-                {
-                    //Q - Normal target - UnEvolved
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 95, 120, 145, 170}[level]
-                                + 1.4*source.FlatPhysicalDamageMod
-                    },
-                    //Q - Isolated target - UnEvolved
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {91, 123.5, 156, 188.5, 221}[level]
-                                + 1.56*source.FlatPhysicalDamageMod
-                    },
-                    //Q - Normal target - Evolved
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 2,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 95, 120, 145, 170}[level]
-                                + 2.24*source.FlatPhysicalDamageMod
-                                + 10*((AIHeroClient) source).Level
-                    },
-                    //Q - Isolated target - Evolved
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 3,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {91, 123.5, 156, 188.5, 221}[level]
-                                + 2.6*source.FlatPhysicalDamageMod
-                                + 10*((AIHeroClient) source).Level
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 110, 140, 170, 200}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 100, 135, 170, 205}[level]
-                                + 0.2*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q - Normal target - UnEvolved
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 95, 120, 145, 170}[level]
+                                        + 1.2*source.FlatPhysicalDamageMod
+                            },
+                        //Q - Isolated target - UnEvolved
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {105, 142.5, 180, 217.5, 255}[level]
+                                        + 1.56*source.FlatPhysicalDamageMod
+                            },
+                        //Q - Normal target - Evolved
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 2,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 95, 120, 145, 170}[level]
+                                        + 2.24*source.FlatPhysicalDamageMod
+                                        + 10*((AIHeroClient) source).Level
+                            },
+                        //Q - Isolated target - Evolved
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 3,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {105, 142.5, 180, 217.5, 255}[level]
+                                        + 2.6*source.FlatPhysicalDamageMod
+                                        + 10*((AIHeroClient) source).Level
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 110, 140, 170, 200}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 100, 135, 170, 205}[level]
+                                        + 0.2*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "KogMaw",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 130, 180, 230, 280}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage = (source, target, level) =>
-                        {
-                            var dmg = (0.02
-                                       + (Math.Truncate(source.TotalMagicalDamage/100)
-                                          *0.75))*target.MaxHealth;
-
-                            if (target is Obj_AI_Minion && dmg > 100)
+                        //Q
+                        new DamageSpell
                             {
-                                dmg = 100;
-                            }
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 130, 180, 230, 280}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage = (source, target, level) =>
+                                    {
+                                        var dmg = (new double[] {0.03, 0.04, 0.05, 0.06, 0.07}[level]
+                                                   + (Math.Truncate(source.TotalMagicalDamage/100)
+                                                      *0.75))*target.MaxHealth;
 
-                            return dmg;
-                        }
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {100, 140, 180}[level]
-                                 + 0.65*source.FlatPhysicalDamageMod
-                                 + 0.25*source.TotalMagicalDamage)
-                                *(target.HealthPercent < 40
-                                    ? 3
-                                    : (target.HealthPercent < 60 ? 2 : 1))
-                    },
-                });
+                                        if (target is Obj_AI_Minion && dmg > 100)
+                                        {
+                                            dmg = 100;
+                                        }
+
+                                        return dmg;
+                                    }
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {100, 140, 180}[level]
+                                         + 0.65*source.FlatPhysicalDamageMod
+                                         + 0.25*source.TotalMagicalDamage)
+                                        *(target.HealthPercent < 25
+                                              ? 3
+                                              : (target.HealthPercent < 50 ? 2 : 1))
+                            },
+                    });
 
             Spells.Add(
                 "Kalista",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 70, 130, 190, 250}[level]
-                                + source.BaseAttackDamage + source.FlatPhysicalDamageMod
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {12, 14, 16, 18, 20}[level]/100)
-                                *target.MaxHealth
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage = (source, target, level) =>
-                        {
-                            var count = target.GetBuffCount("kalistaexpungemarker");
-                            if (count > 0)
+                        //Q
+                        new DamageSpell
                             {
-                                return (new double[] {20, 30, 40, 50, 60}[level]
-                                        + 0.6
-                                        *(source.BaseAttackDamage
-                                          + source.FlatPhysicalDamageMod)) +
-                                       // Base damage of E
-                                       ((count - 1)
-                                        *(new double[] {10, 14, 19, 25, 32}[level]
-                                          + // Base damage per spear
-                                          new double[] {0.2, 0.225, 0.25, 0.275, 0.3}[
-                                              level]
-                                          *(source.BaseAttackDamage
-                                            + source.FlatPhysicalDamageMod)));
-                                // Damage multiplier per spear
-                            }
-                            return 0;
-                        }
-                    },
-                });
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 70, 130, 190, 250}[level]
+                                        + source.BaseAttackDamage + source.FlatPhysicalDamageMod
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {12, 14, 16, 18, 20}[level]/100)
+                                        *target.MaxHealth
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage = (source, target, level) =>
+                                    {
+                                        if (target == null)
+                                        {
+                                            return 0;
+                                        }
+                                        var count = target.Buffs.FirstOrDefault(x => x.Name == "kalistaexpungemarker").Count;
+                                        if (count > 0)
+                                        {
+                                            return (new double[] {20, 30, 40, 50, 60}[level]
+                                                    + 0.6
+                                                    *(source.BaseAttackDamage
+                                                      + source.FlatPhysicalDamageMod)) +
+                                                   // Base damage of E
+                                                   ((count - 1)
+                                                    *(new double[] {10, 14, 19, 25, 32}[level]
+                                                      + // Base damage per spear
+                                                      new double[] {0.2, 0.225, 0.25, 0.275, 0.3}[
+                                                          level]
+                                                      *(source.BaseAttackDamage
+                                                        + source.FlatPhysicalDamageMod)));
+                                            // Damage multiplier per spear
+                                        }
+                                        return 0;
+                                    }
+                            },
+                    });
 
             Spells.Add(
                 "Kindred",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + (source.BaseAttackDamage + source.FlatPhysicalDamageMod)*0.2f
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 30, 35, 40, 45}[level]
-                                + (source.BaseAttackDamage + source.FlatPhysicalDamageMod)*0.4f
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 110, 140, 170, 200}[level]
-                                + (source.BaseAttackDamage + source.FlatPhysicalDamageMod)*0.2f
-                                + target.MaxHealth*0.05f
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {55, 75, 95, 115, 135}[level]
+                                        + source.TotalAttackDamage*0.2f
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {25, 30, 35, 40, 45}[level]
+                                        + source.TotalAttackDamage*0.4f
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 75, 110, 145, 180}[level]
+                                        + source.TotalAttackDamage*0.2f
+                                        + target.MaxHealth*0.05f
+                            },
+                    });
 
             Spells.Add(
                 "LeBlanc",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {55, 90, 125, 160, 195}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //Q . explosion (passive)
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                40 + 16.7*(((AIHeroClient) source).Level - 1)
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {85, 125, 165, 205, 245}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //W . explosion (passive)
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                40 + 16.7*(((AIHeroClient) source).Level - 1)
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 60, 80, 100, 120}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E . explosion (passive)
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                40 + 16.7*(((AIHeroClient) source).Level - 1)
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {55, 90, 125, 160, 195}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //Q . explosion (passive)
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        40 + 16.7*(((AIHeroClient) source).Level - 1)
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 55, 70, 86, 100}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //W . explosion (passive)
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        40 + 16.7*(((AIHeroClient) source).Level - 1)
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 60, 80, 100, 120}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E . explosion (passive)
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        40 + 16.7*(((AIHeroClient) source).Level - 1)
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "LeeSin",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 80, 110, 140, 170}[level]
-                                + 0.9*source.FlatPhysicalDamageMod
-                    },
-                    //Q - 2nd
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 80, 110, 140, 170}[level]
-                                + 0.9*source.FlatPhysicalDamageMod
-                                + 0.08*(target.MaxHealth - target.Health)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 95, 130, 165, 200}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 400, 600}[level]
-                                + 2*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 80, 110, 140, 170}[level]
+                                        + 0.9*source.FlatPhysicalDamageMod
+                            },
+                        //Q - 2nd
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 80, 110, 140, 170}[level]
+                                        + 0.9*source.FlatPhysicalDamageMod
+                                        + 0.08*(target.MaxHealth - target.Health)
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 95, 130, 165, 200}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 300, 450}[level]
+                                        + 2*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Leona",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 55, 80, 105, 130}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 100, 140, 180, 220}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 100, 140, 180, 220}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 175, 250}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 55, 80, 105, 130}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 175, 250}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Lissandra",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 100, 130, 160, 190}[level]
-                                + 0.65*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 100, 130, 160, 190}[level]
+                                        + 0.65*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Lucian",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 110, 140, 170, 200}[level]
-                                + new double[] {60, 75, 90, 105, 120}[level]/100
-                                *source.FlatPhysicalDamageMod
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 100, 140, 180, 220}[level]
-                                + 0.9*source.TotalMagicalDamage
-                    },
-                    //R - per shot
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 50, 60}[level] + 0.1*source.TotalMagicalDamage
-                                + 0.25*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 115, 150, 185, 220}[level]
+                                        + new double[] {0.6, 0.7, 0.8, 0.9, 1}[level]
+                                        *source.FlatPhysicalDamageMod
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level]
+                                        + 0.9*source.TotalMagicalDamage
+                            },
+                        //R - per shot
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 50, 60}[level] + 0.1*source.TotalMagicalDamage
+                                        + 0.25*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Lulu",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 110, 140, 170, 200}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 125, 170, 215, 260}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 110, 140, 170, 200}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Lux",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 100, 150, 200, 250}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {300, 400, 500}[level]
-                                + 0.75*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 100, 150, 200, 250}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {300, 400, 500}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Malphite",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 120, 170, 220, 270}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 120, 170, 220, 270}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
 
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {15, 30, 45, 60, 75}[level] + 1.1*source.TotalMagicalDamage +
-                                1.15*source.PercentBonusArmorPenetrationMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 100, 140, 180, 220}[level] + 0.3*source.Armor
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 300, 400}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {15, 30, 45, 60, 75}[level] + 1.1*source.TotalMagicalDamage +
+                                        1.15*source.PercentArmorMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level] + 0.3*source.Armor
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 300, 400}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Malzahar",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {4, 4.5, 5, 5.5, 6}[level]/100
-                                 + 0.01/100*source.TotalMagicalDamage)*target.MaxHealth
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 115, 150, 185, 220}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                        //1.5% of the target’s maximum health per 100 ability power, per second
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                2.5
-                                *(new double[] {6, 8, 10}[level]/100
-                                  + 0.015*source.TotalMagicalDamage/100)*target.MaxHealth
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {4, 4.5, 5, 5.5, 6}[level]/100
+                                         + 0.01/100*source.TotalMagicalDamage)*target.MaxHealth
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 115, 150, 185, 220}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            //1.5% of the target’s maximum health per 100 ability power, per second
+                                {
+                                    Slot = SpellSlot.R,
+                                    DamageType = DamageType.Magical,
+                                    Damage =
+                                        (source, target, level) =>
+                                            2.5
+                                            *(new double[] {6, 8, 10}[level]/100
+                                              + 0.015*source.TotalMagicalDamage/100)*target.MaxHealth
+                                },
+                    });
 
             Spells.Add(
                 "Maokai",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {9, 10, 11, 12, 13}[level]/100
-                                 + 0.03/100*source.TotalMagicalDamage)*target.MaxHealth
-                    },
-                    //E - impact
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 60, 80, 100, 120}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E - explosion
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 150, 200}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {9, 10, 11, 12, 13}[level]/100
+                                         + 0.03/100*source.TotalMagicalDamage)*target.MaxHealth
+                            },
+                        //E - explosion
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 150, 200}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "MasterYi",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 60, 95, 130, 165}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + 0.6*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {10, 12.5, 15, 17.5, 20}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + new double[] {10, 15, 20, 25, 30}[level]
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {25, 60, 95, 130, 165}[level]
+                                        + source.TotalAttackDamage
+                                        + 0.6*source.TotalAttackDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {10, 12.5, 15, 17.5, 20}[level]/100
+                                        *source.TotalAttackDamage
+                                        + new double[] {14, 23, 32, 41, 50}[level]
+                            },
+                    });
 
             Spells.Add(
                 "MissFortune",
                 new List<DamageSpell>
-                {
-                    //Q - First target
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 35, 50, 65, 80}[level]
-                                + 0.35*source.TotalMagicalDamage
-                                + 0.85*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //Q - Second target
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 70, 100, 130, 160}[level]
-                                + 0.5*source.TotalMagicalDamage
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                0.06*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 115, 150, 185, 220}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //R - per wave
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                0.75*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - First target
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 35, 50, 65, 80}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                                        + 0.85*source.TotalAttackDamage
+                            },
+                        //Q - Second target
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 35, 50, 65, 80}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                                        + 0.85*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        0.06*source.TotalAttackDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 115, 150, 185, 220}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //R - per wave
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        0.75*source.TotalAttackDamage
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "MonkeyKing",
                 new List<DamageSpell> //AKA wukong
-                {
-                    //Q - bonus
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 60, 90, 120, 150}[level]
-                                + 0.1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level] + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level] + 0.8*source.FlatPhysicalDamageMod
-                    },
-                    //R - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 110, 200}[level]
-                                + 1.1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                });
+                        //Q - bonus
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 60, 90, 120, 150}[level]
+                                        + 0.1*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level] + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level] + 0.8*source.FlatPhysicalDamageMod
+                            },
+                        //R - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 110, 200}[level]
+                                        + 1.1*source.TotalAttackDamage
+                            },
+                    });
 
             Spells.Add(
                 "Mordekaiser",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 110, 140, 170, 200}[level]
-                                + 1*source.FlatPhysicalDamageMod + 0.4*source.TotalMagicalDamage
-                    },
-                    //W - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {24, 38, 52, 66, 80}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {24, 29, 34}[level]/100
-                                 + 0.04/100*source.TotalMagicalDamage)*target.MaxHealth
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 110, 140, 170, 200}[level]
+                                        + source.FlatPhysicalDamageMod + 0.4*source.TotalMagicalDamage
+                            },
+                        //W - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {24, 38, 52, 66, 80}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {24, 29, 34}[level]/100
+                                         + 0.04/100*source.TotalMagicalDamage)*target.MaxHealth
+                            },
+                    });
 
             Spells.Add(
                 "Morgana",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 135, 190, 245, 300}[level]
-                                + 0.9*source.TotalMagicalDamage
-                    },
-                    //W - per tick
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {8, 16, 24, 32, 40}[level]
-                                + 0.11*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 225, 300}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 135, 190, 245, 300}[level]
+                                        + 0.9*source.TotalMagicalDamage
+                            },
+                        //W - per tick
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {8, 16, 24, 32, 40}[level]
+                                        + 0.11*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 225, 300}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Nami",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 130, 185, 240, 295}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 40, 55, 70, 85}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 130, 185, 240, 295}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {25, 40, 55, 70, 85}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Nasus",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (from buff in ObjectManager.Player.Buffs
-                                    where buff.Name == "nasusqstacks"
-                                    select buff.Count).FirstOrDefault()
-                                + new double[] {30, 50, 70, 90, 110}[level]
-                    },
-                    //E - Initial
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {55, 95, 135, 175, 215}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //E - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {11, 19, 27, 35, 43}[level]
-                                + 0.12*source.TotalMagicalDamage
-                    },
-                    //R - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {3, 4, 5}[level]/100
-                                 + 0.01/100*source.TotalMagicalDamage)*target.MaxHealth
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (from buff in ObjectManager.Player.Buffs
+                                         where buff.Name == "nasusqstacks"
+                                         select buff.Count).FirstOrDefault()
+                                        + new double[] {30, 50, 70, 90, 110}[level]
+                            },
+                        //E - Initial
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {55, 95, 135, 175, 215}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //E - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {11, 19, 27, 35, 43}[level]
+                                        + 0.12*source.TotalMagicalDamage
+                            },
+                        //R - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {3, 4, 5}[level]/100
+                                         + 0.01/100*source.TotalMagicalDamage)*target.MaxHealth
+                            },
+                    });
 
             Spells.Add(
                 "Nautilus",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.75*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 40, 50, 60, 70}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 100, 140, 180, 220}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R - main target
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 325, 450}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //R - missile
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {125, 175, 225}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 40, 50, 60, 70}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R - main target
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 325, 450}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //R - missile
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {125, 175, 225}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Nidalee",
                 new List<DamageSpell>
-                {
-                    //Q - human - min * 3 = max
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 77.5, 95, 112.5, 130}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //Q - cat
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage = (source, target, level) =>
-                        {
-                            var dmg =
-                                (new double[] {4, 20, 50, 90}[
-                                    source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
-                                 + 0.36*source.TotalMagicalDamage
-                                 + 0.75
-                                 *(source.BaseAttackDamage + source.FlatPhysicalDamageMod))
-                                *((target.MaxHealth - target.Health)/target.MaxHealth
-                                  *1.5 + 1);
-                            dmg *= target.HasBuff("nidaleepassivehunted") ? 1.33 : 1.0;
-                            return dmg;
-                        }
-                    },
-                    //W - human
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 80, 120, 160, 200}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //W - cat
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 110, 160, 210}[
-                                    source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //E - cat
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 130, 190, 250}[
-                                    source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - human - min * 3 = max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 85, 100, 115, 130}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //Q - cat
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage = (source, target, level) =>
+                                    {
+                                        var dmg =
+                                            (new double[] {5, 30, 55, 80}[
+                                                 source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
+                                             + 0.36*source.TotalMagicalDamage
+                                             + 0.75
+                                             *source.TotalAttackDamage)
+                                            *((target.MaxHealth - target.Health)/target.MaxHealth
+                                              *1.5 + 1);
+                                        dmg *= target.HasBuff("nidaleepassivehunted") ? 1.33 : 1.0;
+                                        return dmg;
+                                    }
+                            },
+                        //W - human
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 80, 120, 160, 200}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //W - cat
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 110, 160, 210}[
+                                            source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //E - cat
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 130, 190, 250}[
+                                            source.Spellbook.GetSpell(SpellSlot.R).Level - 1]
+                                        + 0.45*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Nocturne",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.75*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 260}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 1.2*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.75*source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 260}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 1.2*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Nunu",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {400, 550, 700, 850, 1000}[level]
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {85, 130, 175, 225, 275}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R - Max Damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {625, 875, 1125}[level]
-                                + 2.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {400, 550, 700, 850, 1000}[level]
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {85, 130, 175, 225, 275}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //R - Max Damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {625, 875, 1125}[level]
+                                        + 2.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Olaf",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.4*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.4*source.TotalAttackDamage
+                            },
+                    });
 
             Spells.Add(
                 "Orianna",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 225, 300}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 225, 300}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Pantheon",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {65, 105, 145, 185, 225}[level]
-                                 + 1.4*source.FlatPhysicalDamageMod)
-                                *((target.Health/target.MaxHealth < 0.15) ? 2 : 1)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 75, 100, 125, 150}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //E - per strike
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {13, 23, 33, 43, 53}[level]
-                                 + 0.6*source.FlatPhysicalDamageMod)
-                                *((target is AIHeroClient) ? 2 : 1)
-                    },
-                    //R - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {400, 700, 1000}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R - min
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {400, 700, 1000}[level]
-                                 + 1*source.TotalMagicalDamage)*0.5
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {65, 105, 145, 185, 225}[level]
+                                         + 1.4*source.FlatPhysicalDamageMod)
+                                        *((target.Health/target.MaxHealth < 0.15) ? 2 : 1)
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 75, 100, 125, 150}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //E - per strike
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {13, 23, 33, 43, 53}[level]
+                                         + 0.6*source.FlatPhysicalDamageMod)
+                                        *((target is AIHeroClient) ? 2 : 1)
+                            },
+                        //R - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {400, 700, 1000}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //R - min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {400, 700, 1000}[level]
+                                         + source.TotalMagicalDamage)*0.5
+                            },
+                    });
 
             Spells.Add(
                 "Poppy",
                 new List<DamageSpell>
-                {
-                    //Q - single hit
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {35, 55, 75, 95, 115}[level]
-                                + 0.80*source.FlatPhysicalDamageMod + 0.07*target.MaxHealth
-                    },
-                    //Q - both hits
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {70, 110, 150, 190, 230}[level]
-                                 + 1.6*source.FlatPhysicalDamageMod + 0.14*target.MaxHealth)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //E - without colliding
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 70, 90, 110, 130}[level]
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                    //E - with colliding
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {100, 140, 180, 220, 260}[level]
-                                 + 1*source.FlatPhysicalDamageMod)
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {200, 300, 400}[level]
-                                 + 0.9*source.FlatPhysicalDamageMod)
-                    },
-                });
+                        //Q - single hit
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {35, 55, 75, 95, 115}[level]
+                                        + 0.80*source.FlatPhysicalDamageMod + 0.07*target.MaxHealth
+                            },
+                        //Q - both hits
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {70, 110, 150, 190, 230}[level]
+                                         + 1.6*source.FlatPhysicalDamageMod + 0.14*target.MaxHealth)
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //E - without colliding
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 70, 90, 110, 130}[level]
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                        //E - with colliding
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {100, 140, 180, 220, 260}[level]
+                                         + source.FlatPhysicalDamageMod)
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {100, 150, 200}[level]
+                                         + 0.45*source.FlatPhysicalDamageMod)
+                            },
+                    });
 
             Spells.Add(
                 "Quinn",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage = (source, target, level) =>
-                        {
-                            var damage = (new double[] {20, 45, 70, 95, 120}[level]
-                                          + (new double[] {0.8, 0.9, 1.0, 1.1, 1.2}[level]
-                                             *source.TotalAttackDamage)
-                                          + 0.35*source.TotalMagicalDamage);
-                            damage += damage*((100 - target.HealthPercent)/100);
-                            return damage;
-                        }
-                    },
-                    //E
-                    new DamageSpell
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage = (source, target, level) =>
+                                    {
+                                        var damage = (new double[] {20, 45, 70, 95, 120}[level]
+                                                      + (new double[] {0.8, 0.9, 1.0, 1.1, 1.2}[level]
+                                                         *source.TotalAttackDamage)
+                                                      + 0.35*source.TotalMagicalDamage);
+                                        damage += damage*((100 - target.HealthPercent)/100);
+                                        return damage;
+                                    }
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 70, 100, 130, 160}[level]
+                                        + 0.2*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage = (source, target, level) => source.TotalAttackDamage
+                            },
+                    });
+
+            Spells.Add(
+                "Rakan",
+                new List<DamageSpell>
                     {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 70, 100, 130, 160}[level]
-                                + 0.2*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage = (source, target, level) => source.TotalAttackDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                   (source, target, level) =>
+                                new double[] {70, 115, 160, 205, 250}[level]
+                                + 0.5 * source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                   (source, target, level) =>
+                                new double[] {70, 115, 160, 205, 250}[level]
+                                + 0.5 * source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                   (source, target, level) =>
+                                   new double[] {100, 200, 300}[level]
+                                   + new double[] {1, 1.25, 1.5}[level]
+                                   + 0.5 * source.FlatMagicDamageMod
+
+                            },
+                    });
 
             Spells.Add(
                 "Rammus",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 150, 200, 250, 300}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {15, 25, 35, 45, 55}[level] + 0.1*source.Armor
-                    },
-                    //R - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 130, 195}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 135, 170, 205, 240}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {15, 25, 35, 45, 55}[level] + 0.1*source.Armor
+                            },
+                        //R - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 80, 120}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Renekton",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.8*source.FlatPhysicalDamageMod
-                    },
-                    //Q - empowered
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {60, 90, 120, 150, 180}[level]
-                                 + 0.8*source.FlatPhysicalDamageMod)*1.5
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 30, 50, 70, 90}[level]
-                                + 1.5*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W - empowered
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {10, 30, 50, 70, 90}[level]
-                                 + 1.5*(source.BaseAttackDamage + source.FlatPhysicalDamageMod))
-                                *1.5
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 60, 90, 120, 150}[level]
-                                + 0.9*source.FlatPhysicalDamageMod
-                    },
-                    //E - empowered
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {30, 60, 90, 120, 150}[level]
-                                 + 0.9*source.FlatPhysicalDamageMod)*1.5
-                    },
-                    //R - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 60, 120}[level]
-                                + 0.1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.8*source.FlatPhysicalDamageMod
+                            },
+                        //Q - empowered
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {60, 90, 120, 150, 180}[level]
+                                         + 0.8*source.FlatPhysicalDamageMod)*1.5
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 30, 50, 70, 90}[level]
+                                        + 1.5*source.TotalAttackDamage
+                            },
+                        //W - empowered
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {10, 30, 50, 70, 90}[level]
+                                         + 1.5*source.TotalAttackDamage)
+                                        *1.5
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 60, 90, 120, 150}[level]
+                                        + 0.9*source.FlatPhysicalDamageMod
+                            },
+                        //E - empowered
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {30, 60, 90, 120, 150}[level]
+                                         + 0.9*source.FlatPhysicalDamageMod)*1.5
+                            },
+                        //R - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 80, 120}[level]
+                                        + 0.1*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Rengar",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 60, 80, 100, 120}[level]
-                                + new double[] {30, 40, 50, 60, 70}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //Q Emp
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage = (source, target, level) =>
-                            104 + 16*((AIHeroClient) source).Level +
-                            2.4*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 80, 110, 140, 170}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //W Emp
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) => 40 + 10*((AIHeroClient) source).Level
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 100, 150, 200, 250}[level]
-                                + 0.7*source.FlatPhysicalDamageMod
-                    },
-                    //E Emp
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) => 35 + 15*((AIHeroClient) source).Level
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 60, 80, 100, 120}[level]
+                                        + new double[] {30, 40, 50, 60, 70}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                        //Q Emp
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage = (source, target, level) =>
+                                    104 + 16*((AIHeroClient) source).Level +
+                                    2.4*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 80, 110, 140, 170}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //W Emp
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) => 40 + 10*((AIHeroClient) source).Level
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 100, 150, 200, 250}[level]
+                                        + 0.7*source.FlatPhysicalDamageMod
+                            },
+                        //E Emp
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) => 35 + 15*((AIHeroClient) source).Level
+                            },
+                    });
 
             Spells.Add(
                 "Riven",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 30, 50, 70, 90}[level]
-                                + ((source.BaseAttackDamage + source.FlatPhysicalDamageMod)/100)
-                                *new double[] {40, 45, 50, 55, 60}[level]
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 80, 110, 140, 170}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {80, 120, 160}[level]
-                                 + 0.6*source.FlatPhysicalDamageMod)
-                                *((target.MaxHealth - target.Health)/target.MaxHealth*2.67 + 1)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 30, 50, 70, 90}[level]
+                                        + (source.TotalAttackDamage/100)
+                                        *new double[] {40, 45, 50, 55, 60}[level]
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 80, 110, 140, 170}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {100, 150, 200}[level]
+                                         + 0.6*source.FlatPhysicalDamageMod)
+                                        *((target.MaxHealth - target.Health)/target.MaxHealth*2.67 + 1)
+                            },
+                    });
 
             Spells.Add(
                 "Rumble",
                 new List<DamageSpell>
-                {
-                    //Q - total  damage
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 135, 195, 255, 315}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //Q - Danger Zone total damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {112.5, 202.5, 292.5, 382.5, 472.5}[level]
-                                + 1.5*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {45, 70, 95, 120, 145}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E - Danger Zone
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {67.5, 105, 142.5, 180, 217.5}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {130, 185, 240}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R - Total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {650, 925, 1200}[level]
-                                + 1.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - total  damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 135, 195, 255, 315}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //Q - Danger Zone total damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {112.5, 202.5, 292.5, 382.5, 472.5}[level]
+                                        + 1.5*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {45, 70, 95, 120, 145}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E - Danger Zone
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {67.5, 105, 142.5, 180, 217.5}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {130, 185, 240}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R - Total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {650, 925, 1200}[level]
+                                        + 1.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Ryze",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {60, 85, 110, 135, 160, 185}[level]
-                                 + 0.45*source.TotalMagicalDamage
-                                 + 0.03
-                                 *(source.MaxMana - 392.4 - 52*(source as AIHeroClient).Level))
-                                *(1
-                                  + (target.HasBuff("RyzeE")
-                                      ? new double[] {40, 55, 70, 85, 100}[
-                                          ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E)
-                                              .Level - 1]/100
-                                      : 0))
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 100, 120, 140, 160}[level]
-                                + 0.2*source.TotalMagicalDamage
-                                + 0.01
-                                *(source.MaxMana - 392.4 - 52*(source as AIHeroClient).Level)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 75, 100, 125, 150}[level]
-                                + 0.3*source.TotalMagicalDamage
-                                + 0.02
-                                *(source.MaxMana - 392.4 - 52*(source as AIHeroClient).Level)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {60, 85, 110, 135, 160, 185}[level]
+                                         + 0.45*source.TotalMagicalDamage
+                                         + 0.03
+                                         *(source.MaxMana - 392.4 - 52*(source as AIHeroClient).Level))
+                                        *(1
+                                          + (target.HasBuff("RyzeE")
+                                                 ? new double[] {40, 55, 70, 85, 100}[
+                                                       ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E)
+                                                           .Level - 1]/100
+                                                 : 0))
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 100, 120, 140, 160}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                                        + 0.01
+                                        *(source.MaxMana - 392.4 - 52*(source as AIHeroClient).Level)
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 75, 100, 125, 150}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                                        + 0.02
+                                        *(source.MaxMana - 392.4 - 52*(source as AIHeroClient).Level)
+                            },
+                    });
 
             Spells.Add(
                 "Sejuani",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                    },
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 125, 170, 215, 260}[level]
+                            },
 
-                    //W - AA  damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {4, 4.5, 5, 5.5, 6}[level]/100*target.MaxHealth
-                    },
-                    //W - Aoe per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {10, 17.5, 25, 32.5, 40}[level]
-                                + (new double[] {4, 6, 8, 10, 12}[level]/100)*source.MaxHealth
-                                + 0.15*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                });
+                        //W - AA  damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {4, 4.5, 5, 5.5, 6}[level]/100*target.MaxHealth
+                            },
+                        //W - Aoe per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {10, 17.5, 25, 32.5, 40}[level]
+                                        + (new double[] {4, 6, 8, 10, 12}[level]/100)*source.MaxHealth
+                                        + 0.15*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Shaco",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {140, 160, 180, 200, 220}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W - per attack
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {35, 50, 65, 80, 95}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {5, 35, 65, 95, 125}[level]
-                                + 0.85*source.FlatPhysicalDamageMod + 0.9*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {300, 450, 600}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 35, 50, 65, 80}[level] + 0.5 * source.TotalMagicalDamage
+                            },
+                        //W - per attack
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {35, 50, 65, 80, 95}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {5, 35, 65, 95, 125}[level] + new double[]{3, 4, 5, 6, 7, 8}[level] / 100 * (target.MaxHealth - target.Health) + 0.9 * source.TotalMagicalDamage + 0.85 * source.TotalAttackDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {300, 450, 600}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Shen",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage = (source, target, level) =>
-                        {
-                            var dmg = (new double[] {2, 2.5, 3, 3.5, 4}[level]
-                                       + 0.015*source.TotalMagicalDamage)
-                                      *target.MaxHealth/100;
-                            if (target is AIHeroClient)
+                        //Q
+                        new DamageSpell
                             {
-                                return dmg;
-                            }
-                            return
-                                Math.Min(
-                                    new double[] {30, 50, 70, 90, 110}[level] + dmg,
-                                    new double[] {75, 100, 125, 150, 175}[level]);
-                        }
-                    },
-                    //Q - Enhanced
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage = (source, target, level) =>
-                        {
-                            var dmg = (new double[] {5, 5.5, 6, 6.6, 7}[level]
-                                       + 0.02*source.TotalMagicalDamage)
-                                      *target.MaxHealth/100;
-                            if (target is AIHeroClient)
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage = (source, target, level) =>
+                                    {
+                                        var dmg = (new double[] {2, 2.5, 3, 3.5, 4}[level]
+                                                   + 0.015*source.TotalMagicalDamage)
+                                                  *target.MaxHealth/100;
+                                        if (target is AIHeroClient)
+                                        {
+                                            return dmg;
+                                        }
+                                        return
+                                            Math.Min(
+                                                new double[] {30, 50, 70, 90, 110}[level] + dmg,
+                                                new double[] {75, 100, 125, 150, 175}[level]);
+                                    }
+                            },
+                        //Q - Enhanced
+                        new DamageSpell
                             {
-                                return dmg;
-                            }
-                            return
-                                Math.Min(
-                                    new double[] {30, 50, 70, 90, 110}[level] + dmg,
-                                    new double[] {75, 100, 125, 150, 175}[level]);
-                        }
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 85, 120, 155, 190}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage = (source, target, level) =>
+                                    {
+                                        var dmg = (new double[] {4, 4.5, 5, 5.5, 6}[level]
+                                                   + 0.02*source.TotalMagicalDamage)
+                                                  *target.MaxHealth/100;
+                                        if (target is AIHeroClient)
+                                        {
+                                            return dmg;
+                                        }
+                                        return
+                                            Math.Min(
+                                                new double[] {30, 50, 70, 90, 110}[level] + dmg,
+                                                new double[] {75, 100, 125, 150, 175}[level]);
+                                    }
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 85, 120, 155, 190}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Shyvana",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 85, 90, 95, 100}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W - per second
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 35, 50, 65, 80}[level]
-                                + 0.2*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 125, 150, 175, 200}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 85, 90, 95, 100}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                        //W - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 32, 45, 57, 70}[level]
+                                        + 0.2*source.FlatPhysicalDamageMod + 0.1 * source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 100, 140, 180, 220}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Singed",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {22, 34, 46, 58, 70}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 65, 80, 95, 110}[level]
-                                + 0.75*source.TotalMagicalDamage
-                                + new double[] {4, 5.5, 7, 8.5, 10}[level]/100
-                                *target.MaxHealth
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {22, 34, 46, 58, 70}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 65, 80, 95, 110}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                                        + new double[] {4, 5.5, 7, 8.5, 10}[level]/100
+                                        *target.MaxHealth
+                            },
+                    });
 
             Spells.Add(
                 "Sion",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 40, 60, 80, 100}[level]
-                                + 0.6*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //Q
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 120, 180, 240, 300}[level]
-                                + 1.8*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 65, 90, 115, 140}[level]
-                                + 0.4*source.TotalMagicalDamage
-                                + new double[] {10, 11, 12, 13, 14}[level]/100
-                                *target.MaxHealth
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 105, 140, 175, 210}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {70, 105, 140, 175, 210}[level]
-                                 + 0.4*source.TotalMagicalDamage)*1.5
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 300, 450}[level]
-                                + 0.4*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {150, 300, 450}[level]
-                                 + 0.4*source.FlatPhysicalDamageMod)*2
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 40, 60, 80, 100}[level]
+                                        + 0.6*source.TotalAttackDamage
+                            },
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 120, 180, 240, 300}[level]
+                                        + 1.8*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 65, 90, 115, 140}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                                        + new double[] {10, 11, 12, 13, 14}[level]/100
+                                        *target.MaxHealth
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 105, 140, 175, 210}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {70, 105, 140, 175, 210}[level]
+                                         + 0.4*source.TotalMagicalDamage)*1.5
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 300, 450}[level]
+                                        + 0.4*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {150, 300, 450}[level]
+                                         + 0.4*source.FlatPhysicalDamageMod)*2
+                            },
+                    });
 
             Spells.Add(
                 "Sivir",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 45, 65, 85, 105}[level]
-                                + new double[] {70, 80, 90, 100, 110}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W - bounce
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 65, 70, 75, 80}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {25, 45, 65, 85, 105}[level]
+                                        + new double[] {70, 80, 90, 100, 110}[level]/100
+                                        *source.TotalAttackDamage
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W - bounce
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 65, 70, 75, 80}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                    });
 
             Spells.Add(
                 "Skarner",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 30, 40, 50, 60}[level]
-                                + 0.4*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 75, 110, 145, 180}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //R - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {20, 60, 100}[level]
-                                 + 0.5*source.TotalMagicalDamage)
-                                + (0.60*source.TotalAttackDamage)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 30, 40, 50, 60}[level]
+                                        + 0.4*source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 75, 110, 145, 180}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //R - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {20, 60, 100}[level]
+                                         + 0.5*source.TotalMagicalDamage)
+                                        + (0.60*source.TotalAttackDamage)
+                            },
+                    });
 
             Spells.Add(
                 "Sona",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 70, 100, 130, 160}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 70, 100, 130, 160}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Soraka",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.35*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Swain",
                 new List<DamageSpell>
-                {
-                    //Q - per second
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {25, 40, 55, 70, 85}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 80, 110, 140, 170}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R - per draven
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 70, 90}[level] + 0.2*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - per second
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 47.5, 65, 82.5, 100}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 80, 110, 140, 170}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //R - per draven
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 70, 90}[level] + 0.2*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Syndra",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {50, 95, 140, 185, 230}[level]
-                                 + 0.75*source.TotalMagicalDamage)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 115, 160, 205, 250}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //R - min damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {270, 405, 540}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R - per sphere
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {90, 135, 180}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {50, 95, 140, 185, 230}[level]
+                                         + 0.75*source.TotalMagicalDamage)
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 115, 160, 205, 250}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //R - min damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {270, 405, 540}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R - per sphere
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {90, 135, 180}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Talon",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 100, 120, 140, 160}[level]
-                                + source.FlatPhysicalDamageMod
-                    },
-                    //W
-                    new DamageSpell
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 100, 120, 140, 160}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {110, 150, 190, 230, 270}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160}[level]
+                                        + 0.8*source.FlatPhysicalDamageMod
+                            },
+                    });
+
+            Spells.Add(
+                "Taliyah",
+                new List<DamageSpell>
                     {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {110, 150, 190, 230, 270}[level]
-                                + 1.1*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160}[level]
-                                + 0.8*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q - Min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 95, 120, 145, 170}[level]
+                                        + 0.45 * source.TotalMagicalDamage
+                            },
+                        //Q - Max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {182 , 247 , 312 , 377 , 442}[level]
+                                        + 1.17 * source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 80, 100, 120, 140}[level]
+                                        + 0.4 * source.TotalMagicalDamage
+                            },
+                        //E - Min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70 , 90 , 110 , 130 , 150}[level]
+                                        + 40 * source.TotalMagicalDamage
+                            },
+                        //E - Max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {140 , 180 , 220 , 260 , 300}[level]
+                                        + 0.80 * source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Taric",
                 new List<DamageSpell>
-                {
-                    //W
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 80, 120, 160, 200}[level] + 0.2*source.Armor
-                    },
-                    //E - min damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 70, 100, 130, 160}[level]
-                                + 0.2*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 80, 120, 160, 200}[level] + 0.2*source.Armor
+                            },
+                        //E - min damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 70, 100, 130, 160}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "TahmKench",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 130, 180, 230, 280}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //W - Devour 
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                target is Obj_AI_Minion
-                                    ? new double[] {400, 450, 500, 550, 600}[level]
-                                    : (new double[] {0.20, 0.23, 0.26, 0.29, 0.32}[level]
-                                       + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
-                    },
-                    //W - Regugitate
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 150, 200, 250, 300}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 130, 180, 230, 280}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //W - Devour 
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        target is Obj_AI_Minion
+                                            ? new double[] {400, 450, 500, 550, 600}[level]
+                                            : (new double[] {0.20, 0.23, 0.26, 0.29, 0.32}[level]
+                                               + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
+                            },
+                        //W - Regugitate
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 150, 200, 250, 300}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Teemo",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + 0.8*source.TotalMagicalDamage
-                    },
-                    //E - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {34, 68, 102, 136, 170}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //E - onhit
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 20, 30, 40, 50}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R - total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 325, 450}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 125, 170, 215, 260}[level]
+                                        + 0.8*source.TotalMagicalDamage
+                            },
+                        //E - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {34, 68, 102, 136, 170}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //E - onhit
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 20, 30, 40, 50}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R - total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 325, 450}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Thresh",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E - Active
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 95, 125, 155, 185}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {250, 400, 550}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E - Active
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 95, 125, 155, 185}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {250, 400, 550}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Tristana",
                 new List<DamageSpell>
-                {
-                    //W
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 110, 160, 210, 260}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E - base damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 70, 80, 90, 100}[level]
-                                + new double[] {0.5, 0.65, 0.8, 0.95, 1.10}[level]
-                                *source.FlatPhysicalDamageMod + 0.5*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {300, 400, 500}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 110, 160, 210, 260}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E - base damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 70, 80, 90, 100}[level]
+                                        + new double[] {0.5, 0.65, 0.8, 0.95, 1.10}[level]
+                                        *source.FlatPhysicalDamageMod + 0.5*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {300, 400, 500}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Trundle",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 40, 60, 80, 100}[level]
-                                + new[] {0, 0.5, 0.1, 0.15, 0.2}[level]
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R - Total
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {20, 24, 28}[level]/100
-                                 + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 40, 60, 80, 100}[level]
+                                        + new[] {0, 0.5, 0.1, 0.15, 0.2}[level]
+                                        *source.TotalAttackDamage
+                            },
+                        //R - Total
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {20, 24, 28}[level]/100
+                                         + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
+                            },
+                    });
 
             Spells.Add(
                 "Tryndamere",
                 new List<DamageSpell>
-                {
-                    //E
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 100, 130, 160, 190}[level]
-                                + 1.2*source.FlatPhysicalDamageMod + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 100, 130, 160, 190}[level]
+                                        + 1.2*source.FlatPhysicalDamageMod + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "TwistedFate",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.65*source.TotalMagicalDamage
-                    },
-                    //W - Blue
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 60, 80, 100, 120}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W - Red
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 45, 60, 75, 90}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W - Yellow
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 2,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new[] {15, 22.5, 30, 37.5, 45}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {55, 80, 105, 130, 155}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.65*source.TotalMagicalDamage
+                            },
+                        //W - Blue
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 60, 80, 100, 120}[level]
+                                        + source.TotalAttackDamage
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W - Red
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 45, 60, 75, 90}[level]
+                                        + source.TotalAttackDamage
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W - Yellow
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 2,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new[] {15, 22.5, 30, 37.5, 45}[level]
+                                        + source.TotalAttackDamage
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {55, 80, 105, 130, 155}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Twitch",
                 new List<DamageSpell>
-                {
-                    //E - current stacks
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (from buff in target.Buffs
-                                    where buff.DisplayName.ToLower() == "twitchdeadlyvenom"
-                                    select buff.Count).FirstOrDefault()
-                                *(new double[] {15, 20, 25, 30, 35}[level]
-                                  + 0.2*source.TotalMagicalDamage
-                                  + 0.25*source.FlatPhysicalDamageMod)
-                                + new double[] {20, 35, 50, 65, 80}[level]
-                    },
-                    //E - per stack
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {15, 20, 25, 30, 35}[level]
-                                + 0.2*source.TotalMagicalDamage
-                                + 0.25*source.FlatPhysicalDamageMod
-                                + new double[] {20, 35, 50, 65, 80}[level]
-                    },
-                });
+                        //E - current stacks
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        TwitchStack(target)
+                                        *(new double[] {15, 20, 25, 30, 35}[level]
+                                          + 0.2*source.TotalMagicalDamage
+                                          + 0.25*source.FlatPhysicalDamageMod)
+                                        + new double[] {20, 35, 50, 65, 80}[level]
+                            },
+                        //E - per stack
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {15, 20, 25, 30, 35}[level]
+                                        + 0.2*source.TotalMagicalDamage
+                                        + 0.25*source.FlatPhysicalDamageMod
+                                        + new double[] {20, 35, 50, 65, 80}[level]
+                            },
+                    });
 
             Spells.Add(
                 "Udyr",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 80, 130, 180, 230}[level]
-                                + (new double[] {120, 130, 140, 150, 160}[level]/100)
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //R - per wave
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 20, 30, 40, 50}[level]
-                                + 0.25*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 80, 130, 180, 230}[level]
+                                        + (new double[] {120, 130, 140, 150, 160}[level]/100)
+                                        *source.TotalAttackDamage
+                            },
+                        //R - per wave
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 20, 30, 40, 50}[level]
+                                        + 0.25*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Urgot",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 40, 70, 100, 130}[level]
-                                + 0.85*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 130, 185, 240, 295}[level]
-                                + 0.6*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 40, 70, 100, 130}[level]
+                                        + 0.85*source.TotalAttackDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 130, 185, 240, 295}[level]
+                                        + 0.6*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Varus",
                 new List<DamageSpell>
-                {
-                    //Q - min
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 47, 83, 120, 157}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //Q - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.Q,
-                        Stage = 1,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {15, 70, 125, 180, 235}[level]
-                                + +1.6*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W - on hit
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {10, 14, 18, 22, 26}[level]
-                                + 0.25*source.TotalMagicalDamage
-                    },
-                    //W - per stack
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                (new[] {2, 2.75, 3.5, 4.25, 5}[level]/100
-                                 + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 100, 135, 170, 205}[level]
-                                + 0.6*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 175, 250}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q - min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 47, 83, 120, 157}[level]
+                                        + source.TotalAttackDamage
+                            },
+                        //Q - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                Stage = 1,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {15, 70, 125, 180, 235}[level]
+                                        + +1.6*source.TotalAttackDamage
+                            },
+                        //W - on hit
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {10, 14, 18, 22, 26}[level]
+                                        + 0.25*source.TotalMagicalDamage
+                            },
+                        //W - per stack
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new[] {2, 2.75, 3.5, 4.25, 5}[level]/100
+                                         + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 100, 135, 170, 205}[level]
+                                        + 0.6*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 175, 250}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Vayne",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 35, 40, 45, 50}[level]/100
-                                *(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) => source is Obj_AI_Minion
-                                ? Math.Min(
-                                    200,
-                                    (new double[] {6, 7.5, 9, 10.5, 12}[level]/100
-                                     *target.MaxHealth))
-                                : new double[] {6, 7.5, 9, 10.5, 12}[level]/100
-                                  *target.MaxHealth
-                    },
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 35, 40, 45, 50}[level]/100
+                                        *source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) => source is Obj_AI_Minion
+                                                                   ? Math.Min(
+                                                                       200,
+                                                                       (new double[] {6, 7.5, 9, 10.5, 12}[level]/100
+                                                                        *target.MaxHealth))
+                                                                   : new double[] {6, 7.5, 9, 10.5, 12}[level]/100
+                                                                     *target.MaxHealth
+                            },
 
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {45, 80, 115, 150, 185}[level]
-                                + 0.5*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {45, 80, 115, 150, 185}[level]
+                                        + 0.5*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Veigar",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 125, 170, 215, 260}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {120, 170, 220, 270, 320}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) => new double[] {175, 250, 325}[level]
-                                // TODO: figure out how fast it scales, 175-350/250-500/325-650 (based on target’s missing health)
-                                                       + 0.8*target.TotalMagicalDamage
-                                                       + 0.75*source.TotalMagicalDamage
-                        //0.75 - 1.5 ability power (based on target’s missing health)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 150, 200, 250, 300}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) => new double[] {175, 250, 325}[level]
+                                                               // TODO: figure out how fast it scales, 175-350/250-500/325-650 (based on target’s missing health)
+                                                               + 0.8*target.TotalMagicalDamage
+                                                               + 0.75*source.TotalMagicalDamage
+                                //0.75 - 1.5 ability power (based on target’s missing health)
+                            },
+                    });
 
             Spells.Add(
                 "Velkoz",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //W - Max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 50, 70, 90, 110}[level]
-                                + new double[] {45, 75, 105, 135, 165}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 100, 130, 160, 190}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.True,
-                        Damage =
-                            (source, target, level) =>
-                                target.HasBuff("velkozresearchedstack")
-                                    ? new double[] {500, 725, 950}[level]
-                                      + 1*source.TotalMagicalDamage
-                                    : source.CalcDamage(
-                                        target,
-                                        DamageType.Magical,
-                                        new double[] {500, 725, 950}[level]
-                                        + 1*source.TotalMagicalDamage)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //W - Max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 50, 70, 90, 110}[level]
+                                        + new double[] {45, 75, 105, 135, 165}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 100, 130, 160, 190}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.True,
+                                Damage =
+                                    (source, target, level) =>
+                                        target.HasBuff("velkozresearchedstack")
+                                            ? new double[] {450, 625, 800}[level]
+                                              + 1.25* source.TotalMagicalDamage
+                                            : source.CalcDamage(
+                                                target,
+                                                DamageType.Magical,
+                                                new double[] {450, 625, 800}[level]
+                                                + 1.25 * source.TotalMagicalDamage)
+                            },
+                    });
 
             Spells.Add(
                 "Vi",
                 new List<DamageSpell>
-                {
-                    //Q - min
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {50, 75, 100, 125, 150}[level]
-                                + 0.8*source.FlatPhysicalDamageMod
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new[] {4, 5.5, 7, 8.5, 10}[level]/100
-                                 + 0.01*source.FlatPhysicalDamageMod/35)*target.MaxHealth
-                    },
-                    //E - extra
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {5, 20, 35, 50, 65}[level]
-                                + 1.15*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 300, 450}[level]
-                                + 1.4*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q - min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {50, 75, 100, 125, 150}[level]
+                                        + 0.8*source.FlatPhysicalDamageMod
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new[] {4, 5.5, 7, 8.5, 10}[level]/100
+                                         + 0.01*source.FlatPhysicalDamageMod/35)*target.MaxHealth
+                            },
+                        //E - extra
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {5, 20, 35, 50, 65}[level]
+                                        + 1.15*source.TotalAttackDamage
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 300, 450}[level]
+                                        + 1.4*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Viktor",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 80, 100, 120, 140}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {90, 170, 250, 330, 410}[level]
-                                + 1.2*source.TotalMagicalDamage
-                    },
-                    //R - summon damage
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {100, 175, 250}[level]
-                                + 0.50*source.TotalMagicalDamage
-                    },
-                    //R - per bolt
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        Stage = 1,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 80, 100, 120, 140}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {90, 170, 250, 330, 410}[level]
+                                        + 1.2*source.TotalMagicalDamage
+                            },
+                        //R - summon damage
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {100, 175, 250}[level]
+                                        + 0.50*source.TotalMagicalDamage
+                            },
+                        //R - per bolt
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                Stage = 1,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Vladimir",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 90, 105, 120, 135}[level]
-                                + 0.55*source.TotalMagicalDamage
-                    },
-                    //W - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 135, 190, 245, 300}[level]
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 80, 100, 120, 140}[level]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] { 80, 100, 120, 140, 160}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //W - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 80, 100, 120, 140}[level]
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + source.TotalMagicalDamage + 0.6 * source.Health
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {150, 250, 350}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Volibear",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 60, 90, 120, 150}[level]
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                (new double[] {60, 110, 160, 210, 260}[level])
-                                *((target.MaxHealth - target.Health)/target.MaxHealth + 1)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 105, 150, 195, 240}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R - per bolt
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 115, 155}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 60, 90, 120, 150}[level]
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        (new double[] {60, 110, 160, 210, 260}[level])
+                                        *((target.MaxHealth - target.Health)/target.MaxHealth + 1)
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 105, 150, 195, 240}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R - per bolt
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 115, 155}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Warwick",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                Math.Max(
-                                    new double[] {75, 125, 175, 225, 275}[level],
-                                    new double[] {8, 10, 12, 14, 16}[level]/100
-                                    *target.MaxHealth) + 1*source.TotalMagicalDamage
-                    },
-                    //R - max
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {150, 250, 350}[level]
-                                + 2*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {6 , 7 , 8 , 9 , 10}[level]/100 *target.MaxHealth + (1.2*source.TotalAttackDamage + 0.9 * source.TotalMagicalDamage)
+                            },
+                        //R - max
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {175,350,525}[level]
+                                        + 1.67*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Xerath",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 120, 160, 200, 240}[level]
-                                + 0.75*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 110, 140, 170, 200}[level]
-                                + 0.45*source.TotalMagicalDamage
-                    },
-                    //R - per charge
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 230, 260}[level]
-                                + 0.43*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 120, 160, 200, 240}[level]
+                                        + 0.75*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 110, 140, 170, 200}[level]
+                                        + 0.45*source.TotalMagicalDamage
+                            },
+                        //R - per charge
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 230, 260}[level]
+                                        + 0.43*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "XinZhao",
                 new List<DamageSpell>
-                {
-                    //Q - per attack
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {15, 30, 45, 60, 75}[level]
-                                + 0.2*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 175, 275}[level]
-                                + 1*source.FlatPhysicalDamageMod + 0.15*target.Health
-                    },
-                });
+                        //Q - per attack
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {15, 30, 45, 60, 75}[level]
+                                        + 0.2*source.TotalAttackDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.6*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 175, 275}[level]
+                                        + source.FlatPhysicalDamageMod + 0.15*target.Health
+                            },
+                    });
 
             Spells.Add(
                 "Yasuo",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {20, 40, 60, 80, 100}[level]
-                                + 1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //E - min
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 90, 110, 130, 150}[level]
-                                + 0.6*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {200, 300, 400}[level]
-                                + 1.5*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {20, 40, 60, 80, 100}[level]
+                                        + source.TotalAttackDamage
+                            },
+                        //E - min
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 70, 80, 90, 100}[level]
+                                        + 0.6*source.TotalMagicalDamage + 0.2 * source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {200, 300, 400}[level]
+                                        + 1.5*source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Yorick",
                 new List<DamageSpell>
-                {
-                    //Q - extra
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {30, 60, 90, 120, 150}[level]
-                                + 1.2*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 95, 130, 165, 200}[level]
-                                + 1*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {55, 85, 115, 145, 175}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                });
+                        //Q - extra
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {30, 60, 90, 120, 150}[level]
+                                        + 1.2*source.TotalAttackDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 95, 130, 165, 200}[level]
+                                        + source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {55, 85, 115, 145, 175}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                    });
 
             Spells.Add(
                 "Zac",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 110, 150, 190, 230}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 55, 70, 85, 100}[level]
-                                + (new double[] {4, 5, 6, 7, 8}[level]/100
-                                   + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {80, 130, 180, 230, 280}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                    //R - per bounce
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {140, 210, 280}[level]
-                                + 0.4*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 110, 150, 190, 230}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 55, 70, 85, 100}[level]
+                                        + (new double[] {4, 5, 6, 7, 8}[level]/100
+                                           + 0.02*source.TotalMagicalDamage/100)*target.MaxHealth
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {80, 130, 180, 230, 280}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                        //R - per bounce
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {140, 210, 280}[level]
+                                        + 0.4*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Zed",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 115, 155, 195, 235}[level]
-                                + 1*source.FlatPhysicalDamageMod
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {65, 90, 115, 140, 165}[level]
-                                + 0.8*source.FlatPhysicalDamageMod
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Physical,
-                        Damage =
-                            (source, target, level) =>
-                                1*(source.BaseAttackDamage + source.FlatPhysicalDamageMod)
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 105, 140, 175, 210}[level]
+                                        + source.FlatPhysicalDamageMod
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {65, 90, 115, 140, 165}[level]
+                                        + 0.8*source.FlatPhysicalDamageMod
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Physical,
+                                Damage =
+                                    (source, target, level) =>
+                                        source.TotalAttackDamage
+                            },
+                    });
 
             Spells.Add(
                 "Ziggs",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {75, 120, 165, 210, 255}[level]
-                                + 0.65*source.TotalMagicalDamage
-                    },
-                    //W
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.W,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {70, 105, 140, 175, 210}[level]
-                                + 0.35*source.TotalMagicalDamage
-                    },
-                    //E - per mine
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {40, 65, 90, 115, 140}[level]
-                                + 0.3*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {300, 450, 600}[level]
-                                + 1.1*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {75, 120, 165, 210, 255}[level]
+                                        + 0.65*source.TotalMagicalDamage
+                            },
+                        //W
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.W,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {70, 105, 140, 175, 210}[level]
+                                        + 0.35*source.TotalMagicalDamage
+                            },
+                        //E - per mine
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {40, 65, 90, 115, 140}[level]
+                                        + 0.3*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {300, 450, 600}[level]
+                                        + 1.1*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Zilean",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {90, 145, 200, 260, 320}[level]
-                                + 0.9*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {90, 145, 200, 260, 320}[level]
+                                        + 0.9*source.TotalMagicalDamage
+                            },
+                    });
 
             Spells.Add(
                 "Zyra",
                 new List<DamageSpell>
-                {
-                    //Q
-                    new DamageSpell
                     {
-                        Slot = SpellSlot.Q,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 90, 120, 150, 180}[level]
-                                + 0.55*source.TotalMagicalDamage
-                    },
-                    //E
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.E,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {60, 95, 130, 165, 200}[level]
-                                + 0.5*source.TotalMagicalDamage
-                    },
-                    //R
-                    new DamageSpell
-                    {
-                        Slot = SpellSlot.R,
-                        DamageType = DamageType.Magical,
-                        Damage =
-                            (source, target, level) =>
-                                new double[] {180, 265, 350}[level]
-                                + 0.7*source.TotalMagicalDamage
-                    },
-                });
+                        //Q
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.Q,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 90, 120, 150, 180}[level]
+                                        + 0.55*source.TotalMagicalDamage
+                            },
+                        //E
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.E,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {60, 95, 130, 165, 200}[level]
+                                        + 0.5*source.TotalMagicalDamage
+                            },
+                        //R
+                        new DamageSpell
+                            {
+                                Slot = SpellSlot.R,
+                                DamageType = DamageType.Magical,
+                                Damage =
+                                    (source, target, level) =>
+                                        new double[] {180, 265, 350}[level]
+                                        + 0.7*source.TotalMagicalDamage
+                            },
+                    });
 
             #endregion
         }
@@ -7718,6 +7806,7 @@ namespace TW.Common
         }
 
         #endregion
+
 
         #region Public Methods and Operators
 
@@ -8085,6 +8174,53 @@ namespace TW.Common
             IEnumerable<Tuple<SpellSlot, int>> spellCombo)
         {
             return GetComboDamage(source, target, spellCombo) > target.Health;
+        }
+
+        private static int TwitchStack(Obj_AI_Base target) // Doctor
+        {
+            var Ec = 0;
+            for (var t = 1; t < 7; t++)
+            {
+                if (ObjectManager.Get<Obj_GeneralParticleEmitter>().Any(s => s.Position.Distance(target.ServerPosition) <= 175 && s.Name == "twitch_poison_counter_0" + t + ".troy"))
+                {
+                    Ec = t;
+                }
+            }
+            return Ec;
+        }
+
+        public static float GetRendDamage(AIHeroClient source, AIHeroClient target)
+        {
+            return GetRendDamage(source, target, -1);
+        }
+
+        private static readonly float[] RawRendDamage = { 20, 30, 40, 50, 60 };
+        private static readonly float[] RawRendDamageMultiplier = { 0.6f, 0.6f, 0.6f, 0.6f, 0.6f };
+        private static readonly float[] RawRendDamagePerSpear = { 5, 9, 14, 20, 27 };
+        private static readonly float[] RawRendDamagePerSpearMultiplier = { 0.15f, 0.18f, 0.21f, 0.24f, 0.27f };
+
+        public static float GetRendDamage(Obj_AI_Base source, Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
+        {
+            return EloBuddy.SDK.Damage.CalculateDamageOnUnit(source, target, EloBuddy.DamageType.Physical, GetRawRendDamage(source, target, customStacks, rendBuff)) * (Player.Instance.HasBuff("SummonerExhaustSlow") ? 0.6f : 1);
+        }
+
+        private static BuffInstance GetRendBuffInternal(Obj_AI_Base target)
+        {
+            return target.Buffs.Find(b => b.Caster.IsMe && b.IsValid && b.DisplayName == "KalistaExpungeMarker");
+        }
+
+        public static float GetRawRendDamage(Obj_AI_Base source, Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
+        {
+            rendBuff = rendBuff ?? GetRendBuffInternal(target);
+            var stacks = (customStacks > -1 ? customStacks : rendBuff != null ? rendBuff.Count : 0) - 1;
+            if (stacks > -1)
+            {
+                var index = source.Spellbook.GetSpell(SpellSlot.E).Level - 1;
+                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] +
+                       source.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
+            }
+
+            return 0;
         }
 
         #endregion
@@ -8473,33 +8609,7 @@ namespace TW.Common
             var targetHero = target as AIHeroClient;
             if (hero != null)
             {
-                // Offensive masteries:
 
-                //INCREASED DAMAGE FROM ABILITIES 0.4/0.8/1.2/1.6/2%
-
-                /*Mastery sorcery = hero.GetMastery(MasteryData.Ferocity.Sorcery);
-                if (sorcery != null && sorcery.IsActive())
-                {
-                    amount *= 1 + ((new double[] { 0.4, 0.8, 1.2, 1.6, 2.0 }[sorcery.Points]) / 100);
-                }
-
-                //MELEE Deal an additional 3 % damage, but receive an additional 1.5 % damage
-                //RANGED Deal an additional 2 % damage, but receive an additional 2 % damage
-                Mastery DoubleEdgedSword = hero.GetMastery(MasteryData.Ferocity.DoubleEdgedSword);
-                if (DoubleEdgedSword != null && DoubleEdgedSword.IsActive())
-                {
-                    amount *= hero.IsMelee() ? 1.03 : 1.02;
-                }
-
-                // Bounty Hunter: TAKING NAMES You gain a permanent 1 % damage increase for each unique enemy champion you kill
-                Mastery BountyHunter = hero.GetMastery(MasteryData.Ferocity.BountyHunter);
-                if (BountyHunter != null && BountyHunter.IsActive())
-                {
-                    //We need a hero.UniqueChampionsKilled or both the sender and the target for ChampionKilled OnNotify Event
-                    // amount += amount * Math.Min(hero.ChampionsKilled, 5);
-                }*/
-
-                //Opressor: KICK 'EM WHEN THEY'RE DOWN You deal 2.5% increased damage to targets with impaired movement (slows, stuns, taunts, etc)
                 var Opressor = hero.GetMastery(MasteryData.Ferocity.DoubleEdgedSword);
                 if (targetHero != null && Opressor != null && Opressor.IsActive() && targetHero.IsMovementImpaired())
                 {

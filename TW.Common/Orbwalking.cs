@@ -1344,7 +1344,7 @@ namespace TW.Common
                 }
 
                 /* turrets / inhibitors / nexus */
-                if ((mode == OrbwalkingMode.LaneClear || mode == OrbwalkingMode.Mixed)
+                if ((mode == OrbwalkingMode.LaneClear)
                     && (!_config.Item("FocusMinionsOverTurrets").GetValue<KeyBind>().Active
                         || !MinionManager.GetMinions(
                             ObjectManager.Player.Position,
@@ -1374,7 +1374,7 @@ namespace TW.Common
                 }
 
                 /*Champions*/
-                if (mode != OrbwalkingMode.LastHit)
+                if (mode != OrbwalkingMode.LastHit && mode != OrbwalkingMode.Flee)
                 {
                     if (mode != OrbwalkingMode.LaneClear || !this.ShouldWait())
                     {
@@ -1394,13 +1394,14 @@ namespace TW.Common
                             .Where(
                                 mob =>
                                 mob.IsValidTarget() && mob.Team == GameObjectTeam.Neutral && this.InAutoAttackRange(mob)
-                                && mob.CharData.BaseSkinName != "gangplankbarrel" && mob.Name != "WardCorpse");
+                                && mob.CharData.BaseSkinName != "gangplankbarrel" && mob.Name != "WardCorpse"
+                                && !mob.CharData.BaseSkinName.Contains("Plant"));
 
                     result = _config.Item("Smallminionsprio").GetValue<bool>()
                                  ? jminions.MinOrDefault(mob => mob.MaxHealth)
                                  : jminions.MaxOrDefault(mob => mob.MaxHealth);
 
-                    if (result != null)
+                    if (result != null && !result.IsDead)
                     {
                         return result;
                     }
@@ -1623,7 +1624,8 @@ namespace TW.Common
                             if (predHealth >= 2 * this.Player.GetAutoAttackDamage(this._prevMinion)
                                 || Math.Abs(predHealth - this._prevMinion.Health) < float.Epsilon)
                             {
-                                return this._prevMinion;
+                                if (this._prevMinion.IsHPBarRendered)
+                                    return this._prevMinion;
                             }
                         }
 
@@ -1632,8 +1634,7 @@ namespace TW.Common
                                 .Where(
                                     minion =>
                                         minion.IsValidTarget() && this.InAutoAttackRange(minion)
-                                        && this.ShouldAttackMinion(minion) && !minion.BaseSkinName.Contains("PlantSatchel")
-                                        && !minion.BaseSkinName.Contains("PlantVision") && !minion.BaseSkinName.Contains("PlantHealth"))
+                                        && this.ShouldAttackMinion(minion) && !minion.CharData.BaseSkinName.Contains("Plant"))
 
                             let predHealth =
                                 HealthPrediction.LaneClearHealthPrediction(
@@ -1657,7 +1658,7 @@ namespace TW.Common
                                     .FirstOrDefault();
                         }
 
-                        if (result != null)
+                        if (result != null && !result.IsDead)
                         {
                             this._prevMinion = (Obj_AI_Minion) result;
                         }
