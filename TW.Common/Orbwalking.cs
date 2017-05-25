@@ -1632,7 +1632,7 @@ namespace TW.Common
                                 .Where(
                                     minion =>
                                         minion.IsValidTarget() && this.InAutoAttackRange(minion)
-                                        && this.ShouldAttackMinion(minion) && !minion.BaseSkinName.Contains("Plant"))
+                                        && this.ShouldAttackMinion(minion))
 
                             let predHealth =
                                 HealthPrediction.LaneClearHealthPrediction(
@@ -1645,6 +1645,7 @@ namespace TW.Common
                             select minion);
 
                         result = results.MaxOrDefault(m => !MinionManager.IsMinion(m, true) ? float.MaxValue : m.Health);
+
 
                         if (_config.Item("PrioritizeCasters").GetValue<bool>())
                         {
