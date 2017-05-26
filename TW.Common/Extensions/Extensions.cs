@@ -8,6 +8,8 @@
     using System.Runtime.Serialization.Json;
     using SharpDX;
     using EloBuddy;
+    using Extension = EloBuddy.SDK.Extensions;
+    using Distance;
 
     public static class Extensions
     {
@@ -409,6 +411,39 @@
         public static bool IsAutoAttack(this SpellDataInst spellData)
         {
             return Orbwalking.IsAutoAttack(spellData.Name);
+        }
+
+
+        /// <summary>
+        /// Returns the actual path of a unit.
+        /// </summary>
+        /// <param name="unit"> The unit.</param>
+        public static Vector3[] GetRealPath(Obj_AI_Base unit)
+        {
+            const int tolerance = 50;
+            var path = unit.Path.ToList();
+
+            for (var i = path.Count - 1; i > 0; i--)
+            {
+                var start = path[i].To2D();
+                var end = path[i - 1].To2D();
+
+                if (unit.ServerPosition.Distance(start, end, true) <= Extension.Pow(tolerance))
+                {
+                    path.RemoveRange(0, i);
+                    break;
+                }
+            }
+
+            return new[] { unit.Position }.Concat(path).ToArray();
+        }
+
+        /// <summary> 
+        /// Returns the path the unit is taking.
+        /// </summary>
+        public static Vector3[] RealPath(this Obj_AI_Base unit)
+        {
+            return GetRealPath(unit);
         }
 
         #endregion

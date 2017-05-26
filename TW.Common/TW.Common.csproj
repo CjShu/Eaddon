@@ -86,6 +86,7 @@
     <Compile Include="Data\MasteryData.cs" />
     <Compile Include="Data\SpellDatabase.cs" />
     <Compile Include="DrawMin.cs" />
+    <Compile Include="Extensions\Distance\DistanceExtensions.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Extensions\HeroName.cs" />

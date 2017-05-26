@@ -8,84 +8,31 @@ namespace TW.Common
     using Extensions;
     using Color = System.Drawing.Color;
 
-    /// <summary>
-    ///     This class offers everything related to auto-attacks and orbwalking.
-    /// </summary>
     public static class Orbwalking
     {
         #region Static Fields
 
-        /// <summary>
-        /// An array of the last 3 targets as NetworkIDs, useful for 3-hit passives or thunderlord
-        /// </summary>
         public static int[] LastTargets = new int[] {0,0,0};
-        /// <summary>
-        ///     <c>true</c> if the orbwalker will attack.
-        /// </summary>
         public static bool Attack = true;
-
-        /// <summary>
-        ///     <c>true</c> if the orbwalker will skip the next attack.
-        /// </summary>
+        public static bool isOnBasicAttackBroken = false;
         public static bool DisableNextAttack;
-
-        /// <summary>
-        ///     The last auto attack tick
-        /// </summary>
         public static int LastAATick;
-
-        /// <summary>
-        ///     The tick the most recent attack command was sent.
-        /// </summary>
         public static int LastAttackCommandT;
-
-        /// <summary>
-        ///     The last move command position
-        /// </summary>
         public static Vector3 LastMoveCommandPosition = Vector3.Zero;
-
-        /// <summary>
-        ///     The tick the most recent move command was sent.
-        /// </summary>
         public static int LastMoveCommandT;
-
-        /// <summary>
-        ///     <c>true</c> if the orbwalker will move.
-        /// </summary>
         public static bool Move = true;
-
-        /// <summary>
-        ///     The champion name
-        /// </summary>
         private static readonly string _championName;
-
-        /// <summary>
-        ///     The random
-        /// </summary>
         private static readonly Random _random = new Random(DateTime.Now.Millisecond);
-
-        /// <summary>
-        ///     Spells that reset the attack timer.
-        /// </summary>
         private static readonly string[] AttackResets =
             {
-                "dariusnoxiantacticsonh", "fiorae", "garenq", "gravesmove",
-                "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge",
-                "leonashieldofdaybreak", "luciane", "monkeykingdoubleattack",
-                "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze",
-                "netherblade", "gangplankqwrapper", "powerfist",
-                "renektonpreexecute", "rengarq", "shyvanadoubleattack",
-                "sivirw", "takedown", "talonnoxiandiplomacy",
-                "trundletrollsmash", "vaynetumble", "vie", "volibearq",
-                "xenzhaocombotarget", "yorickspectral", "reksaiq",
-                "itemtitanichydracleave", "masochism", "illaoiw",
-                "elisespiderw", "fiorae", "meditate", "sejuaninorthernwinds",
-                "asheq","camilleq", "camilleq2"
+                "dariusnoxiantacticsonh", "fiorae", "garenq", "gravesmove", "hecarimrapidslash", "jaxempowertwo",
+                "leonashieldofdaybreak", "luciane", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq",
+                "nautiluspiercinggaze", "netherblade", "gangplankqwrapper", "powerfist", "renektonpreexecute",
+                "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash",
+                "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq",
+                "itemtitanichydracleave", "masochism", "illaoiw", "elisespiderw", "fiorae", "meditate",
+                "sejuaninorthernwinds", "camilleq", "camilleq2"
             };
-
-        /// <summary>
-        ///     Spells that are attacks even if they dont have the "attack" word in their name.
-        /// </summary>
         private static readonly string[] Attacks =
             {
                 "caitlynheadshotmissile", "frostarrow", "garenslash2",
@@ -95,76 +42,51 @@ namespace TW.Common
                 "xenzhaothrust2", "xenzhaothrust3", "viktorqbuff",
                 "lucianpassiveshot"
             };
-
-        /// <summary>
-        ///     Spells that are not attacks even if they have the "attack" word in their name.
-        /// </summary>
         private static readonly string[] NoAttacks =
             {
-                "volleyattack", "volleyattackwithsound",
-                "jarvanivcataclysmattack", "monkeykingdoubleattack",
-                "shyvanadoubleattack", "shyvanadoubleattackdragon",
-                "zyragraspingplantattack", "zyragraspingplantattack2",
-                "zyragraspingplantattackfire", "zyragraspingplantattack2fire",
-                "viktorpowertransfer", "sivirwattackbounce", "asheqattacknoonhit",
-                "elisespiderlingbasicattack", "heimertyellowbasicattack",
-                "heimertyellowbasicattack2", "heimertbluebasicattack",
-                "annietibbersbasicattack", "annietibbersbasicattack2",
-                "yorickdecayedghoulbasicattack", "yorickravenousghoulbasicattack",
-                "yorickspectralghoulbasicattack", "malzaharvoidlingbasicattack",
-                "malzaharvoidlingbasicattack2", "malzaharvoidlingbasicattack3",
-                "kindredwolfbasicattack", "gravesautoattackrecoil"
+                "volleyattack", "volleyattackwithsound", "jarvanivcataclysmattack", "monkeykingdoubleattack",
+                "shyvanadoubleattack", "shyvanadoubleattackdragon", "zyragraspingplantattack",
+                "zyragraspingplantattack2", "zyragraspingplantattackfire", "zyragraspingplantattack2fire",
+                "viktorpowertransfer", "sivirwattackbounce", "asheqattacknoonhit", "elisespiderlingbasicattack",
+                "heimertyellowbasicattack", "heimertyellowbasicattack2", "heimertbluebasicattack",
+                "annietibbersbasicattack", "annietibbersbasicattack2", "yorickdecayedghoulbasicattack",
+                "yorickravenousghoulbasicattack", "yorickspectralghoulbasicattack", "malzaharvoidlingbasicattack",
+                "malzaharvoidlingbasicattack2", "malzaharvoidlingbasicattack3", "kindredwolfbasicattack",
+                "gravesautoattackrecoil"
             };
-
-        /// <summary>
-        ///     Champs whose auto attacks can't be cancelled
-        /// </summary>
+        private static readonly string[] spellname = { "LucianR", "VarusQ", "ViQ", "VladimirE", "XerathArcanopulseChargeUp" };
         private static readonly string[] NoCancelChamps = { "Kalista" };
-
-        /// <summary>
-        ///     The player
-        /// </summary>
         private static readonly AIHeroClient Player;
-
         private static int _autoattackCounter;
-
-        /// <summary>
-        ///     The delay
-        /// </summary>
         private static int _delay;
-
-        /// <summary>
-        ///     The last target
-        /// </summary>
         private static AttackableUnit _lastTarget;
-
-        /// <summary>
-        ///     The minimum distance
-        /// </summary>
         private static float _minDistance = 400;
-
-        /// <summary>
-        ///     <c>true</c> if the auto attack missile was launched from the player.
-        /// </summary>
         private static bool _missileLaunched;
-
         public static List<Obj_AI_Minion> AzirSoliders = new List<Obj_AI_Minion>();
+        public static List<Obj_AI_Base> MinionListAA = new List<Obj_AI_Base>();
+        private static int TimeAdjust = 0;
+        private static int BrainFarmInt = -90;
+        private static int DelayOnFire = 0;
+        private static int DelayOnFireId = 0;
+        private static int CountEnemy = 0;
+        public static int LastMove;
+        public static int NextMovementDelay;
+        public static Vector3 LastMovementPosition = Vector3.Zero;
 
         #endregion
 
-        #region Constructors and Destructors
-
-        /// <summary>
-        ///     Initializes static members of the <see cref="Orbwalking" /> class.
-        /// </summary>
         static Orbwalking()
         {
             Player = ObjectManager.Player;
             _championName = Player.ChampionName;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
-            Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
-            Spellbook.OnStopCast += SpellbookOnStopCast;
+            //Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
+            //Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(Obj_AI_Base_OnDoCast);
+            //Spellbook.OnStopCast += SpellbookOnStopCast;
             Obj_AI_Base.OnPlayAnimation += Obj_AI_Base_OnPlayAnimation;
+            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+            Spellbook.OnStopCast += OnStopCast;
+            Obj_AI_Base.OnSpellCast += OnSpellCast;
+            EloBuddy.Player.OnIssueOrder += Player_OnIssueOrder;
 
             if (_championName == "Rengar")
             {
@@ -186,14 +108,114 @@ namespace TW.Common
 
             if (_championName == "Azir")
             {
-                AzirSoliders = ObjectManager.Get<Obj_AI_Minion>().Where(x
+                AzirSoliders = ObjectManager.Get<Obj_AI_Minion>().Where(
+                    x
                     => x.IsAlly && x.Name == "AzirSoldier" && x.HasBuff("azirwspawnsound")).ToList();
-
                 GameObject.OnCreate += OnCreate;
                 GameObject.OnDelete += OnDelete;
             }
         }
 
+        private static void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
+        {
+            var senderValid = sender != null && sender.IsValid && sender.IsMe;
+
+            if (!senderValid || args.Order != GameObjectOrder.MoveTo)
+            {
+                return;
+            }
+            if (LastMovementPosition != Vector3.Zero && args.TargetPosition.Distance(LastMovementPosition) < 300)
+            {
+                if (NextMovementDelay == 0)
+                {
+                    var min = 80;
+                    var max = 250;
+                    NextMovementDelay = min > max ? min : WeightedRandom.Next(min, max);
+                }
+
+                if ((Utils.TickCount - LastMove) < NextMovementDelay)
+                {
+                    NextMovementDelay = 0;
+                    args.Process = false;
+                    return;
+                }
+
+                var wp = ObjectManager.Player.GetWaypoints();
+
+                if (args.TargetPosition.Distance(Player.ServerPosition) < 50)
+                {
+                    args.Process = false;
+                    return;
+                }
+            }
+
+            LastMovementPosition = args.TargetPosition;
+            LastMove = Utils.TickCount;
+        }
+
+        private static void OnSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender.IsMe)
+            {
+                var ping = Game.Ping;
+                if (ping <= 30)
+                {
+                    Utility.DelayAction.Add(30 - ping, () => Obj_AI_Base_OnDoCast_Delayed(sender, args));
+                    return;
+                }
+
+                Obj_AI_Base_OnDoCast_Delayed(sender, args);
+            }
+        }
+    
+        private static void OnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
+        {
+            if (spellbook.IsValid && EloBuddy.SDK.Orbwalker.IsRanged && !EloBuddy.SDK.Orbwalker.CanBeAborted && spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
+            {
+                Console.WriteLine("AA Cancel" + Game.Time);
+
+                ResetAutoAttackTimer();
+            }
+        }
+
+        private static void OnProcessSpellCast(Obj_AI_Base unit, GameObjectProcessSpellCastEventArgs Spell)
+        {
+            var spellName = Spell.SData.Name;
+            var attackdelay = unit.AttackCastDelay * 1000f + 30f;
+
+            if (unit.IsMe && IsAutoAttackReset(spellName))
+            {
+                if (Spell.Target.NetworkId == DelayOnFireId)
+                {
+                    DelayOnFire = Utils.GameTimeTickCount;
+                }
+
+                if (Spell.Target is Obj_AI_Base || Spell.Target is Obj_BarracksDampener || Spell.Target is Obj_HQ)
+                {
+                    LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
+                    LastMoveCommandT = 0;
+                    _autoattackCounter++;
+
+                    if (Spell.Target is Obj_AI_Base)
+                    {
+                        var enemy = (Obj_AI_Base)Spell.Target;
+
+                        if (enemy.IsValid)
+                        {
+                            FireOnTargetSwitch(enemy);
+                            _lastTarget = enemy;
+                        }
+                    }
+                }
+
+                if (unit.IsMelee)
+                {
+                    Utility.DelayAction.Add((int)attackdelay, () => OnProcessSpellCast(unit, Spell));
+                }
+            }
+
+            FireOnAttack(unit, _lastTarget);
+        }
 
         private static void OnCreate(GameObject sender, EventArgs args)
         {
@@ -222,14 +244,28 @@ namespace TW.Common
                     args.Animation == "Crit" ||
                     args.Animation == "Attack2" ||
                     args.AnimationHash.ToString("x8") == "d7d89ccc" || // kali - passive
-                    (args.AnimationHash.ToString("x8") == "a75d185e" && (sender.Name.ToLower().Contains("master")) || sender.Name.ToLower().Contains("lucian")) || // universal passive hash
+                    (args.AnimationHash.ToString("x8") == "a75d185e" &&
+                    (sender.Name.ToLower().Contains("master")) ||
+                    sender.Name.ToLower().Contains("lucian")) || // universal passive hash
                     args.AnimationHash.ToString("x8") == "58b1ec4a" || // yasuo - aa1
                     args.AnimationHash.ToString("x8") == "53b1e46b" || // yasuo - aa2
                     args.AnimationHash.ToString("x8") == "730fbce4" || // yasuo - aa3
+                    (args.AnimationHash.ToString("x8") == "1419ad45" && sender.Name.ToLower().Contains("kog")
+                    && sender.Name.ToLower().ToLower().Contains("maw")) ||
                     (args.AnimationHash.ToString("x8") == "b7f64047" && sender.Name.ToLower().Contains("twitch")) // twitch - R
                 )
                 {
-                    LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
+                    bool mbuff = Orbwalking.Player.HasBuff("vaynetumblebonus");
+
+                    if (mbuff)
+                    {
+                        Orbwalking.LastAATick = 0;
+                    }
+                    else
+                    {
+                        Orbwalking.LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
+                    }
+
                     _missileLaunched = false;
                     LastMoveCommandT = 0;
                     _autoattackCounter++;
@@ -237,121 +273,39 @@ namespace TW.Common
             }
         }
 
-        #endregion
 
         #region Delegates
 
-        /// <summary>
-        ///     Delegate AfterAttackEvenH
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        /// <param name="target">The target.</param>
         public delegate void AfterAttackEvenH(AttackableUnit unit, AttackableUnit target);
-
-        /// <summary>
-        ///     Delegate BeforeAttackEvenH
-        /// </summary>
-        /// <param name="args">The <see cref="BeforeAttackEventArgs" /> instance containing the event data.</param>
         public delegate void BeforeAttackEvenH(BeforeAttackEventArgs args);
-
-        /// <summary>
-        ///     Delegate OnAttackEvenH
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        /// <param name="target">The target.</param>
         public delegate void OnAttackEvenH(AttackableUnit unit, AttackableUnit target);
-
-        /// <summary>
-        ///     Delegate OnNonKillableMinionH
-        /// </summary>
-        /// <param name="minion">The minion.</param>
         public delegate void OnNonKillableMinionH(AttackableUnit minion);
-
-        /// <summary>
-        ///     Delegate OnTargetChangeH
-        /// </summary>
-        /// <param name="oldTarget">The old target.</param>
-        /// <param name="newTarget">The new target.</param>
         public delegate void OnTargetChangeH(AttackableUnit oldTarget, AttackableUnit newTarget);
 
         #endregion
 
         #region Public Events
 
-        /// <summary>
-        ///     This event is fired after a unit finishes auto-attacking another unit (Only works with player for now).
-        /// </summary>
         public static event AfterAttackEvenH AfterAttack;
-
-        /// <summary>
-        ///     This event is fired before the player auto attacks.
-        /// </summary>
         public static event BeforeAttackEvenH BeforeAttack;
-
-        /// <summary>
-        ///     This event is fired when a unit is about to auto-attack another unit.
-        /// </summary>
         public static event OnAttackEvenH OnAttack;
-
-        /// <summary>
-        ///     Occurs when a minion is not killable by an auto attack.
-        /// </summary>
         public static event OnNonKillableMinionH OnNonKillableMinion;
-
-        /// <summary>
-        ///     Gets called on target changes
-        /// </summary>
         public static event OnTargetChangeH OnTargetChange;
 
         #endregion
 
         #region Enums
 
-        /// <summary>
-        ///     The orbwalking mode.
-        /// </summary>
         public enum OrbwalkingMode
         {
-            /// <summary>
-            ///     The orbwalker will only last hit minions.
-            /// </summary>
             LastHit,
-
-            /// <summary>
-            ///     The orbwalker will alternate between last hitting and auto attacking champions.
-            /// </summary>
             Mixed,
-
-            /// <summary>
-            ///     The orbwalker will clear the lane of minions as fast as possible while attempting to get the last hit.
-            /// </summary>
             LaneClear,
-
-            /// <summary>
-            ///     The orbwalker will only attack the target.
-            /// </summary>
             Combo,
-
-            /// <summary>
-            /// The orbwalker will only Flee Move.
-            /// </summary>
             Flee,
-
             Burst,
-
-            /// <summary>
-            ///     The orbwalker will only last hit minions as late as possible.
-            /// </summary>
             Freeze,
-
-            /// <summary>
-            ///     The orbwalker will only move.
-            /// </summary>
             CustomMode,
-
-            /// <summary>
-            ///     The orbwalker does nothing.
-            /// </summary>
             None
         }
 
@@ -359,10 +313,6 @@ namespace TW.Common
 
         #region Public Methods and Operators
 
-        /// <summary>
-        ///     Returns if the player's auto-attack is ready.
-        /// </summary>
-        /// <returns><c>true</c> if this instance can attack; otherwise, <c>false</c>.</returns>
         public static bool CanAttack()
         {
             if (Player.ChampionName == "Graves")
@@ -409,13 +359,8 @@ namespace TW.Common
             return Utils.GameTimeTickCount + Game.Ping / 2 + 25 >= LastAATick + Player.AttackDelay * 1000;
         }
 
-        /// <summary>
-        ///     Returns true if moving won't cancel the auto-attack.
-        /// </summary>
-        /// <param name="extraWindup">The extra windup.</param>
-        /// <returns><c>true</c> if this instance can move the specified extra windup; otherwise, <c>false</c>.</returns>
         public static bool CanMove(float extraWindup, bool disableMissileCheck = false)
-        {
+        {           
             if (_missileLaunched && Orbwalker.MissileCheck && !disableMissileCheck)
             {
                 return true;
@@ -431,40 +376,22 @@ namespace TW.Common
                    || (Utils.GameTimeTickCount + Game.Ping / 2
                        >= LastAATick + Player.AttackCastDelay * 1000 + extraWindup + localExtraWindup);
         }
-
-        /// <summary>
-        ///     Returns the auto-attack range of the target.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <returns>System.Single.</returns>
         public static float GetAttackRange(AIHeroClient target)
         {
             var result = target.AttackRange + target.BoundingRadius;
             return result;
         }
 
-        /// <summary>
-        ///     Gets the last move position.
-        /// </summary>
-        /// <returns>Vector3.</returns>
         public static Vector3 GetLastMovePosition()
         {
             return LastMoveCommandPosition;
         }
 
-        /// <summary>
-        ///     Gets the last move time.
-        /// </summary>
-        /// <returns>System.Single.</returns>
         public static float GetLastMoveTime()
         {
             return LastMoveCommandT;
         }
 
-        /// <summary>
-        ///     Returns player auto-attack missile speed.
-        /// </summary>
-        /// <returns>System.Single.</returns>
         public static float GetMyProjectileSpeed()
         {
             return IsMelee(Player) || _championName == "Azir" || _championName == "Velkoz"
@@ -473,11 +400,6 @@ namespace TW.Common
                        : Player.BasicAttack.MissileSpeed;
         }
 
-        /// <summary>
-        ///     Returns the auto-attack range of local player with respect to the target.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <returns>System.Single.</returns>
         public static float GetRealAutoAttackRange(AttackableUnit target)
         {
             var result = Player.AttackRange + Player.BoundingRadius;
@@ -498,11 +420,6 @@ namespace TW.Common
             return result;
         }
 
-        /// <summary>
-        ///     Returns true if the target is in auto-attack range.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool InAutoAttackRange(AttackableUnit target)
         {
             if (!target.IsValidTarget())
@@ -516,45 +433,22 @@ namespace TW.Common
                     Player.ServerPosition.To2D()) <= myRange * myRange;
         }
 
-        /// <summary>
-        ///     Returns true if the spellname is an auto-attack.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns><c>true</c> if the name is an auto attack; otherwise, <c>false</c>.</returns>
         public static bool IsAutoAttack(string name)
         {
             return (name.ToLower().Contains("attack") && !NoAttacks.Contains(name.ToLower()))
                    || Attacks.Contains(name.ToLower());
         }
 
-        /// <summary>
-        ///     Returns true if the spellname resets the attack timer.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <returns><c>true</c> if the specified name is an auto attack reset; otherwise, <c>false</c>.</returns>
         public static bool IsAutoAttackReset(string name)
         {
             return AttackResets.Contains(name.ToLower());
         }
 
-        /// <summary>
-        ///     Returns true if the unit is melee
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        /// <returns><c>true</c> if the specified unit is melee; otherwise, <c>false</c>.</returns>
         public static bool IsMelee(this Obj_AI_Base unit)
         {
             return unit.CombatType == GameObjectCombatType.Melee;
         }
 
-        /// <summary>
-        ///     Moves to the position.
-        /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="holdAreaRadius">The hold area radius.</param>
-        /// <param name="overrideTimer">if set to <c>true</c> [override timer].</param>
-        /// <param name="useFixedDistance">if set to <c>true</c> [use fixed distance].</param>
-        /// <param name="randomizeMinDistance">if set to <c>true</c> [randomize minimum distance].</param>
         public static void MoveTo(
             Vector3 position,
             float holdAreaRadius = 0,
@@ -588,7 +482,7 @@ namespace TW.Common
             if (currentPath.Count > 1 && currentPath.PathLength() > 100)
             {
                 var movePath = Player.GetPath(point);
-
+              
                 if (movePath.Length > 1)
                 {
                     var v1 = currentPath[1] - currentPath[0];
@@ -620,15 +514,6 @@ namespace TW.Common
             LastMoveCommandT = Utils.GameTimeTickCount;
         }
 
-        /// <summary>
-        ///     Orbwalks a target while moving to Position.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="position">The position.</param>
-        /// <param name="extraWindup">The extra windup.</param>
-        /// <param name="holdAreaRadius">The hold area radius.</param>
-        /// <param name="useFixedDistance">if set to <c>true</c> [use fixed distance].</param>
-        /// <param name="randomizeMinDistance">if set to <c>true</c> [randomize minimum distance].</param>
         public static void Orbwalk(
             AttackableUnit target,
             Vector3 position,
@@ -677,27 +562,17 @@ namespace TW.Common
             }
         }
 
-        /// <summary>
-        ///     Resets the Auto-Attack timer.
-        /// </summary>
+
         public static void ResetAutoAttackTimer()
         {
             LastAATick = 0;
         }
 
-        /// <summary>
-        ///     Sets the minimum orbwalk distance.
-        /// </summary>
-        /// <param name="d">The d.</param>
         public static void SetMinimumOrbwalkDistance(float d)
         {
             _minDistance = d;
         }
 
-        /// <summary>
-        ///     Sets the movement delay.
-        /// </summary>
-        /// <param name="delay">The delay.</param>
         public static void SetMovementDelay(int delay)
         {
             _delay = delay;
@@ -707,10 +582,6 @@ namespace TW.Common
 
         #region Methods
 
-        /// <summary>
-        /// Pushes a target to the <see cref="LastTargets"/> list.
-        /// </summary>
-        /// <param name="networkId"></param>
         private static void PushLastTargets(int networkId)
         {
             LastTargets[2] = LastTargets[1];
@@ -718,11 +589,6 @@ namespace TW.Common
             LastTargets[0] = networkId;
         }
 
-        /// <summary>
-        ///     Fires the after attack event.
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        /// <param name="target">The target.</param>
         private static void FireAfterAttack(AttackableUnit unit, AttackableUnit target)
         {
             if (AfterAttack != null && target.IsValidTarget())
@@ -731,10 +597,6 @@ namespace TW.Common
             }
         }
 
-        /// <summary>
-        ///     Fires the before attack event.
-        /// </summary>
-        /// <param name="target">The target.</param>
         private static void FireBeforeAttack(AttackableUnit target)
         {
             if (BeforeAttack != null)
@@ -747,23 +609,14 @@ namespace TW.Common
             }
         }
 
-        /// <summary>
-        ///     Fires the on attack event.
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        /// <param name="target">The target.</param>
         private static void FireOnAttack(AttackableUnit unit, AttackableUnit target)
         {
             if (OnAttack != null)
             {
-                OnAttack(unit, target);
+               OnAttack(unit, target);
             }
         }
 
-        /// <summary>
-        ///     Fires the on non killable minion event.
-        /// </summary>
-        /// <param name="minion">The minion.</param>
         private static void FireOnNonKillableMinion(AttackableUnit minion)
         {
             if (OnNonKillableMinion != null)
@@ -772,10 +625,6 @@ namespace TW.Common
             }
         }
 
-        /// <summary>
-        ///     Fires the on target switch event.
-        /// </summary>
-        /// <param name="newTarget">The new target.</param>
         private static void FireOnTargetSwitch(AttackableUnit newTarget)
         {
             if (OnTargetChange != null && (!_lastTarget.IsValidTarget() || _lastTarget != newTarget))
@@ -784,31 +633,6 @@ namespace TW.Common
             }
         }
 
-        /// <summary>
-        ///     Fired when an auto attack is fired.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
-        private static void Obj_AI_Base_OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (sender.IsMe)
-            {
-                var ping = Game.Ping;
-                if (ping <= 30) //First world problems kappa
-                {
-                    Utility.DelayAction.Add(30 - ping, () => Obj_AI_Base_OnDoCast_Delayed(sender, args));
-                    return;
-                }
-
-                Obj_AI_Base_OnDoCast_Delayed(sender, args);
-            }
-        }
-
-        /// <summary>
-        ///     Fired 30ms after an auto attack is launched.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void Obj_AI_Base_OnDoCast_Delayed(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (IsAutoAttackReset(args.SData.Name))
@@ -823,11 +647,6 @@ namespace TW.Common
             }
         }
 
-        /// <summary>
-        ///     Handles the <see cref="E:ProcessSpell" /> event.
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        /// <param name="Spell">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void OnProcessSpell(Obj_AI_Base unit, GameObjectProcessSpellCastEventArgs Spell)
         {
             try
@@ -870,19 +689,6 @@ namespace TW.Common
             }
         }
 
-        /// <summary>
-        ///     Fired when the spellbook stops casting a spell.
-        /// </summary>
-        /// <param name="spellbook">The spellbook.</param>
-        /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
-        private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
-        {
-            if (spellbook.IsValid && spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
-            {
-                ResetAutoAttackTimer();
-            }
-        }
-
         #endregion
 
         /// <summary>
@@ -890,31 +696,10 @@ namespace TW.Common
         /// </summary>
         public class BeforeAttackEventArgs : EventArgs
         {
-            #region Fields
-
-            /// <summary>
-            ///     The target
-            /// </summary>
             public AttackableUnit Target;
-
-            /// <summary>
-            ///     The unit
-            /// </summary>
             public Obj_AI_Base Unit = ObjectManager.Player;
-
-            /// <summary>
-            ///     <c>true</c> if the orbwalker should continue with the attack.
-            /// </summary>
             private bool _process = true;
 
-            #endregion
-
-            #region Public Properties
-
-            /// <summary>
-            ///     Gets or sets a value indicating whether this <see cref="BeforeAttackEventArgs" /> should continue with the attack.
-            /// </summary>
-            /// <value><c>true</c> if the orbwalker should continue with the attack; otherwise, <c>false</c>.</value>
             public bool Process
             {
                 get
@@ -927,14 +712,8 @@ namespace TW.Common
                     this._process = value;
                 }
             }
-
-            #endregion
         }
 
-        /// <summary>
-        ///     This class allows you to add an instance of "Orbwalker" to your assembly in order to control the orbwalking in an
-        ///     easy way.
-        /// </summary>
         public class Orbwalker : IDisposable
         {
             #region Constants
@@ -1298,7 +1077,7 @@ namespace TW.Common
 
                     foreach (var minion in MinionList)
                     {
-                        var t = (int)(this.Player.AttackCastDelay * 1000) - 100 + Game.Ping / 2
+                        var t = (int)(this.Player.AttackCastDelay * 1000f) - 50 + Game.Ping / 2
                                 + 1000 * (int)Math.Max(0, this.Player.Distance(minion) - this.Player.BoundingRadius)
                                 / (int)GetMyProjectileSpeed();
 
@@ -1312,6 +1091,7 @@ namespace TW.Common
                         if (minion.Team != GameObjectTeam.Neutral && this.ShouldAttackMinion(minion))
                         {
                             var damage = this.Player.GetAutoAttackDamage(minion, true);
+
                             var killable = predHealth <= damage;
 
                             if (mode == OrbwalkingMode.Freeze)
@@ -1411,12 +1191,6 @@ namespace TW.Common
                 if (mode == OrbwalkingMode.LaneClear || mode == OrbwalkingMode.Mixed || mode == OrbwalkingMode.LastHit
                     || mode == OrbwalkingMode.Freeze)
                 {
-                    //var closestTower = ObjectManager.Get<Obj_AI_Turret>().MinOrDefault(
-                    //    t => t.IsAlly && (t.Name.Contains("L_03_A") || t.Name.Contains("L_02_A")
-                    //                      || t.Name.Contains("C_04_A") || t.Name.Contains("C_05_A")
-                    //                      || t.Name.Contains("R_02_A") || t.Name.Contains("R_03_A")) && !t.IsDead
-                    //             ? this.Player.Distance(t, true)
-                    //             : float.MaxValue);
 
                     var closestTower =
                         ObjectManager.Get<Obj_AI_Turret>()
@@ -1658,7 +1432,7 @@ namespace TW.Common
                                     .FirstOrDefault();
                         }
 
-                        if (result != null && !result.IsDead)
+                        if (result != null)
                         {
                             this._prevMinion = (Obj_AI_Minion) result;
                         }
@@ -1748,10 +1522,6 @@ namespace TW.Common
 
             #region Methods
 
-            /// <summary>
-            ///     Fired when the game is drawn.
-            /// </summary>
-            /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             private void DrawingOnOnDraw(EventArgs args)
             {
                 if (_config.Item("AACircle").GetValue<Circle>().Active)
@@ -1802,10 +1572,6 @@ namespace TW.Common
                 }
             }
 
-            /// <summary>
-            ///     Fired when the game is updated.
-            /// </summary>
-            /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             private void GameOnOnGameUpdate(EventArgs args)
             {
                 try
@@ -1834,12 +1600,6 @@ namespace TW.Common
                 }
             }
 
-            /// <summary>
-            ///     Returns if a minion should be attacked
-            /// </summary>
-            /// <param name="minion">The <see cref="Obj_AI_Minion" /></param>
-            /// <param name="includeBarrel">Include Gangplank Barrel</param>
-            /// <returns><c>true</c> if the minion should be attacked; otherwise, <c>false</c>.</returns>
             private bool ShouldAttackMinion(Obj_AI_Minion minion)
             {
                 if (minion.Name == "WardCorpse" || minion.CharData.BaseSkinName == "jarvanivstandard")
