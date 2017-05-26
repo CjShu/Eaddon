@@ -14,7 +14,6 @@ namespace TW.Common
 
         public static int[] LastTargets = new int[] {0,0,0};
         public static bool Attack = true;
-        public static bool isOnBasicAttackBroken = false;
         public static bool DisableNextAttack;
         public static int LastAATick;
         public static int LastAttackCommandT;
@@ -54,7 +53,6 @@ namespace TW.Common
                 "malzaharvoidlingbasicattack2", "malzaharvoidlingbasicattack3", "kindredwolfbasicattack",
                 "gravesautoattackrecoil"
             };
-        private static readonly string[] spellname = { "LucianR", "VarusQ", "ViQ", "VladimirE", "XerathArcanopulseChargeUp" };
         private static readonly string[] NoCancelChamps = { "Kalista" };
         private static readonly AIHeroClient Player;
         private static int _autoattackCounter;
@@ -376,6 +374,7 @@ namespace TW.Common
                    || (Utils.GameTimeTickCount + Game.Ping / 2
                        >= LastAATick + Player.AttackCastDelay * 1000 + extraWindup + localExtraWindup);
         }
+
         public static float GetAttackRange(AIHeroClient target)
         {
             var result = target.AttackRange + target.BoundingRadius;
