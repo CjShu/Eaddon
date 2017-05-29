@@ -660,7 +660,13 @@
             var hero = unit as AIHeroClient;
             return hero != null && hero.IsValid && hero.ChampionName.Equals(championName);
         }
-
+        
+        public static bool Compare1(this GameObject gameObject, GameObject @object)
+        {
+            return gameObject != null && gameObject.IsValid && @object != null && @object.IsValid &&
+                   gameObject.NetworkId == @object.NetworkId;
+        }
+        
         /// <summary>
         ///     Returns if the unit's movement is impaired (Slows, Taunts, Charms, Taunts, Snares, Fear)
         /// </summary>
@@ -669,6 +675,21 @@
             return hero.HasBuffOfType(BuffType.Flee) || hero.HasBuffOfType(BuffType.Charm)
                    || hero.HasBuffOfType(BuffType.Slow) || hero.HasBuffOfType(BuffType.Snare)
                    || hero.HasBuffOfType(BuffType.Stun) || hero.HasBuffOfType(BuffType.Taunt);
+        }
+
+        public static float DistanceToPlayer(this Obj_AI_Base source)
+        {
+            return ObjectManager.Player.Distance(source);
+        }
+
+        public static float DistanceToPlayer(this Vector3 position)
+        {
+            return position.To2D().DistanceToPlayer();
+        }
+
+        public static float DistanceToPlayer(this Vector2 position)
+        {
+            return ObjectManager.Player.Distance(position);
         }
 
         /// <summary>

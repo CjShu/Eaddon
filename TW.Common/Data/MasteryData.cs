@@ -145,6 +145,11 @@
             return mastery.Points >= 1;
         }
 
+        public static bool IsValid(this Mastery mastery)
+        {
+            return mastery != null && mastery.Points > 0;
+        }
+
         #endregion
     }
 }

@@ -8,7 +8,6 @@
     using LeagueSharp.Data.DataTypes;
     using LeagueSharp.Data.Enumerations;
     using SkillshotType = TW.Common.SkillshotType;
-    using Spell = TW.Common.Spell;
 
     /// <summary>
     ///     The spell database.
@@ -160,13 +159,13 @@
         /// <param name="slot">The SpellSlot</param>
         /// <param name="championName">The Champion Name</param>
         /// <returns></returns>
-        public static Spell MakeSpell(this SpellSlot slot, string championName = "undefined")
+        public static TW.Common.Spell MakeSpell(this SpellSlot slot, string championName = "undefined")
         {
             var spellData = GetBySpellSlot(slot, championName);
             // Charged Spell:
             if (spellData.ChargedSpellName != "")
             {
-                return new Spell
+                return new TW.Common. Spell
                            {
                                Slot = slot, ChargedBuffName = spellData.ChargedBuffName,
                                ChargedMaxRange = spellData.ChargedMaxRange, ChargedMinRange = spellData.ChargedMinRange,
@@ -186,8 +185,8 @@
             // Skillshot:
             if (spellData.CastType.Any(type => type == CastType.Position || type == CastType.Direction))
             {
-                return new Spell
-                           {
+                return new TW.Common.Spell
+                {
                                Slot = slot, Delay = spellData.Delay, Range = spellData.Range,
                                Width =
                                    spellData.Radius > 0 && spellData.Radius < 30000
@@ -201,8 +200,8 @@
                            };
             }
             // Targeted:
-            return new Spell
-                       {
+            return new TW.Common.Spell
+            {
                            Slot = slot, Range = spellData.Range, Delay = spellData.Delay, Speed = spellData.MissileSpeed,
                            IsSkillshot = false
                        };

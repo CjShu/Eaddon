@@ -23,6 +23,7 @@
         ///     check if the spell is being channeled
         /// </summary>
         public bool IsChanneling = false;
+        public EloBuddy.SDK.Spell.Skillshot skillshot { get; set; }
 
         /// <summary>
         ///     Diffrenet object names
@@ -77,9 +78,6 @@
         ///     The width
         /// </summary>
         private float _width;
-
-        public EloBuddy.SDK.Spell.Chargeable charge { get; set; }
-        public EloBuddy.SDK.Spell.Skillshot skillshot { get; set; }
 
         #endregion
 
@@ -899,51 +897,6 @@
                             CollisionObjects =
                                 collisionable ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
                         });
-        }
-
-        /// <summary>
-        ///  Gets the Min Target Count prediction.
-        /// </summary>
-        /// <param name="unit"></param>
-        /// <param name="aoe"></param>
-        /// <param name="overrideRange"></param>
-        /// <param name="collisionable"></param>
-        /// <param name="minTarget"></param>
-        /// <returns></returns>
-        public PredictionOutput GetMinPrediction(
-            Obj_AI_Base unit,
-            bool aoe = false,
-            float overrideRange = -1f,
-            CollisionableObjects[] collisionable = null,
-            int minTarget = 2)
-        {
-            var pred =
-                Prediction.GetPrediction(
-                    new PredictionInput
-                        {
-                            Unit = unit,
-                            Delay = this.Delay,
-                            Radius = this.Width,
-                            Speed = this.Speed,
-                            From = this.From,
-                            Range = (overrideRange > 100) ? overrideRange : this.Range,
-                            Collision = this.Collision,
-                            Type = this.Type,
-                            RangeCheckFrom = this.RangeCheckFrom,
-                            Aoe = aoe,
-                            CollisionObjects = collisionable ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
-                        });
-
-            if (IsChargedSpell && charge != null)
-            {
-                return new PredictionOutput() { CastPosition = charge.GetPrediction(unit).CastPosition, Hitchance = pred.Hitchance, CollisionObjects = pred.CollisionObjects, AoeTargetsHit = pred.AoeTargetsHit, Input = pred.Input, UnitPosition = charge.GetPrediction(unit).UnitPosition, _aoeTargetsHitCount = pred._aoeTargetsHitCount };
-            }
-            else if (skillshot != null && IsSkillshot)
-            {
-                return new PredictionOutput() { CastPosition = skillshot.GetPrediction(unit).CastPosition, Hitchance = pred.Hitchance, CollisionObjects = pred.CollisionObjects, AoeTargetsHit = pred.AoeTargetsHit, Input = pred.Input, UnitPosition = skillshot.GetPrediction(unit).UnitPosition, _aoeTargetsHitCount = pred._aoeTargetsHitCount };
-            }
-
-            return pred;
         }
 
         /// <summary>

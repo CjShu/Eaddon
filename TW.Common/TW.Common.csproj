@@ -80,7 +80,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="CustomEvents.cs" />
     <Compile Include="CustomizableAntiGapcloser.cs" />
-    <Compile Include="Damage.cs" />
+    <Compile Include="Damages\Damage.cs" />
     <Compile Include="Dash.cs" />
     <Compile Include="Data\ItemData.cs" />
     <Compile Include="Data\MasteryData.cs" />

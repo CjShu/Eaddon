@@ -7474,7 +7474,7 @@ namespace TW.Common
                                 DamageType = DamageType.Magical,
                                 Damage =
                                     (source, target, level) =>
-                                        new double[] {60, 70, 80, 90, 100}[level]
+                                        new double[] {70, 90, 110, 130, 150}[level]
                                         + 0.6*source.TotalMagicalDamage + 0.2 * source.FlatPhysicalDamageMod
                             },
                         //R
@@ -7829,12 +7829,15 @@ namespace TW.Common
             {
                 case DamageType.Magical:
                     damage = CalcMagicDamage(source, target, amount);
+                    //damage = EloBuddy.SDK.Damage.CalculateDamageOnUnit(source, target, EloBuddy.DamageType.Magical, (float)amount);
                     break;
                 case DamageType.Physical:
                     damage = CalcPhysicalDamage(source, target, amount);
+                    //damage = EloBuddy.SDK.Damage.CalculateDamageOnUnit(source, target, EloBuddy.DamageType.Physical, (float)amount);
                     break;
                 case DamageType.True:
                     damage = amount;
+                    //damage = Math.Max(Math.Floor(amount), 0);
                     break;
             }
 
@@ -8038,7 +8041,10 @@ namespace TW.Common
                     source,
                     target,
                     Math.Max(0, Math.Min(source.Spellbook.GetSpell(slot).Level - 1, 5)));
+
                 spell.CalculatedDamage = CalcDamage(source, target, spell.DamageType, rawDamage);
+
+
                 return spell;
             }
 
@@ -8626,13 +8632,14 @@ namespace TW.Common
                     }
                     //Thunderlord's Decree: Your 3rd ability or basic attack on an enemy champion shocks them, dealing 10 - 180(+0.3 bonus attack damage)(+0.1 ability power) magic damage in an area around them
 
+                    /*
                     var Thunder = hero.GetMastery(MasteryData.Cunning.ThunderlordsDecree);
                     if (Thunder != null && Thunder.IsActive())
                     {
                         if (Orbwalking.LastTargets != null && Orbwalking.LastTargets[0] == targetHero.NetworkId &&
                             Orbwalking.LastTargets[1] == targetHero.NetworkId)
                             amount += 10*hero.Level + (0.3*hero.TotalAttackDamage) + (0.1*hero.TotalMagicalDamage);
-                    }
+                    }*/
                 }
 
                 // Double edge sword:
