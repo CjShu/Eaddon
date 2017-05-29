@@ -24,6 +24,14 @@
     {
         #region Static Fields
 
+        public static Sprite tabmenuMain;
+        public static readonly TextureLoader TextureLoader = new TextureLoader();
+        public static string _tabcount;
+        public static Texture TabTexture
+        {
+            get { return TextureLoader[_tabcount]; }
+        }
+
         /// <summary>
         ///     The menu settings, root menu alias.
         /// </summary>
@@ -138,6 +146,8 @@
 
             Root.AddItem(new MenuItem("by", "\u7ffb\u8b6f\u4f5c\u8005 By: CjShu"));
 
+            //tabmenuMain = new Sprite(() => TabTexture);
+           
             CommonMenu.Instance.AddSubMenu(Root); 
         }
 
