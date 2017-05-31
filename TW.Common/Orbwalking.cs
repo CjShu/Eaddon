@@ -80,7 +80,7 @@ namespace TW.Common
             Spellbook.OnStopCast += OnStopCast;
             Obj_AI_Base.OnSpellCast += OnSpellCast;
             EloBuddy.Player.OnIssueOrder += Player_OnIssueOrder;
-
+            Obj_AI_Base.OnBasicAttack += OnBasicAttack;
             if (_championName == "Rengar")
             {
                 Obj_AI_Base.OnPlayAnimation += delegate(Obj_AI_Base sender, GameObjectPlayAnimationEventArgs args)
@@ -108,6 +108,35 @@ namespace TW.Common
                 GameObject.OnDelete += OnDelete;
             }
         }
+
+        private static void OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender.IsMe && (args.Target is Obj_AI_Base || args.Target is Obj_BarracksDampener || args.Target is Obj_HQ))
+            {
+                LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
+                _missileLaunched = false;
+                LastMoveCommandT = 0;
+                _autoattackCounter++;
+
+                if (args.Target is Obj_AI_Base)
+                {
+                    var target = (Obj_AI_Base)args.Target;
+                    if (target.IsValid)
+                    {
+                        FireOnTargetSwitch(target);
+                        _lastTarget = target;
+                    }
+                }
+
+                if (sender is Obj_AI_Turret && args.Target is Obj_AI_Base)
+                {
+                    LastTargetTurrets[sender.NetworkId] = (Obj_AI_Base)args.Target;
+                }
+            }
+            FireOnAttack(sender, _lastTarget);
+        }
+
+        internal static readonly Dictionary<int, Obj_AI_Base> LastTargetTurrets = new Dictionary<int, Obj_AI_Base>();
 
         private static void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
         {
@@ -1116,7 +1145,7 @@ namespace TW.Common
                 if (mode == OrbwalkingMode.LaneClear || mode == OrbwalkingMode.Mixed || mode == OrbwalkingMode.LastHit || mode == OrbwalkingMode.Freeze)
                 {
                     if (!_config.Item("AutoAdjustTime").GetValue<bool>())
-                        BrainFarmInt = -TimeAdjust - 80;
+                        BrainFarmInt = -TimeAdjust - 70;
 
                     var LastHitList = minionsFiltered
                         .Where(minion => minion.Team != GameObjectTeam.Neutral)
