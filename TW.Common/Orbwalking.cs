@@ -202,41 +202,13 @@ namespace TW.Common
 
         private static void OnProcessSpellCast(Obj_AI_Base unit, GameObjectProcessSpellCastEventArgs Spell)
         {
-            var spellName = Spell.SData.Name;
-            var attackdelay = unit.AttackCastDelay * 1000f + 30f;
-
-            if (unit.IsMe && IsAutoAttackReset(spellName))
+            if (unit.IsMe)
             {
-                if (Spell.Target.NetworkId == DelayOnFireId)
+                if (IsAutoAttackReset(Spell.SData.Name) && Spell.SData.SpellCastTime == 0)
                 {
-                    DelayOnFire = Utils.GameTimeTickCount;
-                }
-
-                if (Spell.Target is Obj_AI_Base || Spell.Target is Obj_BarracksDampener || Spell.Target is Obj_HQ)
-                {
-                    LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
-                    LastMoveCommandT = 0;
-                    _autoattackCounter++;
-
-                    if (Spell.Target is Obj_AI_Base)
-                    {
-                        var enemy = (Obj_AI_Base)Spell.Target;
-
-                        if (enemy.IsValid)
-                        {
-                            FireOnTargetSwitch(enemy);
-                            _lastTarget = enemy;
-                        }
-                    }
-                }
-
-                if (unit.IsMelee)
-                {
-                    Utility.DelayAction.Add((int)attackdelay, () => OnProcessSpellCast(unit, Spell));
+                    ResetAutoAttackTimer();
                 }
             }
-
-            FireOnAttack(unit, _lastTarget);
         }
 
         private static void OnCreate(GameObject sender, EventArgs args)
@@ -715,7 +687,6 @@ namespace TW.Common
             private OrbwalkingMode _mode = OrbwalkingMode.None;
             private Vector3 _orbwalkingPoint;
             private string CustomModeName;
-            private Obj_AI_Minion _prevMinion;
             private Obj_AI_Base laneClearMinion;
             private bool isFinishAttack;
             private int countAutoAttack;

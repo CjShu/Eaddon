@@ -1,7 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Caitlyn",
     "\\Syndra\\Common",
     "\\Syndra\\Tools",
     "\\TW.Common",
@@ -10,6 +9,6 @@
     "\\TW.Common\\Properties",
     "\\TW.Common\\TargetSelector"
   ],
-  "SelectedNode": "\\TW.Common\\TargetSelector\\TargetSelector.cs",
+  "SelectedNode": "\\TW.Common\\Orbwalking.cs",
   "PreviewInSolutionExplorer": false
 }
