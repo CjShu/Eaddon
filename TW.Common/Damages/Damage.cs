@@ -8042,9 +8042,21 @@ namespace TW.Common
                     target,
                     Math.Max(0, Math.Min(source.Spellbook.GetSpell(slot).Level - 1, 5)));
 
-                spell.CalculatedDamage = CalcDamage(source, target, spell.DamageType, rawDamage);
-
-
+                //spell.CalculatedDamage = CalcDamage(source, target, spell.DamageType, rawDamage);
+                EloBuddy.DamageType ty = EloBuddy.DamageType.Physical;
+                if (spell.DamageType == DamageType.Magical)
+                {
+                    ty = EloBuddy.DamageType.Magical;
+                }
+                if (spell.DamageType == DamageType.Physical)
+                {
+                    ty = EloBuddy.DamageType.Physical;
+                }
+                if (spell.DamageType == DamageType.True)
+                {
+                    ty = EloBuddy.DamageType.True;
+                }
+                spell.CalculatedDamage = EloBuddy.SDK.Damage.CalculateDamageOnUnit(source, target, ty, (float)rawDamage);
                 return spell;
             }
 
@@ -8086,7 +8098,7 @@ namespace TW.Common
                         DamageType.Physical,
                         source.BaseAttackDamage + source.FlatPhysicalDamageMod);
                 case DamageItems.LiandrysTorment:
-                    var d = target.Health*.2f*3f;
+                    var d = target.Health * .2f * 3f;
                     return (target.CanMove || target.HasBuff("slow")) ? d : d*2;
             }
             return 1d;
@@ -8133,7 +8145,7 @@ namespace TW.Common
         {
             if (summonerSpell == SummonerSpell.Ignite)
             {
-                return 50 + 20*source.Level - (target.HPRegenRate/5*3);
+                return 50 + 20 * source.Level - (target.HPRegenRate / 5 * 3);
             }
 
             if (summonerSpell == SummonerSpell.Smite)
@@ -8338,7 +8350,7 @@ namespace TW.Common
             }
 
             // Penetration can't reduce armor below 0.
-            var armor = target.Armor;
+            var armor = target.CharData.Armor;
             var bonusArmor = target.Armor - target.CharData.Armor;
 
             double value;
@@ -8550,7 +8562,8 @@ namespace TW.Common
                 var Fervor = hero.GetMastery(MasteryData.Ferocity.FervorofBattle);
                 if (Fervor != null && Fervor.IsActive())
                 {
-                    value += (0.9 + hero.Level*0.42)*hero.GetBuffCount("MasteryOnHitDamageStacker");
+                    //value += (0.9 + hero.Level*0.42)*hero.GetBuffCount("MasteryOnHitDamageStacker");
+                    value += Math.Min((0.59 + hero.Level * 0.41) * hero.GetBuffCount("MasteryOnHitDamageStacker"), 4.71 + hero.Level * 0.41);
                 }
             }
 

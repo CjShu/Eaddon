@@ -1193,10 +1193,18 @@ namespace TW.Common
                 /*Jungle minions*/
                 if (mode == OrbwalkingMode.LaneClear || mode == OrbwalkingMode.Mixed)
                 {
-                    var jminions = ObjectManager.Get<Obj_AI_Minion>().Where(
-                        mob => mob.IsValidTarget() && mob.Team == GameObjectTeam.Neutral && this.InAutoAttackRange(mob)
-                               && mob.CharData.BaseSkinName != "gangplankbarrel" && mob.Name != "WardCorpse"
-                               && !mob.CharData.BaseSkinName.Contains("Plant"));
+                    //var jminions = ObjectManager.Get<Obj_AI_Minion>().Where(
+                    //    mob => mob.IsValidTarget() && mob.Team == GameObjectTeam.Neutral && this.InAutoAttackRange(mob)
+                    //           && mob.CharData.BaseSkinName != "gangplankbarrel" && mob.Name != "WardCorpse"
+                    //           && !mob.CharData.BaseSkinName.Contains("Plant"));
+                    var jminions =
+                        EloBuddy.SDK.EntityManager.MinionsAndMonsters.Monsters
+                            .Where(
+                                mob =>
+                                    mob.IsValidTarget() && mob.Team == GameObjectTeam.Neutral && this.InAutoAttackRange(mob)
+                                    && mob.CharData.BaseSkinName != "gangplankbarrel" && mob.Name != "WardCorpse"
+                                    && !mob.BaseSkinName.Contains("Plant"));
+
 
                     result = _config.Item("Smallminionsprio").GetValue<bool>()
                                  ? jminions.MinOrDefault(mob => mob.MaxHealth)
@@ -1239,7 +1247,7 @@ namespace TW.Common
                             var turretMinion =
                                 minions.FirstOrDefault(
                                     minion => minion is Obj_AI_Minion
-                                              && HealthPrediction.HasTurretAggro((Obj_AI_Minion)minion));
+                                              && HealthPrediction.HasTurretAggro(minion as Obj_AI_Minion));
 
                             if (turretMinion != null)
                             {
@@ -1333,7 +1341,7 @@ namespace TW.Common
                                     minions.Where(
                                         x =>
                                             x.NetworkId != turretMinion.NetworkId && x is Obj_AI_Minion
-                                            && !HealthPrediction.HasMinionAggro((Obj_AI_Minion)x)))
+                                            && !HealthPrediction.HasMinionAggro(x as Obj_AI_Minion)))
                                 {
                                     var playerDamage = (int)this.Player.GetAutoAttackDamage(minion);
                                     var turretDamage = (int)closestTower.GetAutoAttackDamage(minion, true);
@@ -1349,7 +1357,7 @@ namespace TW.Common
                                     minions.LastOrDefault(
                                         x =>
                                             x.NetworkId != turretMinion.NetworkId && x is Obj_AI_Minion
-                                            && !HealthPrediction.HasMinionAggro((Obj_AI_Minion)x));
+                                            && !HealthPrediction.HasMinionAggro(x as Obj_AI_Minion));
                                 if (lastminion != null && minions.Count() >= 2)
                                 {
                                     if (1f / this.Player.AttackDelay >= 1f
@@ -1374,7 +1382,7 @@ namespace TW.Common
                                 // balance other minions
                                 foreach (var minion in
                                     minions.Where(
-                                        x => x is Obj_AI_Minion && !HealthPrediction.HasMinionAggro((Obj_AI_Minion)x))
+                                        x => x is Obj_AI_Minion && !HealthPrediction.HasMinionAggro(x as Obj_AI_Minion))
                                 )
                                 {
                                     if (closestTower != null)
@@ -1405,13 +1413,14 @@ namespace TW.Common
                         }
                     }
                 }
+
                 var Minions = new List<Obj_AI_Minion>();
 
                 // Special Minions if no enemy is near
                 if (mode == OrbwalkingMode.Combo && Minions.Any() && !HeroManager.Enemies.Any(
-                        e => e != null && e.DistanceToPlayer() <= GetRealAutoAttackRange(e) * 2f))
+                        e => e.IsValidTarget() && e.DistanceToPlayer() <= GetRealAutoAttackRange(e) * 2f))
                 {
-                    Minions.FirstOrDefault();
+                    return Minions.FirstOrDefault();
                 }
 
                 /*Lane Clear minions*/

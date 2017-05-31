@@ -620,11 +620,11 @@
 
             else if (packetCast)
             {
-                return ObjectManager.Player.Spellbook.CastSpell(this.Slot, position, false);
+                return Player.CastSpell(this.Slot, position, false);
             }
             else
             {
-                return ObjectManager.Player.Spellbook.CastSpell(this.Slot, position);
+                return Player.CastSpell(this.Slot, position);
             }
             return false;
         }
@@ -799,8 +799,11 @@
                 to.Select(h => h.To3D()).ToList(),
                 new PredictionInput
                     {
-                        From = from.To3D(), Type = this.Type, Radius = this.Width,
-                        Delay = delayOverride > 0 ? delayOverride : this.Delay, Speed = this.Speed
+                        From = from.To3D(),
+                        Type = this.Type,
+                        Radius = this.Width,
+                        Delay = delayOverride > 0 ? delayOverride : this.Delay,
+                        Speed = this.Speed
                     });
         }
 
@@ -1006,6 +1009,7 @@
             this._chargedCastedT = 0;
 
             Obj_AI_Base.OnProcessSpellCast += this.Obj_AI_Hero_OnProcessSpellCast;
+            //Obj_AI_Base.OnBasicAttack += this.Obj_AI_Hero_OnProcessSpellCast;
             Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
             Spellbook.OnCastSpell += this.SpellbookOnCastSpell;
         }
