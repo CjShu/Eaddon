@@ -1482,10 +1482,10 @@ namespace TW.Common
                 var prioritizeSpecialMinions = _config.Item("prioritizeSpecialMinions").GetValue<bool>();
                 var combominion = mode != OrbwalkingMode.Combo;
 
-                List<Obj_AI_Minion> mList = new List<Obj_AI_Minion>();
-                List<Obj_AI_Minion> cloneList = new List<Obj_AI_Minion>();
-                List<Obj_AI_Minion> finalMinionList = new List<Obj_AI_Minion>();
-                List<Obj_AI_Minion> specialList = new List<Obj_AI_Minion>();
+                var mList = new List<Obj_AI_Minion>();
+                var cloneList = new List<Obj_AI_Minion>();
+                var finalMinionList = new List<Obj_AI_Minion>();
+                var specialList = new List<Obj_AI_Minion>();
 
                 foreach (var minion in EloBuddy.SDK.EntityManager.MinionsAndMonsters.EnemyMinions.Where(
                     m => this.IsValidUnit(m)))
@@ -1508,11 +1508,7 @@ namespace TW.Common
 
                 if (combominion)
                 {
-                    mList = EloBuddy.SDK.EntityManager.MinionsAndMonsters.EnemyMinions
-                        .Where(m => m != null && this.InAutoAttackRange(m))
-                        .OrderByDescending(m => m.CharData.BaseSkinName.Contains("Siege"))
-                        .ThenBy(m => m.CharData.BaseSkinName.Contains("Super")).ThenBy(m => m.Health)
-                        .ThenByDescending(m => m.MaxHealth).ToList();
+                    mList = OrderEnemyMinions(mList);
                 }
 
                 if (_config.Item("attackSpecialMinions").GetValue<bool>() && prioritizeSpecialMinions)
@@ -1528,6 +1524,13 @@ namespace TW.Common
 
                 return finalMinionList.Where(m => !this.ignoreMinions.Any(b => b.Equals(m.CharData.BaseSkinName.ToLower())))
                     .ToList();
+            }
+
+            private static List<Obj_AI_Minion> OrderEnemyMinions(IEnumerable<Obj_AI_Minion> minions)
+            {
+                return minions?.OrderByDescending(minion => minion.CharData.BaseSkinName.Contains("Siege"))
+                    .ThenBy(minion => minion.CharData.BaseSkinName.Contains("Super")).ThenBy(minion => minion.Health)
+                    .ThenByDescending(minion => minion.MaxHealth).ToList();
             }
 
             private bool IsValidUnit(AttackableUnit unit, float range = 0f)
