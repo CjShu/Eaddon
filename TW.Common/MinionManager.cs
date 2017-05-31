@@ -225,32 +225,59 @@
             MinionTeam team = MinionTeam.Enemy,
             MinionOrderTypes order = MinionOrderTypes.Health)
         {
-            var result = (from minion in ObjectManager.Get<Obj_AI_Minion>()
-                          where minion.IsValidTarget(range, false, @from)
-                          let minionTeam = minion.Team
-                          where
-                              team == MinionTeam.Neutral && minionTeam == GameObjectTeam.Neutral
-                              || team == MinionTeam.Ally
-                              && minionTeam
-                              == (ObjectManager.Player.Team == GameObjectTeam.Chaos
-                                      ? GameObjectTeam.Chaos
-                                      : GameObjectTeam.Order)
-                              || team == MinionTeam.Enemy
-                              && minionTeam
-                              == (ObjectManager.Player.Team == GameObjectTeam.Chaos
-                                      ? GameObjectTeam.Order
-                                      : GameObjectTeam.Chaos)
-                              || team == MinionTeam.NotAlly && minionTeam != ObjectManager.Player.Team
-                              || team == MinionTeam.NotAllyForEnemy
-                              && (minionTeam == ObjectManager.Player.Team || minionTeam == GameObjectTeam.Neutral)
-                              || team == MinionTeam.All
-                          where
-                              minion.IsMelee() && type == MinionTypes.Melee
-                              || !minion.IsMelee() && type == MinionTypes.Ranged || type == MinionTypes.All
-                          where
-                              IsMinion(minion)
-                              || minionTeam == GameObjectTeam.Neutral && minion.MaxHealth > 5 && minion.IsHPBarRendered
-                          select minion).Cast<Obj_AI_Base>().ToList();
+            var result = ObjectManager.Get<Obj_AI_Base>().Where(x => x.IsMonster && x.Team == GameObjectTeam.Neutral && !x.IsMinion && !x.BaseSkinName.Contains("Plant")).Cast<Obj_AI_Base>().ToList();
+
+            if (team == MinionTeam.All)
+            {
+                var a = EloBuddy.SDK.EntityManager.MinionsAndMonsters.Minions.Cast<Obj_AI_Base>().ToList();
+                var b = ObjectManager.Get<Obj_AI_Base>().Where(x => x.IsMonster && x.Team == GameObjectTeam.Neutral && !x.IsMinion && !x.BaseSkinName.Contains("Plant")).Cast<Obj_AI_Base>().ToList();
+                result = a.Concat(b).ToList();
+            }
+
+            if (team == MinionTeam.Ally)
+            {
+                result = EloBuddy.SDK.EntityManager.MinionsAndMonsters.AlliedMinions.Cast<Obj_AI_Base>().ToList();
+            }
+
+            if (team == MinionTeam.Enemy)
+            {
+                result = EloBuddy.SDK.EntityManager.MinionsAndMonsters.EnemyMinions.Cast<Obj_AI_Base>().ToList();
+            }
+
+            if (team == MinionTeam.Neutral)
+            {
+                result = ObjectManager.Get<Obj_AI_Base>().Where(x => x.IsMonster && x.Team == GameObjectTeam.Neutral && !x.IsMinion && !x.BaseSkinName.Contains("Plant")).Cast<Obj_AI_Base>().ToList();
+            }
+
+            if (team == MinionTeam.NotAlly)
+            {
+                var a = EloBuddy.SDK.EntityManager.MinionsAndMonsters.EnemyMinions.Cast<Obj_AI_Base>().ToList();
+                var b = ObjectManager.Get<Obj_AI_Base>().Where(x => x.IsMonster && x.Team == GameObjectTeam.Neutral && !x.IsMinion && !x.BaseSkinName.Contains("Plant")).Cast<Obj_AI_Base>().ToList();
+                result = a.Concat(b).ToList();
+            }
+
+            if (team == MinionTeam.NotAllyForEnemy)
+            {
+                var a = EloBuddy.SDK.EntityManager.MinionsAndMonsters.AlliedMinions.Cast<Obj_AI_Base>().ToList();
+                var b = ObjectManager.Get<Obj_AI_Base>().Where(x => x.IsMonster && x.Team == GameObjectTeam.Neutral && !x.IsMinion && !x.BaseSkinName.Contains("Plant")).Cast<Obj_AI_Base>().ToList();
+                result = a.Concat(b).ToList();
+            }
+
+            switch (type)
+            {
+                case MinionTypes.All:
+                    result = result;
+                    break;
+                case MinionTypes.Melee:
+                    result = result.Where(x => x.IsMelee).ToList();
+                    break;
+                case MinionTypes.Ranged:
+                    result = result.Where(x => !x.IsMelee).ToList();
+                    break;
+                case MinionTypes.Wards:
+                    result = result.Where(x => x.Name.Contains("Ward") && x.IsHPBarRendered).ToList();
+                    break;
+            }
 
             switch (order)
             {
@@ -261,6 +288,8 @@
                     result = result.OrderByDescending(o => o.MaxHealth).ToList();
                     break;
             }
+
+            result = result.Where(x => x.IsValidTarget(range, false, @from)).ToList();
 
             return result;
         }

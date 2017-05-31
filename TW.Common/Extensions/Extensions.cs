@@ -150,12 +150,12 @@
             Vector3 from = default(Vector3))
         {
             if (unit == null || !unit.IsValid || !unit.IsVisible || unit.IsDead || !unit.IsTargetable
-                || unit.IsInvulnerable || unit.IsZombie)
+                || unit.IsInvulnerable)
             {
                 return false;
             }
 
-            if (checkTeam && HeroManager.Player.Team == unit.Team)
+            if (checkTeam && unit.Team == HeroManager.Player.Team)
             {
                 return false;
             }
@@ -166,11 +166,6 @@
             }
 
             var @base = unit as Obj_AI_Base;
-
-            if (@base != null && !@base.IsHPBarRendered)
-            {
-                return false;
-            }
 
             return !(range < float.MaxValue)
                    || !(Vector2.DistanceSquared(

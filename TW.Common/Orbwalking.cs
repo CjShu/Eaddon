@@ -81,6 +81,7 @@ namespace TW.Common
             Obj_AI_Base.OnSpellCast += OnSpellCast;
             EloBuddy.Player.OnIssueOrder += Player_OnIssueOrder;
             Obj_AI_Base.OnBasicAttack += OnBasicAttack;
+            GameObject.OnDelete += GameObject_OnDelete;
             if (_championName == "Rengar")
             {
                 Obj_AI_Base.OnPlayAnimation += delegate(Obj_AI_Base sender, GameObjectPlayAnimationEventArgs args)
@@ -106,6 +107,28 @@ namespace TW.Common
                     => x.IsAlly && x.Name == "AzirSoldier" && x.HasBuff("azirwspawnsound")).ToList();
                 GameObject.OnCreate += OnCreate;
                 GameObject.OnDelete += OnDelete;
+            }
+        }
+
+        private static void GameObject_OnDelete(GameObject sender, EventArgs args)
+        {
+            var missile = sender as MissileClient;
+            if (DelayOnFire != 0 && missile != null && Player.AttackDelay > 1 / 2f)
+            {
+                if (missile.SpellCaster.IsMe && missile.SData.IsAutoAttack() && DelayOnFireId == missile.Target.NetworkId)
+                {
+                    var x = Utils.TickCount - DelayOnFire;
+
+                    if (x < 90)
+                    {
+                        BrainFarmInt -= 2;
+                    }
+                    else if (x > 110)
+                    {
+                        BrainFarmInt += 2;
+                    }
+                    Console.WriteLine(BrainFarmInt + " ADJ " + x + " " + TimeAdjust);
+                }
             }
         }
 
@@ -556,6 +579,16 @@ namespace TW.Common
                         {
                             LastAttackCommandT = Utils.GameTimeTickCount;
                             _lastTarget = target;
+
+                            EloBuddy.SDK.Core.DelayAction(
+                                delegate
+                                    {
+                                        LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
+                                        _missileLaunched = false;
+                                        LastMoveCommandT = 0;
+                                        _autoattackCounter++;
+                                    }
+                                , ((int)Player.AttackDelay * 100) + Game.Ping);
                         }
 
                         return;
@@ -687,7 +720,7 @@ namespace TW.Common
             private OrbwalkingMode _mode = OrbwalkingMode.None;
             private Vector3 _orbwalkingPoint;
             private string CustomModeName;
-            private Obj_AI_Base laneClearMinion;
+            private Obj_AI_Minion laneClearMinion;
             private bool isFinishAttack;
             private int countAutoAttack;
             public AttackableUnit LastTarget { get; private set; }
@@ -1118,9 +1151,16 @@ namespace TW.Common
                     if (!_config.Item("AutoAdjustTime").GetValue<bool>())
                         BrainFarmInt = -TimeAdjust - 50;
 
-                    var LastHitList = minionsFiltered
-                        .Where(minion => minion.Team != GameObjectTeam.Neutral)
-                        .OrderByDescending(minion => minion.CharData.BaseSkinName.Contains("Super"))
+                    //var LastHitList = minionsFiltered
+                    //    .Where(minion => minion.Team != GameObjectTeam.Neutral)
+                    //    .OrderByDescending(minion => minion.CharData.BaseSkinName.Contains("Super"))
+                    //    .ThenByDescending(minion => minion.CharData.BaseSkinName.Contains("Siege"))
+                    //    .ThenBy(minion => HealthPrediction.GetHealthPrediction(minion, 1500))
+                    //    .ThenByDescending(minion => minion.MaxHealth);
+
+                    var LastHitList = EloBuddy.SDK.EntityManager.MinionsAndMonsters.EnemyMinions
+                        .Where(minion => minion.IsValidTarget() && this.InAutoAttackRange(minion))
+                        .OrderByDescending(mininon => mininon.CharData.BaseSkinName.Contains("Super"))
                         .ThenByDescending(minion => minion.CharData.BaseSkinName.Contains("Siege"))
                         .ThenBy(minion => HealthPrediction.GetHealthPrediction(minion, 1500))
                         .ThenByDescending(minion => minion.MaxHealth);
@@ -1139,33 +1179,36 @@ namespace TW.Common
 
                         var predHealth = HealthPrediction.GetHealthPrediction(minion, t, this.FarmDelay);
 
-                        var dmg = Player.GetAutoAttackDamage(minion, true)
-                                  + _config.Item("TimeAdjust").GetValue<Slider>().Value;
-
-                        var killable = predHealth <= dmg;
-
-                        if (mode == OrbwalkingMode.Freeze)
+                        if (minion.Team != GameObjectTeam.Neutral && this.ShouldAttackMinion(minion))
                         {
-                            if (minion.Health < 50 || predHealth <= 50)
-                            {
-                                return minion;
-                            }
-                        }
-                        else
-                        {
-                            if (CanAttack())
-                            {
-                                DelayOnFire = t + Utils.TickCount;
-                                DelayOnFireId = minion.NetworkId;
-                            }
+                            var dmg = Player.GetAutoAttackDamage(minion, true)
+                                      + _config.Item("TimeAdjust").GetValue<Slider>().Value;
+                            var killable = predHealth <= dmg;
 
-                            if (predHealth <= 0)
+                            if (mode == OrbwalkingMode.Freeze)
                             {
-                                FireOnNonKillableMinion(minion);
+                                if (minion.Health < 50 || predHealth <= 50)
+                                {
+                                    return minion;
+                                }
                             }
-                            else if (killable)
+                            else
                             {
-                                return minion;
+                                if (CanAttack())
+                                {
+                                    DelayOnFire = t + Utils.TickCount;
+                                    DelayOnFireId = minion.NetworkId;
+                                }
+
+                                if (predHealth <= 0)
+                                {
+                                    FireOnNonKillableMinion(minion);
+                                }
+
+                                if (killable)
+                                {
+                                    return minion;
+                                }
                             }
                         }
                     }
@@ -1210,7 +1253,7 @@ namespace TW.Common
                                  ? jminions.MinOrDefault(mob => mob.MaxHealth)
                                  : jminions.MaxOrDefault(mob => mob.MaxHealth);
 
-                    if (result != null && !result.IsDead)
+                    if (result != null)
                     {
                         return result;
                     }
@@ -1414,13 +1457,16 @@ namespace TW.Common
                     }
                 }
 
-                var Minions = new List<Obj_AI_Minion>();
-
                 // Special Minions if no enemy is near
-                if (mode == OrbwalkingMode.Combo && Minions.Any() && !HeroManager.Enemies.Any(
+                if (mode == OrbwalkingMode.Combo && !HeroManager.Enemies.Any(
                         e => e.IsValidTarget() && e.DistanceToPlayer() <= GetRealAutoAttackRange(e) * 2f))
                 {
-                    return Minions.FirstOrDefault();
+                    var Minions = new List<Obj_AI_Minion>();
+
+                    if (Minions.Any())
+                    {
+                        return Minions.FirstOrDefault();
+                    }
                 }
 
                 /*Lane Clear minions*/
@@ -1430,11 +1476,6 @@ namespace TW.Common
                     {
                         if (this.InAutoAttackRange(this.laneClearMinion) && this.laneClearMinion.IsValidTarget())
                         {
-                            if (this.laneClearMinion.MaxHealth <= 10)
-                            {
-                                return this.laneClearMinion;
-                            }
-
                             var predHealth = HealthPrediction.LaneClearHealthPrediction(
                                 this.laneClearMinion,
                                 (int)(this.Player.AttackDelay * 1000 * LaneClearWaitTimeMod),
@@ -1450,7 +1491,7 @@ namespace TW.Common
                         result =
                             (from minions in ObjectManager.Get<Obj_AI_Minion>()
                                  .Where(
-                                     m => m != null && this.InAutoAttackRange(m) && this.ShouldAttackMinion(m)
+                                     m => m.IsValidTarget() && this.InAutoAttackRange(m) && this.ShouldAttackMinion(m)
                                           && !m.BaseSkinName.Contains("Plant"))
                              let predHealth =
                              HealthPrediction.LaneClearHealthPrediction(
@@ -1705,7 +1746,7 @@ namespace TW.Common
                     return false;
                 }
 
-                return minion.CharData.BaseSkinName != "gangplankbarrel";
+                return MinionManager.IsMinion(minion) && minion.CharData.BaseSkinName != "gangplankbarrel";
             }
 
             private bool ShouldWaitUnderTurret(Obj_AI_Minion noneKillableMinion = null)
