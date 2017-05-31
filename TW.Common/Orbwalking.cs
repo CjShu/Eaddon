@@ -192,7 +192,7 @@ namespace TW.Common
     
         private static void OnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.IsValid && EloBuddy.SDK.Orbwalker.IsRanged && !EloBuddy.SDK.Orbwalker.CanBeAborted && spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
+            if (spellbook.IsValid /*&& EloBuddy.SDK.Orbwalker.IsRanged && */ && !EloBuddy.SDK.Orbwalker.CanBeAborted && spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
             {
                 Console.WriteLine("AA Cancel" + Game.Time);
 
@@ -1116,7 +1116,7 @@ namespace TW.Common
                 if (mode == OrbwalkingMode.LaneClear || mode == OrbwalkingMode.Mixed || mode == OrbwalkingMode.LastHit || mode == OrbwalkingMode.Freeze)
                 {
                     if (!_config.Item("AutoAdjustTime").GetValue<bool>())
-                        BrainFarmInt = -TimeAdjust - 70;
+                        BrainFarmInt = -TimeAdjust - 50;
 
                     var LastHitList = minionsFiltered
                         .Where(minion => minion.Team != GameObjectTeam.Neutral)
@@ -1409,7 +1409,7 @@ namespace TW.Common
 
                 // Special Minions if no enemy is near
                 if (mode == OrbwalkingMode.Combo && Minions.Any() && !HeroManager.Enemies.Any(
-                        e => e.IsValidTarget() && e.DistanceToPlayer() <= GetRealAutoAttackRange(e) * 2f))
+                        e => e != null && e.DistanceToPlayer() <= GetRealAutoAttackRange(e) * 2f))
                 {
                     Minions.FirstOrDefault();
                 }
@@ -1453,7 +1453,7 @@ namespace TW.Common
                              select minions).MaxOrDefault(
                                 m => !MinionManager.IsMinion(m, true) ? float.MaxValue : m.Health);
 
-                        if (result != null && !result.IsDead)
+                        if (result != null)
                         {
                             this.laneClearMinion = (Obj_AI_Minion)result;
                         }

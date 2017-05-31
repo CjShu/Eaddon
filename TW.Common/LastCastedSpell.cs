@@ -114,8 +114,24 @@
         /// </summary>
         static LastCastedSpell()
         {
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
+            Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnSpellCast;
             Spellbook.OnCastSpell += SpellbookOnCastSpell;
+        }
+
+        private static void Obj_AI_Base_OnSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender is AIHeroClient)
+            {
+                var entry = new LastCastedSpellEntry(args.SData.Name, Utils.TickCount, ObjectManager.Player);
+                if (CastedSpells.ContainsKey(sender.NetworkId))
+                {
+                    CastedSpells[sender.NetworkId] = entry;
+                }
+                else
+                {
+                    CastedSpells.Add(sender.NetworkId, entry);
+                }
+            }
         }
 
         #endregion
@@ -167,27 +183,6 @@
         #endregion
 
         #region Methods
-
-        /// <summary>
-        ///     Fired when the game processes the spell cast.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
-        private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (sender is AIHeroClient)
-            {
-                var entry = new LastCastedSpellEntry(args.SData.Name, Utils.TickCount, ObjectManager.Player);
-                if (CastedSpells.ContainsKey(sender.NetworkId))
-                {
-                    CastedSpells[sender.NetworkId] = entry;
-                }
-                else
-                {
-                    CastedSpells.Add(sender.NetworkId, entry);
-                }
-            }
-        }
 
         /// <summary>
         ///     Fired then a spell is casted.
