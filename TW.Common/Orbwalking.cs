@@ -1179,7 +1179,7 @@ namespace TW.Common
 
                         var predHealth = HealthPrediction.GetHealthPrediction(minion, t, this.FarmDelay);
 
-                        if (minion.Team != GameObjectTeam.Neutral && this.ShouldAttackMinion(minion))
+                        if (minion.Team != GameObjectTeam.Neutral)
                         {
                             var dmg = Player.GetAutoAttackDamage(minion, true)
                                       + _config.Item("TimeAdjust").GetValue<Slider>().Value;
@@ -1459,7 +1459,7 @@ namespace TW.Common
 
                 // Special Minions if no enemy is near
                 if (mode == OrbwalkingMode.Combo && !HeroManager.Enemies.Any(
-                        e => e.IsValidTarget() && e.DistanceToPlayer() <= GetRealAutoAttackRange(e) * 2f))
+                        e => e.IsValidTargetSDK() && e.DistanceToPlayer() <= GetRealAutoAttackRange(e) * 2f))
                 {
                     var Minions = new List<Obj_AI_Minion>();
 
@@ -1491,7 +1491,7 @@ namespace TW.Common
                         result =
                             (from minions in ObjectManager.Get<Obj_AI_Minion>()
                                  .Where(
-                                     m => m.IsValidTarget() && this.InAutoAttackRange(m) && this.ShouldAttackMinion(m)
+                                     m => m.IsValidTarget() && this.InAutoAttackRange(m)
                                           && !m.BaseSkinName.Contains("Plant"))
                              let predHealth =
                              HealthPrediction.LaneClearHealthPrediction(
@@ -1576,7 +1576,7 @@ namespace TW.Common
 
             private bool IsValidUnit(AttackableUnit unit, float range = 0f)
             {
-                return unit.IsValidTarget() && this.Player.Distance(unit)
+                return unit.IsValidTargetSDK() && this.Player.Distance(unit)
                        < (range > 0 ? range : GetRealAutoAttackRange(unit));
             }
 
@@ -1755,7 +1755,7 @@ namespace TW.Common
                     ObjectManager.Get<Obj_AI_Minion>()
                         .Any(
                             minion =>
-                            (noneKillableMinion == null || noneKillableMinion.NetworkId != minion.NetworkId)
+                            (noneKillableMinion != null ? noneKillableMinion.NetworkId != minion.NetworkId : true)
                             && minion.IsValidTarget() && minion.Team != GameObjectTeam.Neutral
                             && this.InAutoAttackRange(minion) && MinionManager.IsMinion(minion, false)
                             && HealthPrediction.LaneClearHealthPrediction(

@@ -173,6 +173,49 @@
                             (@base != null ? @base.ServerPosition : unit.Position).To2D()) > range * range);
         }
 
+        /// <summary>
+        ///     Checks if the Unit is valid. SDK
+        /// </summary>
+        /// <param name="unit">
+        ///     Unit from <c>Obj_AI_Base</c> type
+        /// </param>
+        /// <returns>
+        ///     The <see cref="bool" />.
+        /// </returns>
+        public static bool IsValidSDK(this Obj_AI_Base unit)
+        {
+            return unit != null && unit.IsValid;
+        }
+
+        public static bool IsValidTargetSDK(
+            this AttackableUnit unit,
+            float range = float.MaxValue,
+            bool checkTeam = true,
+            Vector3 from = default(Vector3))
+        {
+            if (unit == null || !unit.IsValid || !unit.IsVisible || unit.IsDead || !unit.IsTargetable
+                || unit.IsInvulnerable || unit.IsZombie)
+            {
+                return false;
+            }
+
+            if (checkTeam && ObjectManager.Player.Team == unit.Team)
+            {
+                return false;
+            }
+
+            var @base = unit as Obj_AI_Base;
+
+            if (@base != null && !@base.IsHPBarRendered)
+            {
+                return false;
+            }
+
+            return
+                (from.IsValid() ? from : ObjectManager.Player.ServerPosition).DistanceSquared(
+                    @base?.ServerPosition ?? unit.Position) < range * range;
+        }
+
         public static List<Vector2> CutPath(this List<Vector2> path, float distance)
         {
             var result = new List<Vector2>();
