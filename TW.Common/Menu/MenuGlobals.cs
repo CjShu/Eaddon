@@ -24,6 +24,11 @@
 
         #region Public Methods and Operators
 
+        public static string Function0012(string arg0)
+        {
+            return Regex.Replace(arg0, "packets?", "MOAR DMG", RegexOptions.IgnoreCase);
+        }
+
         public static string Function001(string arg0)
         {
             const string Var0 = "\x70\x61\x63\x6b\x65\x74\x73?";

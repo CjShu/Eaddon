@@ -23,7 +23,7 @@
         ///     The enable quick edit mode value.
         /// </summary>
         private const int ENABLE_QUICK_EDIT_MODE = 0x40 | 0x80;
-
+        private const int ENABLE_QUICK_EDIT_MODE2 = 0x00C0;
         /// <summary>
         ///     The std input handle.
         /// </summary>
@@ -84,6 +84,7 @@
             var handle = NativeMethods.GetStdHandle(STD_INPUT_HANDLE);
             NativeMethods.GetConsoleMode(handle, out mode);
             mode |= ENABLE_QUICK_EDIT_MODE;
+            //mode |= ENABLE_QUICK_EDIT_MODE2;
             NativeMethods.SetConsoleMode(handle, mode);
         }
 
@@ -298,6 +299,21 @@
                 sb.Append(b.ToString("x2"));
             }
 
+            return sb.ToString();
+        }
+
+        public static string Md5Hash1(string s)
+        {
+            var sb = new StringBuilder();
+            HashAlgorithm algorithm = MD5.Create();
+            var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(s));
+            byte[] array = algorithm.ComputeHash(Encoding.UTF8.GetBytes(s));
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                byte b = array[i];
+                sb.Append(b.ToString("x2"));
+            }
             return sb.ToString();
         }
 

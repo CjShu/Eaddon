@@ -36,8 +36,8 @@
         static MenuSettings()
         {
             drawMenu = MenuGlobals.DrawMenu;
-            Game.OnWndProc += args => OnWndProc(new WndEventComposition(args));
-            //Messages.OnMessage += OnWndMessage;
+            //Game.OnWndProc += args => OnWndProc(new WndEventComposition(args));
+            Messages.OnMessage += OnWndMessage;
         }
 
         #endregion

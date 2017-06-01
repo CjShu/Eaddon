@@ -493,9 +493,9 @@
             this.InitMenuState(Assembly.GetCallingAssembly().GetName().Name);
 
             AppDomain.CurrentDomain.DomainUnload += (sender, args) => this.UnloadMenuState();
-            //AppDomain.CurrentDomain.ProcessExit += (sender, args) => this.UnloadMenuState();
+            AppDomain.CurrentDomain.ProcessExit += (sender, args) => this.UnloadMenuState();
             Drawing.OnEndScene += this.OnDraw;
-            Game.OnWndProc += args => this.OnWndProc(new WndEventComposition(args));            
+            Game.OnWndProc += args => this.OnWndProc(new WndEventComposition(args));
         }
 
 
