@@ -137,8 +137,6 @@
                 new MenuItem("FontInfo", "\u9700\u8981\u6309\u4e0bF5 \u9032\u884c\u4fee\u6539").SetFontStyle(FontStyle.Bold, Color.Yellow));
 
             Root.AddItem(new MenuItem("by", "\u7ffb\u8b6f\u4f5c\u8005 By: CjShu"));
-
-            //tabmenuMain = new Sprite(() => TabTexture);
            
             CommonMenu.Instance.AddSubMenu(Root); 
         }
@@ -493,7 +491,7 @@
             this.InitMenuState(Assembly.GetCallingAssembly().GetName().Name);
 
             AppDomain.CurrentDomain.DomainUnload += (sender, args) => this.UnloadMenuState();
-            AppDomain.CurrentDomain.ProcessExit += (sender, args) => this.UnloadMenuState();
+            //AppDomain.CurrentDomain.ProcessExit += (sender, args) => this.UnloadMenuState();
             Drawing.OnEndScene += this.OnDraw;
             Game.OnWndProc += args => this.OnWndProc(new WndEventComposition(args));
         }

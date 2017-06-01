@@ -1,0 +1,11 @@
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\bin\Release\LeagueSharp.Data.dll.config
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\bin\Release\LeagueSharp.Data.dll
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\bin\Release\LeagueSharp.Data.pdb
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\bin\Release\EloBuddy.dll
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\bin\Release\Newtonsoft.Json.dll
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\bin\Release\SharpDX.dll
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.Properties.Resources.resources
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.csproj.GenerateResource.Cache
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.dll
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.pdb

@@ -216,7 +216,7 @@
         private static void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (!sender.IsValidTarget(3000, false) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient ||
-                !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
+                !(args.Target is Obj_AI_Base))
             {
                 return;
             }
@@ -248,21 +248,6 @@
                 {
                     ActiveAttacks.Remove(spellbook.NetworkId);
                 }
-            }
-        }
-
-        private static void SpellbookOnStopCast1(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
-        {
-            if (/*spellbook.IsValid && */args.StopAnimation && args.DestroyMissile)
-            {
-                if (spellbook.IsMelee)
-                {
-                    if (ActiveAttacks.ContainsKey(spellbook.NetworkId))
-                    {
-                        ActiveAttacks.Remove(spellbook.NetworkId);
-                    }
-                }
-
             }
         }
 
