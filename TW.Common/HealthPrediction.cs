@@ -28,12 +28,12 @@
         /// </summary>
         static HealthPrediction()
         {
-            Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
+            //Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
             Game.OnUpdate += Game_OnGameUpdate;
             Spellbook.OnStopCast += SpellbookOnStopCast;
             GameObject.OnDelete += MissileClient_OnDelete;
             Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
-            //Obj_AI_Base.OnBasicAttack += ObjAiBaseOnOnProcessSpellCast;
+            Obj_AI_Base.OnBasicAttack += ObjAiBaseOnOnProcessSpellCast;
         }
 
         #endregion
