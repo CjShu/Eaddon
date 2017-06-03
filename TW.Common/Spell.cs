@@ -893,16 +893,48 @@
             float overrideRange = -1,
             CollisionableObjects[] collisionable = null)
         {
-            return
-                Prediction.GetPrediction(
-                    new PredictionInput
-                        {
-                            Unit = unit, Delay = this.Delay, Radius = this.Width, Speed = this.Speed, From = this.From,
-                            Range = (overrideRange > 0) ? overrideRange : this.Range, Collision = this.Collision,
-                            Type = this.Type, RangeCheckFrom = this.RangeCheckFrom, Aoe = aoe,
-                            CollisionObjects =
-                                collisionable ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
-                        });
+            return Prediction.GetPrediction(
+                new PredictionInput
+                    {
+                        Unit = unit,
+                        Delay = this.Delay,
+                        Radius = this.Width,
+                        Speed = this.Speed,
+                        From = this.From,
+                        Range = (overrideRange > 0) ? overrideRange : this.Range,
+                        Collision = this.Collision,
+                        Type = this.Type,
+                        RangeCheckFrom = this.RangeCheckFrom,
+                        Aoe = aoe,
+                        CollisionObjects =
+                            collisionable
+                            ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
+                    });
+        }
+
+        public PredictionOutput GetPredictionSDK(
+            Obj_AI_Base unit,
+            bool aoe = false,
+            float overrideRange = -1,
+            CollisionableObjects[] collisionable = null)
+        {
+            return Prediction.GetPrediction(
+                new PredictionInput
+                    {
+                        Unit = unit,
+                        Delay = this.Delay,
+                        Radius = this.Width,
+                        Speed = this.Speed,
+                        From = this.From,
+                        Range = (overrideRange > 0) ? overrideRange : this.Range,
+                        Collision = this.Collision,
+                        Type = this.Type,
+                        RangeCheckFrom = this.RangeCheckFrom,
+                        Aoe = aoe,
+                        CollisionObjects =
+                            collisionable
+                            ?? new[] { CollisionableObjects.Minions, CollisionableObjects.YasuoWall }
+                    });
         }
 
         /// <summary>
