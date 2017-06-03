@@ -8042,21 +8042,8 @@ namespace TW.Common
                     target,
                     Math.Max(0, Math.Min(source.Spellbook.GetSpell(slot).Level - 1, 5)));
 
-                //spell.CalculatedDamage = CalcDamage(source, target, spell.DamageType, rawDamage);
-                EloBuddy.DamageType ty = EloBuddy.DamageType.Physical;
-                if (spell.DamageType == DamageType.Magical)
-                {
-                    ty = EloBuddy.DamageType.Magical;
-                }
-                if (spell.DamageType == DamageType.Physical)
-                {
-                    ty = EloBuddy.DamageType.Physical;
-                }
-                if (spell.DamageType == DamageType.True)
-                {
-                    ty = EloBuddy.DamageType.True;
-                }
-                spell.CalculatedDamage = EloBuddy.SDK.Damage.CalculateDamageOnUnit(source, target, ty, (float)rawDamage);
+                spell.CalculatedDamage = CalcDamage(source, target, spell.DamageType, rawDamage);
+
                 return spell;
             }
 
@@ -8628,7 +8615,6 @@ namespace TW.Common
             var targetHero = target as AIHeroClient;
             if (hero != null)
             {
-
                 var Opressor = hero.GetMastery(MasteryData.Ferocity.DoubleEdgedSword);
                 if (targetHero != null && Opressor != null && Opressor.IsActive() && targetHero.IsMovementImpaired())
                 {
@@ -8643,30 +8629,35 @@ namespace TW.Common
                     {
                         amount *= 1 + Merciless.Points/100f;
                     }
-                    //Thunderlord's Decree: Your 3rd ability or basic attack on an enemy champion shocks them, dealing 10 - 180(+0.3 bonus attack damage)(+0.1 ability power) magic damage in an area around them
+                }
 
-                    /*
+                //Thunderlord's Decree: RIDE THE LIGHTNING Your 3rd ability or basic attack on an enemy champion shocks them, dealing 10 - 180(+0.2 bonus attack damage)(+0.1 ability power) magic damage in an area around them
+                if (false)
+                    // Need a good way to check if it is 3rd attack (Use OnProcessSpell/SpellBook.OnCast if have to)
+                {
                     var Thunder = hero.GetMastery(MasteryData.Cunning.ThunderlordsDecree);
                     if (Thunder != null && Thunder.IsActive())
                     {
-                        if (Orbwalking.LastTargets != null && Orbwalking.LastTargets[0] == targetHero.NetworkId &&
-                            Orbwalking.LastTargets[1] == targetHero.NetworkId)
-                            amount += 10*hero.Level + (0.3*hero.TotalAttackDamage) + (0.1*hero.TotalMagicalDamage);
-                    }*/
-                }
-
-                // Double edge sword:
-                // Deal an additional 5 % damage, but receive an additional 2.5 % damage
-                var des = hero.GetMastery(MasteryData.Ferocity.DoubleEdgedSword);
-                if (des != null && des.IsActive())
-                {
-                    amount *= 1.05d;
+                        // amount += 10 * hero.Level + (0.2 * hero.FlatPhysicalDamageMod) + (0.1 * hero.TotalMagicalDamage);
+                    }
                 }
             }
 
-            return
+            if (targetHero != null)
+            {
+                // Defensive masteries:
 
-                amount;
+                // Double edge sword:
+                //MELEE Deal an additional 3 % damage, but receive an additional 1.5 % damage
+                //RANGED Deal an additional 2 % damage, but receive an additional 2 % damage
+                var des = targetHero.GetMastery(MasteryData.Ferocity.DoubleEdgedSword);
+                if (des != null && des.IsActive())
+                {
+                    amount *= targetHero.IsMelee() ? 1.015d : 1.02d;
+                }
+            }
+
+            return amount;
         }
 
         #endregion

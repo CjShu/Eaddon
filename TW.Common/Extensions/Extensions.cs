@@ -368,10 +368,12 @@
         /// <summary>
         ///     Returns the recall duration
         /// </summary>
+        /*
         public static int GetRecallTime(AIHeroClient obj)
         {
             return GetRecallTime(obj.Spellbook.GetSpell(SpellSlot.Recall).Name);
         }
+        //*/
 
         public static int GetRecallTime(string recallName)
         {
@@ -399,6 +401,27 @@
                     break;
             }
             return duration;
+        }
+
+        public static int GetRecallDuration(GameObjectTeleportEventArgs args)
+        {
+            string key;
+            switch (key = args.RecallType.ToLower())
+            {
+                case "recall":
+                    return 8000;
+                case "recallimproved":
+                    return 7000;
+                case "odinrecall":
+                    return 4500;
+                case "odinrecallimproved":
+                    return 4000;
+                case "superrecall":
+                    return 4000;
+                case "superrecallimproved":
+                    return 4000;
+            }
+            return 8000;
         }
 
         public static SpellDataInst GetSpell(this AIHeroClient hero, SpellSlot slot)
@@ -609,6 +632,15 @@
             }
 
             return unit.IsVisible && unit.Distance(fpos, true) <= fountainRange;
+        }
+
+        public static bool IsInFountainRange(this Obj_AI_Base hero, bool enemyFountain = false)
+        {
+            if (!hero.IsHPBarRendered || !enemyFountain)
+            {
+                return ObjectManager.Get<Obj_SpawnPoint>().Any((Obj_SpawnPoint s) => s.Team == hero.Team && hero.Distance(s.Position, true) < 1562500f);
+            }
+            return ObjectManager.Get<Obj_SpawnPoint>().Any((Obj_SpawnPoint s) => s.Team != hero.Team && hero.Distance(s.Position, true) < 1562500f);
         }
 
         /// <summary>

@@ -408,7 +408,6 @@
                 {
                     return baseRange;
                 }
-
                 
                 if (this.IsCharging)
                 {
@@ -1365,7 +1364,7 @@
         {
             if (sender.IsMe && args.SData.Name == this.ChargedSpellName)
             {
-                this._chargedCastedT = Utils.TickCount;
+                this._chargedCastedT = Utils.TickCount - Game.Ping;
             }
         }
 

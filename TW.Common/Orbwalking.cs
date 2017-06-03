@@ -13,6 +13,7 @@
     {
         #region Static Fields
 
+        public static AIHeroClient ForcedTarget = null;
         public static bool Attack = true;
         public static bool DisableNextAttack;
         public static int LastAATick;
@@ -116,10 +117,12 @@
                         }
                     }
 
+                    /*
                     if (sender is Obj_AI_Turret && args.Target is Obj_AI_Base)
                     {
                         LastTargetTurrets[sender.NetworkId] = (Obj_AI_Base)args.Target;
-                    }
+                    }//*/
+                    
                 }
             }
             FireOnAttack(sender, _lastTarget);
@@ -144,7 +147,7 @@
 
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.IsValid /*&& EloBuddy.SDK.Orbwalker.IsRanged &&  && !EloBuddy.SDK.Orbwalker.CanBeAborted*/ && spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
+            if (spellbook.IsValid && EloBuddy.SDK.Orbwalker.IsRanged &&  !EloBuddy.SDK.Orbwalker.CanBeAborted && spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
             {
                 Console.WriteLine("AA Cancel" + Game.Time);
 
@@ -160,6 +163,11 @@
                 {
                     ResetAutoAttackTimer();
                 }
+            }
+
+            if (!IsAutoAttack(Spell.SData.Name))
+            {
+                return;
             }
         }
 
@@ -202,6 +210,26 @@
         #endregion
 
         #region Public Methods and Operators
+
+        public static AIHeroClient GetBestHeroTarget
+        {
+            get
+            {
+                AIHeroClient killableObj = null;
+                var hitsToKill = double.MaxValue;
+                foreach (var obj in HeroManager.Enemies.Where(i => InAutoAttackRange(i)))
+                {
+                    var killHits = obj.Health / Player.GetAutoAttackDamage(obj, true);
+                    if (killableObj != null && (killHits >= hitsToKill || obj.HasBuffOfType(BuffType.Invulnerability)))
+                    {
+                        continue;
+                    }
+                    killableObj = obj;
+                    hitsToKill = killHits;
+                }
+                return hitsToKill < 4 ? killableObj : TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
+            }
+        }
 
         public static bool CanAttack()
         {
@@ -335,6 +363,21 @@
                     Player.ServerPosition.To2D()) <= myRange * myRange;
         }
 
+        public static float GetAutoAttackRange(AttackableUnit target = null)
+        {
+            return GetAutoAttackRange(Player, target);
+        }
+
+        public static bool InAutoAttackRange(AttackableUnit target, float extraRange = 0, Vector3 from = new Vector3())
+        {
+            return target.IsValidTarget(GetAutoAttackRange(target) + extraRange, true, from);
+        }
+
+        private static float GetAutoAttackRange(Obj_AI_Base source, AttackableUnit target)
+        {
+            return source.AttackRange + source.BoundingRadius + (target.IsValidTarget() ? target.BoundingRadius : 0);
+        }
+
         public static bool IsAutoAttack(string name)
         {
             return (name.ToLower().Contains("attack") && !NoAttacks.Contains(name.ToLower()))
@@ -399,7 +442,7 @@
                 }
             }
 
-            if (Utils.GameTimeTickCount - LastMoveCommandT < 70 + Math.Min(60, Game.Ping) && !overrideTimer
+            if (Utils.GameTimeTickCount - LastMoveCommandT < 70 + Math.Min(60, Game.Ping) /* && !overrideTimer*/
                 && angle < 60)
             {
                 return;
@@ -447,7 +490,7 @@
                         {
                             LastAttackCommandT = Utils.GameTimeTickCount;
                             _lastTarget = target;
-
+                           /*                             
                             EloBuddy.SDK.Core.DelayAction(
                                 delegate
                                     {
@@ -457,6 +500,8 @@
                                         _autoattackCounter++;
                                     }
                                 , ((int)Player.AttackDelay * 100) + Game.Ping);
+                                
+                                */
                         }
 
                         return;
@@ -561,7 +606,8 @@
         public class BeforeAttackEventArgs : EventArgs
         {
             public AttackableUnit Target;
-            public Obj_AI_Base Unit = ObjectManager.Player;
+
+            public Obj_AI_Base Unit = EloBuddy.Player.Instance;
             private bool _process = true;
 
             public bool Process
@@ -667,7 +713,7 @@
                 _config.Item("StillCombo").ValueChanged +=
                     (sender, args) => { Move = !args.GetNewValue<KeyBind>().Active; };
 
-                this.Player = ObjectManager.Player;
+                this.Player = EloBuddy.Player.Instance;
                 Game.OnUpdate += new GameUpdate(this.GameOnOnGameUpdate);
                 Drawing.OnDraw += new DrawingDraw(this.DrawingOnOnDraw);
                 Instances.Add(this);
@@ -682,6 +728,14 @@
                 get
                 {
                     return _config.Item("MissileCheck").GetValue<bool>();
+                }
+            }
+
+            public static bool LimitAttackSpeed
+            {
+                get
+                {
+                    return _config.Item("LimitAttackSpeed").GetValue<bool>();
                 }
             }
 
@@ -906,9 +960,9 @@
                 /* turrets / inhibitors / nexus */
                 if (mode == OrbwalkingMode.LaneClear
                     && (!_config.Item("FocusMinionsOverTurrets").GetValue<KeyBind>().Active
-                        || !MinionManager.GetMinions(
-                            ObjectManager.Player.Position,
-                            GetRealAutoAttackRange(ObjectManager.Player)).Any()))
+                        || !EloBuddy.SDK.EntityManager.MinionsAndMonsters.GetLaneMinions(EloBuddy.SDK.EntityManager.UnitTeam.Enemy,
+                            EloBuddy.Player.Instance.Position,
+                            GetRealAutoAttackRange(EloBuddy.Player.Instance)).Any()))
                 {
                     /* turrets */
                     foreach (var turret in
@@ -951,10 +1005,6 @@
                 /*Jungle minions*/
                 if (mode == OrbwalkingMode.LaneClear || mode == OrbwalkingMode.Mixed)
                 {
-                    //var jminions = ObjectManager.Get<Obj_AI_Minion>().Where(
-                    //    mob => mob.IsValidTarget() && mob.Team == GameObjectTeam.Neutral && this.InAutoAttackRange(mob)
-                    //           && mob.CharData.BaseSkinName != "gangplankbarrel" && mob.Name != "WardCorpse"
-                    //           && !mob.CharData.BaseSkinName.Contains("Plant"));
                     var jminions =
                         EloBuddy.SDK.EntityManager.MinionsAndMonsters.Monsters
                             .Where(
@@ -988,7 +1038,7 @@
                         Obj_AI_Minion noneKillableMinion = null;
                         // return all the minions underturret in auto attack range
                         var minions =
-                            MinionManager.GetMinions(this.Player.Position, this.Player.AttackRange + 200)
+                            EloBuddy.SDK.EntityManager.MinionsAndMonsters.GetLaneMinions(EloBuddy.SDK.EntityManager.UnitTeam.Enemy, this.Player.Position, this.Player.AttackRange + 200)
                                 .Where(
                                     minion =>
                                         this.InAutoAttackRange(minion) && closestTower.Distance(minion, true) < 900 * 900)

@@ -29,7 +29,7 @@
         static HealthPrediction()
         {
             //Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
-            Game.OnUpdate += Game_OnGameUpdate;
+            Game.OnTick += Game_OnGameUpdate;
             Spellbook.OnStopCast += SpellbookOnStopCast;
             GameObject.OnDelete += MissileClient_OnDelete;
             Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
@@ -215,8 +215,8 @@
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!sender.IsValidTarget(3000, false) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient ||
-                !(args.Target is Obj_AI_Base))
+            if (!sender.IsValidTarget(3000, false) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient
+                || !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
             {
                 return;
             }
@@ -242,12 +242,16 @@
         /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.IsValid && args.StopAnimation)
+            if (spellbook.IsValid && args.StopAnimation && args.DestroyMissile)
             {
-                if (ActiveAttacks.ContainsKey(spellbook.NetworkId))
+                if (spellbook.IsMelee)
                 {
-                    ActiveAttacks.Remove(spellbook.NetworkId);
+                    if (ActiveAttacks.ContainsKey(spellbook.NetworkId))
+                    {
+                        ActiveAttacks.Remove(spellbook.NetworkId);
+                    }
                 }
+
             }
         }
 
