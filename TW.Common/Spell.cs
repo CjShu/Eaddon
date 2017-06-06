@@ -271,7 +271,7 @@
         {
             get
             {
-                var coolDown = ObjectManager.Player.Spellbook.GetSpell(this.Slot).CooldownExpires;
+                var coolDown = ObjectManager.Player.GetSpell(this.Slot).CooldownExpires;
                 return Game.Time < coolDown ? coolDown - Game.Time : 0;
             }
         }
@@ -537,7 +537,7 @@
         /// <returns><c>true</c> if the spell was casted sucessfully, <c>false</c> otherwise.</returns>
         public bool Cast(bool packetCast = false)
         {
-            return this.CastOnUnit(ObjectManager.Player, packetCast);
+            return this.CastOnUnit(Player.Instance, packetCast);
         }
 
         /// <summary>
@@ -559,11 +559,11 @@
         /// <returns><c>true</c> if the spell was sucessfully casted, <c>false</c> otherwise.</returns>
         public bool Cast(Vector3 fromPosition, Vector3 toPosition)
         {
-            if (Shop.IsOpen || MenuGUI.IsChatOpen)
+            if (MenuGUI.IsChatOpen)
             {
                 return false;
             }
-            return this.Slot.IsReady() && ObjectManager.Player.Spellbook.CastSpell(this.Slot, fromPosition, toPosition);
+            return this.Slot.IsReady() && Player.CastSpell(this.Slot, fromPosition, toPosition);
         }
 
         /// <summary>
@@ -574,7 +574,7 @@
         /// <returns><c>true</c> if the spell was casted successfully, <c>false</c> otherwise.</returns>
         public bool Cast(Vector2 position, bool packetCast = false)
         {
-            if (Shop.IsOpen || MenuGUI.IsChatOpen)
+            if (MenuGUI.IsChatOpen)
             {
                 return false;
             }
@@ -635,7 +635,7 @@
         {
             if (!this.IsChanneling && Utils.TickCount - this._cancelSpellIssue > 400 + Game.Ping)
             {
-                ObjectManager.Player.Spellbook.CastSpell(this.Slot);
+                Player.CastSpell(this.Slot);
                 this._cancelSpellIssue = Utils.TickCount;
             }
         }
@@ -644,7 +644,7 @@
         {
             if (!this.IsChanneling && Utils.TickCount - this._cancelSpellIssue > 400 + Game.Ping)
             {
-                ObjectManager.Player.Spellbook.CastSpell(this.Slot, position);
+                Player.CastSpell(this.Slot, position);
                 this._cancelSpellIssue = Utils.TickCount;
             }
         }
@@ -687,13 +687,19 @@
         /// <returns>CastStates.</returns>
         public CastStates CastOnBestTarget(float extraRange = 0, bool packetCast = false, bool aoe = false)
         {
-            if (Shop.IsOpen || MenuGUI.IsChatOpen)
+            if (MenuGUI.IsChatOpen)
             {
                 return CastStates.NotCasted;
             }
 
             var target = this.GetTarget(extraRange);
-            return target != null ? this.Cast(target, packetCast, aoe) : CastStates.NotCasted;
+
+            if (target == null)
+            {
+                return CastStates.NotCasted;
+            }
+
+            return this.Cast(target, packetCast, aoe);
         }
 
         /// <summary>
@@ -709,7 +715,7 @@
                 return false;
             }
 
-            if (Shop.IsOpen || MenuGUI.IsChatOpen)
+            if (MenuGUI.IsChatOpen)
             {
                 return false;
             }
@@ -718,11 +724,11 @@
 
             if (packetCast)
             {
-                return ObjectManager.Player.Spellbook.CastSpell(this.Slot, unit, false);
+                return Player.CastSpell(this.Slot, unit, false);
             }
             else
             {
-                return ObjectManager.Player.Spellbook.CastSpell(this.Slot, unit);
+                return Player.CastSpell(this.Slot, unit);
             }
         }
 
@@ -1131,8 +1137,9 @@
         {
             if (!this.IsCharging && Utils.TickCount - this._chargedReqSentT > 400 + Game.Ping)
             {
-                ObjectManager.Player.Spellbook.CastSpell(this.Slot);
-                this._chargedReqSentT = Utils.TickCount;
+                //ObjectManager.Player.Spellbook.CastSpell(this.Slot);
+                Player.CastSpell(this.Slot);
+                this._chargedReqSentT = Utils.TickCount  - Game.Ping;
             }
         }
 
@@ -1144,8 +1151,9 @@
         {
             if (!this.IsCharging && Utils.TickCount - this._chargedReqSentT > 400 + Game.Ping)
             {
-                ObjectManager.Player.Spellbook.CastSpell(this.Slot, position);
-                this._chargedReqSentT = Utils.TickCount;
+                //ObjectManager.Player.Spellbook.CastSpell(this.Slot, position);
+                Player.CastSpell(this.Slot, position);
+                this._chargedReqSentT = Utils.TickCount - Game.Ping;
             }
         }
 
@@ -1233,7 +1241,7 @@
         {
             position.Z = NavMesh.GetHeightForPosition(position.X, position.Y);
             ObjectManager.Player.Spellbook.UpdateChargeableSpell(slot, position, releaseCast, false);
-            ObjectManager.Player.Spellbook.CastSpell(slot, position, false);
+            Player.CastSpell(slot, position, false);
         }
 
         /// <summary>
@@ -1281,7 +1289,7 @@
 
                 if (packetCast)
                 {
-                    if (!ObjectManager.Player.Spellbook.CastSpell(this.Slot, unit, false))
+                    if (!Player.CastSpell(this.Slot, unit, false))
                     {
                         return CastStates.NotCasted;
                     }
@@ -1289,7 +1297,7 @@
                 else
                 {
                     //Cant cast the Spell.
-                    if (!ObjectManager.Player.Spellbook.CastSpell(this.Slot, unit))
+                    if (!Player.CastSpell(this.Slot, unit))
                     {
                         return CastStates.NotCasted;
                     }
@@ -1340,12 +1348,12 @@
             }
             else if (packetCast)
             {
-                ObjectManager.Player.Spellbook.CastSpell(this.Slot, prediction.CastPosition, false);
+                Player.CastSpell(this.Slot, prediction.CastPosition, false);
             }
             else
             {
                 //Cant cast the spell (actually should not happen).
-                if (!ObjectManager.Player.Spellbook.CastSpell(this.Slot, prediction.CastPosition))
+                if (!Player.CastSpell(this.Slot, prediction.CastPosition))
                 {
                     return CastStates.NotCasted;
                 }

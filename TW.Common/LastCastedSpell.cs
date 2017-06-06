@@ -115,6 +115,7 @@
         static LastCastedSpell()
         {
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+            //Obj_AI_Base.OnSpellCast += OnProcessSpellCast;
             Spellbook.OnCastSpell += SpellbookOnCastSpell;
         }
 

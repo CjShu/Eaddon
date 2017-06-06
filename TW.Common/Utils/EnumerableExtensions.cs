@@ -31,6 +31,32 @@
         }
 
         /// <summary>
+        ///     Determines if a list contains any of the values.
+        /// </summary>
+        /// <param name="source">Container of objects</param>
+        /// <param name="list">Any object that should be in the container</param>
+        /// <typeparam name="T">Type of object to look for</typeparam>
+        /// <returns>If the container contains any values.</returns>
+        public static bool In<T>(this T source, params T[] list)
+        {
+            return list.Contains(source);
+        }
+
+        /// <summary>
+        ///     Does an action over a list of types.
+        /// </summary>
+        /// <typeparam name="T">Type of value</typeparam>
+        /// <param name="list">List of values</param>
+        /// <param name="action">Function to call foreach value</param>
+        public static void ForEach<T>(this IEnumerable<T> list, Action<T> action)
+        {
+            foreach (var item in list)
+            {
+                action(item);
+            }
+        }
+
+        /// <summary>
         ///     Searches for the max or default element.
         /// </summary>
         /// <typeparam name="T">

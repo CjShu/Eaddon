@@ -216,7 +216,7 @@
         private static void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (!sender.IsValidTarget(3000, false) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient
-                || !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
+                || !(args.Target is Obj_AI_Base))
             {
                 return;
             }
@@ -227,7 +227,7 @@
             var attackData = new PredictedDamage(
                 sender,
                 target,
-                Utils.GameTimeTickCount - Game.Ping / 2,
+                Utils.GameTimeTickCount,
                 sender.AttackCastDelay * 1000,
                 sender.AttackDelay * 1000 - (sender is Obj_AI_Turret ? 70 : 0),
                 sender.IsMelee() ? int.MaxValue : (int)args.SData.MissileSpeed,
@@ -242,7 +242,7 @@
         /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.IsValid && args.StopAnimation && args.DestroyMissile)
+            if (/*spellbook.IsValid && */ args.StopAnimation && args.DestroyMissile)
             {
                 if (spellbook.IsMelee)
                 {

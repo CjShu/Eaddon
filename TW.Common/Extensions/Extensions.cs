@@ -173,6 +173,46 @@
                             (@base != null ? @base.ServerPosition : unit.Position).To2D()) > range * range);
         }
 
+        public static bool IsValidTarget1(this AttackableUnit target,
+            float? range = null,
+            bool onlyEnemyTeam = true,
+            Vector3? rangeCheckFrom = null)
+        {
+            if (target == null || !target.IsValid || target.IsDead || !target.IsVisible || !target.IsTargetable || target.IsInvulnerable)
+            {
+                return false;
+            }
+            if (onlyEnemyTeam && Player.Instance.Team == target.Team)
+            {
+                return false;
+            }
+            Obj_AI_Base obj_AI_Base = target as Obj_AI_Base;
+            if (obj_AI_Base != null && !obj_AI_Base.IsHPBarRendered)
+            {
+                return false;
+            }
+            if (!range.HasValue)
+            {
+                return true;
+            }
+            range = new float?(range.Value.Pow());
+            Vector3 pos = (obj_AI_Base != null) ? obj_AI_Base.ServerPosition : target.Position;
+            if (!rangeCheckFrom.HasValue)
+            {
+                float num = Player.Instance.ServerPosition.DistanceSquared(pos);
+                float? num2 = range;
+                return num < num2.GetValueOrDefault() && num2.HasValue;
+            }
+            float num3 = rangeCheckFrom.Value.Distance(pos, true);
+            float? num4 = range;
+            return num3 < num4.GetValueOrDefault() && num4.HasValue;
+        }
+
+        public static float Pow(this float number)
+        {
+            return number * number;
+        }
+
         /// <summary>
         ///     Checks if the Unit is valid. SDK
         /// </summary>

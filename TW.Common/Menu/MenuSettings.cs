@@ -36,8 +36,8 @@
         static MenuSettings()
         {
             drawMenu = MenuGlobals.DrawMenu;
-            //Game.OnWndProc += args => OnWndProc(new WndEventComposition(args));
-            Messages.OnMessage += OnWndMessage;
+            Game.OnWndProc += args => OnWndProc(new WndEventComposition(args));
+            //Messages.OnMessage += OnWndMessage;
         }
 
         #endregion
@@ -128,9 +128,9 @@
             }
         }
 
-        internal static uint ShowMenuPressKey { get; set; }
+        //internal static uint ShowMenuPressKey { get; set; }
 
-        
+        /*
         internal static void OnWndMessage(Messages.WindowMessage args)
         {
             // Do not open the menu when the chat is open
@@ -170,7 +170,7 @@
                 }
             }
         }
-        
+        */
 
         #endregion
     }
