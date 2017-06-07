@@ -1002,7 +1002,7 @@
                     if (cursorPos.X > this.Position.X + this.Width - this.Height)
                     {
                         var c = this.GetValue<System.Drawing.Color>();
-                        ColorPicker.Load(delegate (System.Drawing.Color args) { this.SetValue(args); }, c);
+                        ColorPicker.Load(delegate(System.Drawing.Color args) { this.SetValue(args); }, c);
                     }
 
                     break;
@@ -1037,7 +1037,7 @@
                     {
                         var c = this.GetValue<Circle>();
                         ColorPicker.Load(
-                            delegate (System.Drawing.Color args)
+                            delegate(System.Drawing.Color args)
                                 {
                                     var val = this.GetValue<Circle>();
                                     val.Color = args;
@@ -1048,7 +1048,7 @@
 
                     break;
                 case MenuValueType.KeyBind:
-                    if (!MenuGUI.IsChatOpen)
+                    if (!MenuGUI.IsChatOpen && !Shop.IsOpen)
                     {
                         switch (message)
                         {

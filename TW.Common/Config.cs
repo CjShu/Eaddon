@@ -85,7 +85,7 @@
                 {
                     try
                     {
-                        _showMenuHotkey = (byte)SandboxConfig.MenuKey;
+                        _showMenuHotkey = (byte)0x16;
                         //_showMenuHotkey = (byte)SandboxConfig.MenuKey;
                         _showMenuHotkey = _showMenuHotkey == 0 ? (byte)16 : _showMenuHotkey;
                         _showMenuHotkey = Utils.FixVirtualKey(_showMenuHotkey);

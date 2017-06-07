@@ -373,27 +373,6 @@ namespace TW.Common
 
         #region Methods
 
-        public static List<Vector3> CirclePonints(float circleLineSegment, float radius, Vector3 position)
-        {
-            var list = new List<Vector3>();
-
-            int count = 1;
-            ;
-            if (count <= circleLineSegment)
-            {
-                double counts = (count * 2) * float.MaxValue / (double)circleLineSegment;
-
-                Vector3 tiem = new Vector3(
-                    position.X + radius * (float)Math.Cos(counts),
-                    position.Y + radius * (float)Math.Sin(counts),
-                    position.Z);
-
-                list.Add(tiem);
-                count++;
-            }
-            return list;
-        }
-
         /// <summary>
         ///     Gets the dashing prediction.
         /// </summary>
@@ -430,8 +409,7 @@ namespace TW.Common
                     {
                         return new PredictionOutput
                                    {
-                                       CastPosition = endP.To3D(),
-                                       UnitPosition = endP.To3D(),
+                                       CastPosition = endP.To3D(), UnitPosition = endP.To3D(),
                                        Hitchance = HitChance.Dashing
                                    };
                     }
@@ -460,18 +438,15 @@ namespace TW.Common
             {
                 return new PredictionOutput
                            {
-                               CastPosition = input.Unit.ServerPosition,
-                               UnitPosition = input.Unit.Position,
+                               CastPosition = input.Unit.ServerPosition, UnitPosition = input.Unit.Position,
                                Hitchance = HitChance.Immobile
                            };
             }
 
             return new PredictionOutput
                        {
-                           Input = input,
-                           CastPosition = input.Unit.ServerPosition,
-                           UnitPosition = input.Unit.ServerPosition,
-                           Hitchance = HitChance.High
+                           Input = input, CastPosition = input.Unit.ServerPosition,
+                           UnitPosition = input.Unit.ServerPosition, Hitchance = HitChance.High
                            /*timeToReachTargetPosition - remainingImmobileT + input.RealRadius / input.Unit.MoveSpeed < 0.4d ? HitChance.High : HitChance.Medium*/
                        };
         }

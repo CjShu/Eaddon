@@ -8248,15 +8248,15 @@ namespace TW.Common
 
             if (magicResist < 0)
             {
-                value = 2 - 100 / (100 - magicResist);
+                value = 2 - 100/(100 - magicResist);
             }
-            else if ((magicResist * source.PercentMagicPenetrationMod) - source.FlatMagicPenetrationMod < 0)
+            else if ((magicResist*source.PercentMagicPenetrationMod) - source.FlatMagicPenetrationMod < 0)
             {
                 value = 1;
             }
             else
             {
-                value = 100/(100 + (magicResist * source.PercentMagicPenetrationMod) - source.FlatMagicPenetrationMod);
+                value = 100/(100 + (magicResist*source.PercentMagicPenetrationMod) - source.FlatMagicPenetrationMod);
             }
 
             var damage = DamageReductionMod(
