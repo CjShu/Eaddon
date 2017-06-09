@@ -147,10 +147,10 @@
 
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.Spellbook.Owner.IsValid &&/* EloBuddy.SDK.Orbwalker.IsRanged &&  !EloBuddy.SDK.Orbwalker.CanBeAborted &&*/
-                spellbook.Spellbook.Owner.IsMe && args.DestroyMissile && args.StopAnimation)
+            if (spellbook.IsValid && EloBuddy.SDK.Orbwalker.IsRanged &&  !EloBuddy.SDK.Orbwalker.CanBeAborted &&
+                spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
             {
-                Console.WriteLine("AA Cancel" + Game.Time);
+                //Console.WriteLine("AA Cancel" + Game.Time);
 
                 ResetAutoAttackTimer();
             }
