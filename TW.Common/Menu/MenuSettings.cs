@@ -1,9 +1,7 @@
 ﻿namespace TW.Common
 {
     using System.IO;
-    using System;
     using SharpDX;
-
     using Color = System.Drawing.Color;
     using EloBuddy;
 
@@ -36,8 +34,8 @@
         static MenuSettings()
         {
             drawMenu = MenuGlobals.DrawMenu;
-            //Game.OnWndProc += args => OnWndProc(new WndEventComposition(args));
-            Messages.OnMessage += OnWndMessage;
+            Game.OnWndProc += args => OnWndProc(new WndEventComposition(args));
+            //Messages.OnMessage += OnWndMessage;
         }
 
         #endregion

@@ -24,6 +24,58 @@
 
         #endregion
 
+        #region Public Methods and Operators
+
+        /// <summary>
+        ///     Returns the unit's ability power
+        /// </summary>
+        [Obsolete("Use TotalMagicalDamage attribute.", false)]
+        public static float AbilityPower(this Obj_AI_Base @base)
+        {
+            return @base.FlatMagicDamageMod + (@base.PercentMagicDamageMod * @base.FlatMagicDamageMod);
+        }
+
+        [Obsolete("Use CountEnemiesInRange", false)]
+        public static int CountEnemysInRange(this Obj_AI_Base unit, float range)
+        {
+            return unit.ServerPosition.CountEnemiesInRange(range);
+        }
+
+        [Obsolete("Use CountEnemiesInRange", false)]
+        public static int CountEnemysInRange(this Vector3 point, float range)
+        {
+            return point.CountEnemiesInRange(range);
+        }
+
+        [Obsolete("Use HealthPercent attribute.", false)]
+        public static float HealthPercentage(this Obj_AI_Base unit)
+        {
+            return unit.HealthPercent;
+        }
+
+        [Obsolete("Use TotalAttackDamage attribute from LeagueSharp.Core", false)]
+        public static float TotalAttackDamage(this AIHeroClient target)
+        {
+            return target.TotalAttackDamage;
+        }
+
+        [Obsolete("Use TotalMagicalDamage from Leaguesharp.Core.", false)]
+        public static float TotalMagicalDamage(this AIHeroClient target)
+        {
+            return target.TotalMagicalDamage;
+        }
+
+        /// <summary>
+        ///     Returns the unit's mana percentage (From 0 to 100).
+        /// </summary>
+        [Obsolete("Use ManaPercent attribute.", false)]
+        public static float ManaPercentage(this Obj_AI_Base unit)
+        {
+            return unit.ManaPercent;
+        }
+
+        #endregion
+
         /// <summary>
         ///     Returns if the spell is ready to use.
         /// </summary>
@@ -70,45 +122,6 @@
             return unit.Buffs.Any(buff => buff.Name.ToLower().Contains("recall") && buff.Type == BuffType.Aura);
         }
 
-        /// <summary>
-        ///     From a JSON-Type string to the type given.
-        /// </summary>
-        /// <param name="json">
-        ///     The JSON string.
-        /// </param>
-        /// <typeparam name="T">
-        ///     The type to convert the JSON to
-        /// </typeparam>
-        /// <returns>
-        ///     The converted type of the JSON.
-        /// </returns>
-        public static T FromJson<T>(this string json)
-        {
-            using (var ms = new MemoryStream(Encoding.Default.GetBytes(json)))
-            {
-                return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(ms);
-            }
-        }
-
-        /// <summary>
-        ///     To a JSON-Type string from an object.
-        /// </summary>
-        /// <param name="obj">
-        ///     The object
-        /// </param>
-        /// <returns>
-        ///     The JSON string.
-        /// </returns>
-        public static string ToJson(this object obj)
-        {
-            using (var ms = new MemoryStream())
-            {
-                var js = new DataContractJsonSerializer(obj.GetType());
-                js.WriteObject(ms, obj);
-                return Encoding.Default.GetString(ms.ToArray());
-            }
-        }
-
         public static bool UnderAllyTurret(this Obj_AI_Base unit)
         {
             return UnderAllyTurret(unit.Position);
@@ -143,6 +156,41 @@
                 ObjectManager.Get<Obj_AI_Turret>().Any(turret => turret.IsValidTarget(950, enemyTurretsOnly, position));
         }
 
+        public static bool IsMovingInSameDirection(Obj_AI_Base source, Obj_AI_Base target)
+        {
+            var sourceLW = source.GetWaypoints().Last().To3D();
+
+            if (sourceLW == source.Position || !source.IsMoving)
+                return false;
+
+            var targetLW = target.GetWaypoints().Last().To3D();
+
+            if (targetLW == target.Position || !target.IsMoving)
+                return false;
+
+            var pos1 = sourceLW.To2D() - source.Position.To2D();
+            var pos2 = targetLW.To2D() - target.Position.To2D();
+            var getAngle = pos1.AngleBetween(pos2);
+
+            if (getAngle < 25)
+                return true;
+            else
+                return false;
+        }
+
+        public static List<Vector3> CirclePoints(float CircleLineSegmentN, float radius, Vector3 position)
+        {
+            var points = new List<Vector3>();
+
+            for (var i = 1; i <= CircleLineSegmentN; i++)
+            {
+                var angle = i * 2 * Math.PI / CircleLineSegmentN;
+                var point = new Vector3(position.X + radius * (float)Math.Cos(angle), position.Y + radius * (float)Math.Sin(angle), position.Z);
+                points.Add(point);
+            }
+            return points;
+        }
+
         public static bool IsValidTarget(
             this AttackableUnit unit,
             float range = float.MaxValue,
@@ -160,6 +208,12 @@
                 return false;
             }
 
+            var obj = unit as Obj_AI_Base;
+            if (obj != null && !obj.IsHPBarRendered)
+            {
+                return false;
+            }
+
             if (unit.Name == "WardCorpse")
             {
                 return false;
@@ -173,7 +227,7 @@
                             (@base != null ? @base.ServerPosition : unit.Position).To2D()) > range * range);
         }
 
-        public static bool IsValidTarget1(this AttackableUnit target,
+        public static bool IsValidTargetEB(this AttackableUnit target,
             float? range = null,
             bool onlyEnemyTeam = true,
             Vector3? rangeCheckFrom = null)
@@ -186,8 +240,8 @@
             {
                 return false;
             }
-            Obj_AI_Base obj_AI_Base = target as Obj_AI_Base;
-            if (obj_AI_Base != null && !obj_AI_Base.IsHPBarRendered)
+            var obj = target as Obj_AI_Base;
+            if (obj != null && !obj.IsHPBarRendered)
             {
                 return false;
             }
@@ -196,7 +250,9 @@
                 return true;
             }
             range = new float?(range.Value.Pow());
-            Vector3 pos = (obj_AI_Base != null) ? obj_AI_Base.ServerPosition : target.Position;
+
+            var pos = (obj != null) ? obj.ServerPosition : target.Position;
+
             if (!rangeCheckFrom.HasValue)
             {
                 float num = Player.Instance.ServerPosition.DistanceSquared(pos);
@@ -208,52 +264,18 @@
             return num3 < num4.GetValueOrDefault() && num4.HasValue;
         }
 
+        public static bool IsValidTargetCommon(
+            this AttackableUnit target,
+            float range = float.MaxValue,
+            bool onlyEnemyTeam = true,
+            Vector3 from = default(Vector3))
+        {
+            return IsValidTarget(target, range, onlyEnemyTeam, from);
+        }
+
         public static float Pow(this float number)
         {
             return number * number;
-        }
-
-        /// <summary>
-        ///     Checks if the Unit is valid. SDK
-        /// </summary>
-        /// <param name="unit">
-        ///     Unit from <c>Obj_AI_Base</c> type
-        /// </param>
-        /// <returns>
-        ///     The <see cref="bool" />.
-        /// </returns>
-        public static bool IsValidSDK(this Obj_AI_Base unit)
-        {
-            return unit != null && unit.IsValid;
-        }
-
-        public static bool IsValidTargetSDK(
-            this AttackableUnit unit,
-            float range = float.MaxValue,
-            bool checkTeam = true,
-            Vector3 from = default(Vector3))
-        {
-            if (unit == null || !unit.IsValid || !unit.IsVisible || unit.IsDead || !unit.IsTargetable
-                || unit.IsInvulnerable || unit.IsZombie)
-            {
-                return false;
-            }
-
-            if (checkTeam && ObjectManager.Player.Team == unit.Team)
-            {
-                return false;
-            }
-
-            var @base = unit as Obj_AI_Base;
-
-            if (@base != null && !@base.IsHPBarRendered)
-            {
-                return false;
-            }
-
-            return
-                (from.IsValid() ? from : ObjectManager.Player.ServerPosition).DistanceSquared(
-                    @base?.ServerPosition ?? unit.Position) < range * range;
         }
 
         public static List<Vector2> CutPath(this List<Vector2> path, float distance)

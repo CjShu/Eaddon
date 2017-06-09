@@ -1,4 +1,4 @@
-﻿namespace LeagueSharp.Common.Data
+﻿namespace TW.Common.Data
 {
     using System;
     using System.Linq;
@@ -18,13 +18,9 @@
 
             SecretStash = 82,
 
-            Assasin = 83,
-
             Meditation = 98,
 
             Merciless = 97,
-
-            GreenfathersGift = 113,
 
             Bandit = 114,
 
@@ -48,14 +44,7 @@
 
             Sorcery = 68,
 
-            FreshBlood = 81,
-
-            ExposeWeakness = 83,
-
-            DoubleEdgedSword = 114,
-
-            [Obsolete("Obsolete! Please update your assembly, oppresor called doubleedgedsword now")]
-            Oppresor = 114,
+            DoubleEdgedSword = 81,
 
             Vampirism = 97,
 
@@ -65,7 +54,7 @@
 
             BountyHunter = 113,
 
-            BattleTrance = 115,
+            Oppresor = 114,
 
             BatteringBlows = 129,
 
@@ -75,7 +64,7 @@
 
             FervorofBattle = 146,
 
-            DeathFireTouch = 148
+            DeathFireTouch = 137
         }
 
         //updated 7 december 2016
@@ -87,9 +76,7 @@
 
             Explorer = 81,
 
-            SiegeMaster = 82,
-
-            ToughSkin = 83,
+            ToughSkin = 82,
 
             RunicArmor = 97,
 
@@ -97,19 +84,12 @@
 
             Insight = 113,
 
-            Perseverance = 114,
-
-            Fearless = 115,
-
             Swiftness = 129,
 
             LegendaryGuardian = 130,
 
             GraspoftheUndying = 145,
 
-            CourageoftheColossus = 146,
-
-            [Obsolete("Obsolete! Please update your assembly! StrengthoftheAges is called CourageoftheColossus now.")]
             StrengthoftheAges = 146,
 
             BondofStones = 147
@@ -144,12 +124,6 @@
         {
             return mastery.Points >= 1;
         }
-
-        public static bool IsValid(this Mastery mastery)
-        {
-            return mastery != null && mastery.Points > 0;
-        }
-
         #endregion
     }
 }

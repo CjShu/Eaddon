@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.InteropServices;
-    using LeagueSharp.Common.Data;
+    using TW.Common.Data;
     using LeagueSharp.Data.Enumerations;
 
     using SharpDX;
@@ -538,7 +538,7 @@
         /// <returns><c>true</c> if the spell was casted sucessfully, <c>false</c> otherwise.</returns>
         public bool Cast(bool packetCast = false)
         {
-            return this.CastOnUnit(Player.Instance, packetCast);
+            return this.CastOnUnit(ObjectManager.Player, packetCast);
         }
 
         /// <summary>
@@ -1019,8 +1019,8 @@
             this._chargedCastedT = 0;
 
             Obj_AI_Base.OnProcessSpellCast += this.Obj_AI_Hero_OnProcessSpellCast;
-            Spell.SpellbookUpdateChargedSpell += this.SpellSpellbookUpdateChargedSpell;
-            //Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
+            //Spell.SpellbookUpdateChargedSpell += this.SpellSpellbookUpdateChargedSpell;
+            Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
             Spellbook.OnCastSpell += this.SpellbookOnCastSpell;
         }
 
@@ -1407,7 +1407,7 @@
         {
             if (sender.IsMe && args.SData.Name == this.ChargedSpellName)
             {
-                this._chargedCastedT = Utils.TickCount /*- Game.Ping*/;
+                this._chargedCastedT = Utils.TickCount - Game.Ping;
             }
         }
 

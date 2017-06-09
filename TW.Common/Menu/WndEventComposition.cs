@@ -1,7 +1,7 @@
 ﻿namespace TW.Common
 {
     using System;
-    using System.Security.Permissions;
+    //using System.Security.Permissions;
     using EloBuddy;
 
     /// <summary>

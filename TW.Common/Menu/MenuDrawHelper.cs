@@ -90,7 +90,7 @@
             Drawing.OnPreReset += OnPreReset;
             Drawing.OnPostReset += OnPostReset;
             AppDomain.CurrentDomain.DomainUnload += OnDomainUnload;
-            AppDomain.CurrentDomain.ProcessExit += OnDomainUnload;
+            //AppDomain.CurrentDomain.ProcessExit += OnDomainUnload;
         }
 
         #endregion

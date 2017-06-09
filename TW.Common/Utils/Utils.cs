@@ -29,72 +29,6 @@
         /// </summary>
         private const int STD_INPUT_HANDLE = -10;
 
-        private static readonly Dictionary<uint, string> KeyCodeDictionary =
-            new Dictionary<uint, string>
-                {
-                    { 8, "Backspace" },
-                    { 9, "Tab" },
-                    { 13, "Enter" },
-                    { 16, "Shift" },
-                    { 17, "Ctrl" },
-                    { 18, "Alt" },
-                    { 19, "Pause" },
-                    { 20, "CapsLock" },
-                    { 27, "Escape" },
-                    { 32, "Space" },
-                    { 33, "PageUp" },
-                    { 34, "PageDown" },
-                    { 35, "End" },
-                    { 36, "Home" },
-                    { 37, "LeftArrow" },
-                    { 38, "UpArrow" },
-                    { 39, "RightArrow" },
-                    { 40, "DownArrow" },
-                    { 45, "Insert" },
-                    { 46, "Delete" },
-                    { 48, "0" },
-                    { 49, "1" },
-                    { 50, "2" },
-                    { 51, "3" },
-                    { 52, "4" },
-                    { 53, "5" },
-                    { 54, "6" },
-                    { 55, "7" },
-                    { 56, "8" },
-                    { 57, "9" },
-                    { 91, "LeftWindow" },
-                    { 92, "RightWindow" },
-                    { 93, "Select" },
-                    { 96, "Num0" },
-                    { 97, "Num1" },
-                    { 98, "Num2" },
-                    { 99, "Num3" },
-                    { 100, "Num4" },
-                    { 101, "Num5" },
-                    { 102, "Num6" },
-                    { 103, "Num7" },
-                    { 104, "Num8" },
-                    { 105, "Num9" },
-                    { 106, "*" },
-                    { 107, "+" },
-                    { 109, "-" },
-                    { 110, "," },
-                    { 111, "/" },
-                    { 144, "NumLock" },
-                    { 145, "ScrollLock" },
-                    { 186, ";" },
-                    { 187, "=" },
-                    { 188, "," },
-                    { 189, "-" },
-                    { 190, "." },
-                    { 191, "/" },
-                    { 192, "`" },
-                    { 219, "(" },
-                    { 220, "'\'" },
-                    { 221, ")" },
-                    { 222, "'" }
-                };
-
         #endregion
 
         #region Public Properties
@@ -167,13 +101,13 @@
             switch (key)
             {
                 case 160:
-                    return 0x10;
                 case 161:
                     return 0x10;
                 case 162:
-                    return 0x11;
                 case 163:
                     return 0x11;
+                default:
+                    return key;
             }
             return key;
         }
@@ -322,7 +256,27 @@
                 return ("F" + (vKey - 111));
             }
 
-            return KeyCodeDictionary.ContainsKey(vKey) ? KeyCodeDictionary[vKey] : vKey.ToString();
+            switch (vKey)
+            {
+                case 9:
+                    return "Tab";
+                case 16:
+                    return "Shift";
+                case 17:
+                    return "Ctrl";
+                case 20:
+                    return "CAPS";
+                case 27:
+                    return "ESC";
+                case 32:
+                    return "Space";
+                case 45:
+                    return "Insert";
+                case 220:
+                    return "º";
+                default:
+                    return vKey.ToString();
+            }
         }
 
         /// <summary>

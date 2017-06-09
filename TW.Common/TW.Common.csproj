@@ -145,17 +145,14 @@
     <Compile Include="Shared.cs" />
     <Compile Include="Spell.cs" />
     <Compile Include="TargetSelector\TargetSelector.cs" />
-    <Compile Include="ThirdParty\Clipper.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Utils\Cursor.cs" />
     <Compile Include="Utils\EnumerableExtensions.cs" />
-    <Compile Include="Utils\JsonFactory.cs" />
     <Compile Include="Utils\KeyboardEvents.cs" />
     <Compile Include="Utils\Keys.cs" />
     <Compile Include="Utils\Messages.cs" />
     <Compile Include="Utils\MouseEvents.cs" />
     <Compile Include="Utils\NativeMethods.cs" />
-    <Compile Include="Utils\ResourceFactory.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\VirtualMouse.cs" />
     <Compile Include="Utils\WeightedRandom.cs" />

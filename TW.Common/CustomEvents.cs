@@ -62,10 +62,15 @@
 
             #region Public Methods and Operators
 
+            internal static void Initialize()
+            {
+                EloBuddy.SDK.Events.Loading.OnLoadingComplete += OnTick;
+            }
+
             /// <summary>
             ///     Initializes this instance.
             /// </summary>
-            public static void Initialize()
+            public static void OnTick(EventArgs args)
             {
                 foreach (var hq in ObjectManager.Get<Obj_HQ>().Where(hq => hq.IsValid))
                 {

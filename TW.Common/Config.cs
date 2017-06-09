@@ -3,7 +3,7 @@
     using System;
     using System.Globalization;
     using System.IO;
-    using System.Security.Permissions;
+    //using System.Security.Permissions;
     using System.Threading;
     using EloBuddy;
     using EloBuddy.Sandbox;
@@ -85,8 +85,8 @@
                 {
                     try
                     {
-                        _showMenuHotkey = (byte)0x16;
-                        //_showMenuHotkey = (byte)SandboxConfig.MenuKey;
+                        //_showMenuHotkey = (byte)0x16;
+                        _showMenuHotkey = (byte)SandboxConfig.MenuKey;
                         _showMenuHotkey = _showMenuHotkey == 0 ? (byte)16 : _showMenuHotkey;
                         _showMenuHotkey = Utils.FixVirtualKey(_showMenuHotkey);
                         //Console.WriteLine(@"Menu press key set to {0}", _showMenuHotkey);

@@ -153,7 +153,7 @@
             TargetSelectionConditionDelegate conditions = null)
         {
             return GetTarget(
-                ObjectManager.Player,
+                Player.Instance,
                 range,
                 damageType,
                 ignoreShield,
@@ -181,7 +181,7 @@
                 var damageType = (Damage.DamageType)Enum.Parse(typeof(Damage.DamageType), type.ToString());
 
                 if (_configMenu != null
-                    && IsValidTarget(
+                    && IsValidTargetLS(
                         SelectedTarget,
                         _configMenu.Item("ForceFocusSelected").GetValue<bool>() ? float.MaxValue : range,
                         type,
@@ -192,7 +192,7 @@
                 }
 
                 if (_configMenu != null
-                    && IsValidTarget(
+                    && IsValidTargetLS(
                         SelectedTarget,
                         _configMenu.Item("ForceFocusSelectedKeys").GetValue<bool>() ? float.MaxValue : range,
                         type,
@@ -217,7 +217,7 @@
                     HeroManager.Enemies.FindAll(
                         hero =>
                             ignoredChamps.All(ignored => ignored.NetworkId != hero.NetworkId)
-                            && IsValidTarget(hero, range, type, ignoreShieldSpells, rangeCheckFrom)
+                            && IsValidTargetLS(hero, range, type, ignoreShieldSpells, rangeCheckFrom)
                             && (conditions == null || conditions(hero)));
                
                 switch (Mode)
@@ -554,7 +554,7 @@
             return LeagueSharp.Data.Data.Get<ChampionPriorityData>().GetPriority(championName);
         }
 
-        private static bool IsValidTarget(
+        private static bool IsValidTargetLS(
             Obj_AI_Base target,
             float range,
             DamageType damageType,
@@ -562,7 +562,7 @@
             Vector3? rangeCheckFrom = null)
         {
             return target.IsValidTarget()
-                   && target.Distance(rangeCheckFrom ?? ObjectManager.Player.ServerPosition, true)
+                   && target.Distance(rangeCheckFrom ?? Player.Instance.ServerPosition, true)
                    < Math.Pow(range <= 0 ? Orbwalking.GetRealAutoAttackRange(target) : range, 2)
                    && !IsInvulnerable(target, damageType, ignoreShieldSpells);
         }

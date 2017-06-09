@@ -9,13 +9,10 @@
     using SharpDX;
     using SharpDX.Direct3D9;
 
-    using Sprite = EloBuddy.SDK.Rendering.Sprite;
     using Color = SharpDX.Color;
     using Rectangle = SharpDX.Rectangle;
 
     using EloBuddy;
-    using EloBuddy.SDK.Rendering;
-    using Properties;
 
     /// <summary>
     ///     The menu.
@@ -513,7 +510,7 @@
         {
             if (championUnique)
             {
-                name = ObjectManager.Player.ChampionName + name;
+                name = Player.Instance.ChampionName + name;
             }
 
             //Search in our own items

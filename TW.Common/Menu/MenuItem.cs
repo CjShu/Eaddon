@@ -145,7 +145,7 @@
         {
             if (championUnique)
             {
-                name = ObjectManager.Player.ChampionName + name;
+                name = Player.Instance.ChampionName + name;
             }
 
             this.Name = name;

@@ -4,15 +4,16 @@ namespace TW.Common
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using TW.Common.Extensions;
     using SharpDX;
     using EloBuddy;
+    using Extensions;
 
     /// <summary>
     ///     Represents the chance of hitting an enemy.
     /// </summary>
     public enum HitChance
     {
+
         Immobile = 8,
         Dashing = 7,
         VeryHigh = 6,
@@ -409,7 +410,8 @@ namespace TW.Common
                     {
                         return new PredictionOutput
                                    {
-                                       CastPosition = endP.To3D(), UnitPosition = endP.To3D(),
+                                       CastPosition = endP.To3D(),
+                                       UnitPosition = endP.To3D(),
                                        Hitchance = HitChance.Dashing
                                    };
                     }
@@ -438,15 +440,18 @@ namespace TW.Common
             {
                 return new PredictionOutput
                            {
-                               CastPosition = input.Unit.ServerPosition, UnitPosition = input.Unit.Position,
+                               CastPosition = input.Unit.ServerPosition,
+                               UnitPosition = input.Unit.Position,
                                Hitchance = HitChance.Immobile
                            };
             }
 
             return new PredictionOutput
                        {
-                           Input = input, CastPosition = input.Unit.ServerPosition,
-                           UnitPosition = input.Unit.ServerPosition, Hitchance = HitChance.High
+                           Input = input,
+                           CastPosition = input.Unit.ServerPosition,
+                           UnitPosition = input.Unit.ServerPosition,
+                           Hitchance = HitChance.High
                            /*timeToReachTargetPosition - remainingImmobileT + input.RealRadius / input.Unit.MoveSpeed < 0.4d ? HitChance.High : HitChance.Medium*/
                        };
         }
@@ -466,8 +471,10 @@ namespace TW.Common
             {
                 return new PredictionOutput
                            {
-                               Input = input, UnitPosition = input.Unit.ServerPosition,
-                               CastPosition = input.Unit.ServerPosition, Hitchance = HitChance.VeryHigh
+                               Input = input,
+                               UnitPosition = input.Unit.ServerPosition,
+                               CastPosition = input.Unit.ServerPosition,
+                               Hitchance = HitChance.VeryHigh
                            };
             }
 
@@ -498,7 +505,9 @@ namespace TW.Common
 
                         return new PredictionOutput
                                    {
-                                       Input = input, CastPosition = cp.To3D(), UnitPosition = p.To3D(),
+                                       Input = input,
+                                       CastPosition = cp.To3D(),
+                                       UnitPosition = p.To3D(),
                                        Hitchance =
                                            PathTracker.GetCurrentPath(input.Unit).Time < 0.1d
                                                ? HitChance.VeryHigh
@@ -556,7 +565,9 @@ namespace TW.Common
 
                         return new PredictionOutput
                                    {
-                                       Input = input, CastPosition = pos.To3D(), UnitPosition = p.To3D(),
+                                       Input = input,
+                                       CastPosition = pos.To3D(),
+                                       UnitPosition = p.To3D(),
                                        Hitchance =
                                            PathTracker.GetCurrentPath(input.Unit).Time < 0.1d
                                                ? HitChance.VeryHigh
@@ -570,7 +581,9 @@ namespace TW.Common
             var position = path.Last();
             return new PredictionOutput
                        {
-                           Input = input, CastPosition = position.To3D(), UnitPosition = position.To3D(),
+                           Input = input,
+                           CastPosition = position.To3D(),
+                           UnitPosition = position.To3D(),
                            Hitchance = HitChance.Medium
                        };
         }
@@ -711,10 +724,10 @@ namespace TW.Common
         {
             var result =
                 unit.Buffs.Where(
-                    buff =>
-                    buff.IsActive && Game.Time <= buff.EndTime
-                    && (buff.Type == BuffType.Charm || buff.Type == BuffType.Knockup || buff.Type == BuffType.Stun
-                        || buff.Type == BuffType.Suppression || buff.Type == BuffType.Snare))
+                        buff =>
+                            buff.IsActive && Game.Time <= buff.EndTime
+                            && (buff.Type == BuffType.Charm || buff.Type == BuffType.Knockup || buff.Type == BuffType.Stun
+                                || buff.Type == BuffType.Suppression || buff.Type == BuffType.Snare))
                     .Aggregate(0d, (current, buff) => Math.Max(current, buff.EndTime));
             return (result - Game.Time);
         }
@@ -764,8 +777,8 @@ namespace TW.Common
             foreach (var enemy in
                 HeroManager.Enemies.FindAll(
                     h =>
-                    h.NetworkId != originalUnit.NetworkId
-                    && h.IsValidTarget((input.Range + 200 + input.RealRadius), true, input.RangeCheckFrom)))
+                        h.NetworkId != originalUnit.NetworkId
+                        && h.IsValidTarget((input.Range + 200 + input.RealRadius), true, input.RangeCheckFrom)))
             {
                 input.Unit = enemy;
                 var prediction = Prediction.GetPrediction(input, false, false);
@@ -822,7 +835,8 @@ namespace TW.Common
                                        AoeTargetsHit = posibleTargets.Select(h => (AIHeroClient)h.Unit).ToList(),
                                        CastPosition = mecCircle.Center.To3D(),
                                        UnitPosition = mainTargetPrediction.UnitPosition,
-                                       Hitchance = mainTargetPrediction.Hitchance, Input = input,
+                                       Hitchance = mainTargetPrediction.Hitchance,
+                                       Input = input,
                                        _aoeTargetsHitCount = posibleTargets.Count
                                    };
                     }
@@ -919,9 +933,11 @@ namespace TW.Common
                     {
                         return new PredictionOutput
                                    {
-                                       Hitchance = mainTargetPrediction.Hitchance, _aoeTargetsHitCount = bestCandidateHits,
+                                       Hitchance = mainTargetPrediction.Hitchance,
+                                       _aoeTargetsHitCount = bestCandidateHits,
                                        UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = bestCandidate.To3D(), Input = input
+                                       CastPosition = bestCandidate.To3D(),
+                                       Input = input
                                    };
                     }
                 }
@@ -946,8 +962,8 @@ namespace TW.Common
                         let edge1 = end.Rotated(-angle / 2)
                         let edge2 = edge1.Rotated(angle)
                         where
-                            point.Distance(new Vector2(), true) < range * range && edge1.CrossProduct(point) > 0
-                            && point.CrossProduct(edge2) > 0
+                        point.Distance(new Vector2(), true) < range * range && edge1.CrossProduct(point) > 0
+                        && point.CrossProduct(edge2) > 0
                         select point).Count();
             }
 
@@ -1050,9 +1066,11 @@ namespace TW.Common
 
                         return new PredictionOutput
                                    {
-                                       Hitchance = mainTargetPrediction.Hitchance, _aoeTargetsHitCount = bestCandidateHits,
+                                       Hitchance = mainTargetPrediction.Hitchance,
+                                       _aoeTargetsHitCount = bestCandidateHits,
                                        UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = ((p1 + p2) * 0.5f).To3D(), Input = input
+                                       CastPosition = ((p1 + p2) * 0.5f).To3D(),
+                                       Input = input
                                    };
                     }
                 }
@@ -1162,8 +1180,7 @@ namespace TW.Common
         /// </summary>
         static Collision()
         {
-            Obj_AI_Base.OnSpellCast += Obj_AI_Hero_OnProcessSpellCast;
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
+            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
         }
 
         #endregion
@@ -1191,10 +1208,10 @@ namespace TW.Common
                                 ObjectManager.Get<Obj_AI_Minion>()
                                     .Where(
                                         minion =>
-                                        minion.IsValidTarget(
-                                            Math.Min(input.Range + input.Radius + 100, 2000),
-                                            true,
-                                            input.RangeCheckFrom)))
+                                            minion.IsValidTarget(
+                                                Math.Min(input.Range + input.Radius + 100, 2000),
+                                                true,
+                                                input.RangeCheckFrom)))
                             {
                                 input.Unit = minion;
                                 var minionPrediction = Prediction.GetPrediction(input, false, false);
@@ -1210,10 +1227,10 @@ namespace TW.Common
                             foreach (var hero in
                                 HeroManager.Enemies.FindAll(
                                     hero =>
-                                    hero.IsValidTarget(
-                                        Math.Min(input.Range + input.Radius + 100, 2000),
-                                        true,
-                                        input.RangeCheckFrom)))
+                                        hero.IsValidTarget(
+                                            Math.Min(input.Range + input.Radius + 100, 2000),
+                                            true,
+                                            input.RangeCheckFrom)))
                             {
                                 input.Unit = hero;
                                 var prediction = Prediction.GetPrediction(input, false, false);
@@ -1230,8 +1247,8 @@ namespace TW.Common
                             foreach (var hero in
                                 HeroManager.Allies.FindAll(
                                     hero =>
-                                    Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition)
-                                    <= Math.Min(input.Range + input.Radius + 100, 2000)))
+                                        Vector3.Distance(ObjectManager.Player.ServerPosition, hero.ServerPosition)
+                                        <= Math.Min(input.Range + input.Radius + 100, 2000)))
                             {
                                 input.Unit = hero;
                                 var prediction = Prediction.GetPrediction(input, false, false);
@@ -1268,11 +1285,11 @@ namespace TW.Common
                                 ObjectManager.Get<GameObject>()
                                     .Where(
                                         gameObject =>
-                                        gameObject.IsValid
-                                        && Regex.IsMatch(
-                                            gameObject.Name,
-                                            "_w_windwall_enemy_0.\\.troy",
-                                            RegexOptions.IgnoreCase)))
+                                            gameObject.IsValid
+                                            && Regex.IsMatch(
+                                                gameObject.Name,
+                                                "_w_windwall_enemy_0.\\.troy",
+                                                RegexOptions.IgnoreCase)))
                             {
                                 wall = gameObject;
                             }
@@ -1316,7 +1333,7 @@ namespace TW.Common
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
-        private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender.IsValid && sender.Team != ObjectManager.Player.Team && args.SData.Name == "YasuoWMovingWall")
             {
@@ -1430,7 +1447,7 @@ namespace TW.Common
         /// </summary>
         static PathTracker()
         {
-            Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
+            Obj_AI_Base.OnNewPath += AIHeroClient_OnNewPath;
         }
 
         #endregion
@@ -1535,7 +1552,7 @@ namespace TW.Common
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="GameObjectNewPathEventArgs" /> instance containing the event data.</param>
-        private static void Obj_AI_Hero_OnNewPath(Obj_AI_Base sender, GameObjectNewPathEventArgs args)
+        private static void AIHeroClient_OnNewPath(Obj_AI_Base sender, GameObjectNewPathEventArgs args)
         {
             if (!(sender is AIHeroClient))
             {
