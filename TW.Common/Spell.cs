@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Runtime.InteropServices;
     using LeagueSharp.Common.Data;
     using LeagueSharp.Data.Enumerations;
 
@@ -11,6 +11,7 @@
     using Extensions;
     using EloBuddy;
 
+    // ReSharper disable once InconsistentNaming
 
     /// <summary>
     ///     This class allows you to handle the spells easily.
@@ -537,7 +538,7 @@
         /// <returns><c>true</c> if the spell was casted sucessfully, <c>false</c> otherwise.</returns>
         public bool Cast(bool packetCast = false)
         {
-            return this.CastOnUnit(ObjectManager.Player, packetCast);
+            return this.CastOnUnit(Player.Instance, packetCast);
         }
 
         /// <summary>
@@ -622,11 +623,11 @@
 
             else if (packetCast)
             {
-                return Player.CastSpell(this.Slot, position, false);
+                return ObjectManager.Player.Spellbook.CastSpell(this.Slot, position, false);
             }
             else
             {
-                return Player.CastSpell(this.Slot, position);
+                return ObjectManager.Player.Spellbook.CastSpell(this.Slot, position);
             }
             return false;
         }
@@ -911,31 +912,6 @@
                     });
         }
 
-        public PredictionOutput GetPredictionSDK(
-            Obj_AI_Base unit,
-            bool aoe = false,
-            float overrideRange = -1,
-            CollisionableObjects[] collisionable = null)
-        {
-            return Prediction.GetPrediction(
-                new PredictionInput
-                    {
-                        Unit = unit,
-                        Delay = this.Delay,
-                        Radius = this.Width,
-                        Speed = this.Speed,
-                        From = this.From,
-                        Range = (overrideRange > 0) ? overrideRange : this.Range,
-                        Collision = this.Collision,
-                        Type = this.Type,
-                        RangeCheckFrom = this.RangeCheckFrom,
-                        Aoe = aoe,
-                        CollisionObjects =
-                            collisionable
-                            ?? new[] { CollisionableObjects.Minions, CollisionableObjects.YasuoWall }
-                    });
-        }
-
         /// <summary>
         ///     Gets the range the spell has when casted to target
         /// </summary>
@@ -1043,9 +1019,17 @@
             this._chargedCastedT = 0;
 
             Obj_AI_Base.OnProcessSpellCast += this.Obj_AI_Hero_OnProcessSpellCast;
-            //Obj_AI_Base.OnBasicAttack += this.Obj_AI_Hero_OnProcessSpellCast;
-            Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
+            Spell.SpellbookUpdateChargedSpell += this.SpellSpellbookUpdateChargedSpell;
+            //Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
             Spellbook.OnCastSpell += this.SpellbookOnCastSpell;
+        }
+
+        private void SpellSpellbookUpdateChargedSpell(Spellbook sender, SpellbookUpdateChargedSpellEventArgs args)
+        {
+            if (sender.Owner.IsMe && Utils.TickCount - this._chargedReqSentT < 3000 && args.ReleaseCast)
+            {
+                args.Process = false;
+            }
         }
 
 
@@ -1221,6 +1205,65 @@
 
         #endregion
 
+
+        public static event SpellbookUpdateChargedSpellEvenH SpellbookUpdateChargedSpell;
+        public delegate void SpellbookUpdateChargedSpellEvenH(Spellbook sender, SpellbookUpdateChargedSpellEventArgs args);
+
+        public class SpellbookUpdateChargedSpellEventArgs : EventArgs
+        {
+            private SpellSlot slot;
+            private Vector3 position;
+            private bool releaseCast;
+            private int _process;
+
+            public bool Process
+            {
+                [return: MarshalAs(UnmanagedType.U1)]
+                get
+                {
+                    return this._process != 0;
+                }
+                [param: MarshalAs(UnmanagedType.U1)]
+                set
+                {
+                    this._process = (value ? 1: 0);
+                }
+            }
+
+            public bool ReleaseCast
+            {
+                [return: MarshalAs(UnmanagedType.U1)]
+                get
+                {
+                    return this.releaseCast;
+                }
+            }
+
+            public Vector3 Position
+            {
+                get
+                {
+                    return this.position;
+                }
+            }
+
+            public SpellSlot Slot
+            {
+                get
+                {
+                    return this.slot;
+                }
+            }
+
+            public SpellbookUpdateChargedSpellEventArgs(SpellSlot _slot, Vector3 _position, [MarshalAs(UnmanagedType.U1)] bool _releaseCast, int process)
+            {
+                this.slot = _slot;
+                this.position = _position;
+                this.releaseCast = _releaseCast;
+                this._process = process;
+            }
+        }
+
         #region Methods
 
         /// <summary>
@@ -1364,7 +1407,7 @@
         {
             if (sender.IsMe && args.SData.Name == this.ChargedSpellName)
             {
-                this._chargedCastedT = Utils.TickCount - Game.Ping;
+                this._chargedCastedT = Utils.TickCount /*- Game.Ping*/;
             }
         }
 
@@ -1374,7 +1417,6 @@
 
             args.Process = !this.IsChanneling;
         }
-
 
         private void OnCreate(GameObject sender, EventArgs args)
         {

@@ -329,7 +329,8 @@
         /// <returns><c>true</c> if the specified minion is minion; otherwise, <c>false</c>.</returns>
         public static bool IsMinion(Obj_AI_Minion minion, bool includeWards = false)
         {
-            return minion.Name.Contains("Minion") || includeWards && IsWard(minion);
+            //return minion.Name.Contains("Minion") || includeWards && IsWard(minion);
+            return IsMinion(minion as Obj_AI_Base, includeWards);
         }
 
         /// <summary>
@@ -351,6 +352,13 @@
         public static bool IsWard(Obj_AI_Minion minion)
         {
             return minion.Name.Contains("Ward") && minion.IsHPBarRendered;
+        }
+
+        public static bool IsMinion(Obj_AI_Base minion, bool includeWards = false)
+        {
+            var name = minion.CharData.BaseSkinName.ToLower();
+            return name.Contains("minion") || name.Contains("bilge") || name.Contains("bw_") ||
+                   (includeWards && (name.Contains("ward") || name.Contains("trinket")));
         }
 
         #endregion

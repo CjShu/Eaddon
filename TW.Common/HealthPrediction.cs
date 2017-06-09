@@ -29,7 +29,7 @@
         static HealthPrediction()
         {
             //Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
-            Game.OnTick += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnGameUpdate;
             Spellbook.OnStopCast += SpellbookOnStopCast;
             GameObject.OnDelete += MissileClient_OnDelete;
             Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
@@ -242,16 +242,12 @@
         /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.IsValid && args.StopAnimation && args.DestroyMissile)
+            if (spellbook.Spellbook.Owner.IsValid && args.StopAnimation)
             {
-                if (spellbook.IsMelee)
+                if (ActiveAttacks.ContainsKey(spellbook.Spellbook.Owner.NetworkId))
                 {
-                    if (ActiveAttacks.ContainsKey(spellbook.NetworkId))
-                    {
-                        ActiveAttacks.Remove(spellbook.NetworkId);
-                    }
+                    ActiveAttacks.Remove(spellbook.Spellbook.Owner.NetworkId);
                 }
-
             }
         }
 
