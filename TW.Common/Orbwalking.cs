@@ -255,7 +255,6 @@
             return Utils.GameTimeTickCount + Game.Ping / 2 + 25 >= LastAATick + player.AttackDelay * 1000;
         }
 
-
         public static bool CanMove(float extraWindup, bool disableMissileCheck = false)
         {
             if (_missileLaunched && Orbwalker.MissileCheck && !disableMissileCheck)

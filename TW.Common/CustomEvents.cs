@@ -77,7 +77,7 @@
                     NexusList.Add(hq);
                 }
 
-                if (EloBuddy.Game.Mode == GameMode.Running || EloBuddy.Game.Mode == GameMode.Paused || EloBuddy.Game.Mode == GameMode.Finished)
+                if (EloBuddy.Game.Mode == GameMode.Running)
                 {
                     //Otherwise the .ctor didn't return yet and no callback will occur
                     Utility.DelayAction.Add(500, () => { Game_OnGameStart(new EventArgs()); });

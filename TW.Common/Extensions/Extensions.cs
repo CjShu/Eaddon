@@ -227,7 +227,7 @@
                             (@base != null ? @base.ServerPosition : unit.Position).To2D()) > range * range);
         }
 
-        public static bool IsValidTargetEB(this AttackableUnit target,
+        public static bool IsValidTarget1(this AttackableUnit target,
             float? range = null,
             bool onlyEnemyTeam = true,
             Vector3? rangeCheckFrom = null)
