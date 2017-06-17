@@ -191,7 +191,7 @@
             return points;
         }
 
-        public static bool IsValidTarget1(
+        public static bool IsValidTarget(
             this AttackableUnit unit,
             float range = float.MaxValue,
             bool checkTeam = true,
@@ -227,7 +227,7 @@
                             (@base != null ? @base.ServerPosition : unit.Position).To2D()) > range * range);
         }
 
-        public static bool IsValidTarget(
+        public static bool IsValidTarget1(
             this AttackableUnit target,
             float? range = null,
             bool onlyEnemyTeam = true,

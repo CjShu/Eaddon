@@ -9,3 +9,4 @@ C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.
 C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.csproj.GenerateResource.Cache
 C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.dll
 C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.pdb
+C:\Users\user\Source\Repos\Eaddon\LeagueSharp.Data\obj\Release\LeagueSharp.Data.csprojResolveAssemblyReference.cache
