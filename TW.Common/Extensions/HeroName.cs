@@ -83,7 +83,7 @@
             new HeroNameEntity("Elise", "伊莉絲"),
             new HeroNameEntity("Evelynn", "伊芙琳"),
             new HeroNameEntity("Ezreal", "伊澤瑞爾"),
-            new HeroNameEntity("Fiddlesticks", "費德提克"),
+            new HeroNameEntity("FiddleSticks", "費德提克"),
             new HeroNameEntity("Fiora", "菲歐拉"),
             new HeroNameEntity("Fizz", "飛斯"),
             new HeroNameEntity("Galio", "加里歐"),
