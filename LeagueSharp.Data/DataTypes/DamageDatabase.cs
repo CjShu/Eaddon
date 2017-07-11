@@ -28,7 +28,7 @@
         /// </summary>
         internal static readonly IDictionary<string, byte[]> DamageFiles = new Dictionary<string, byte[]>
                                                                                {
-                                                                                  { "6.11", Resources._6_11 } 
+                                                                                  { "7.13", Resources._7_13 } 
                                                                                };
 
         #endregion
@@ -97,7 +97,7 @@
         /// </summary>
         void IDataType.Initialize()
         {
-            var version = new System.Version("6.11");
+            var version = new System.Version("7.13");
             var versionString = $"{version.Major}.{version.Minor}";
 
             var fileBytes = DamageFiles.ContainsKey(versionString)
@@ -378,6 +378,12 @@
         ///     The scale per target missing health.
         /// </value>
         public double ScalePerTargetMissHealth { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the scale per crit percent.
+        /// </summary>
+        /// <value>The scale per crit percent.</value>
+        public double ScalePerCritPercent { get; set; }
 
         /// <summary>
         ///     Gets the Scaling Slot.
