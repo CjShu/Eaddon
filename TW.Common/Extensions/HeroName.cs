@@ -109,6 +109,7 @@
             new HeroNameEntity("Kassadin", "卡薩丁"),
             new HeroNameEntity("Katarina", "卡特蓮娜"),
             new HeroNameEntity("Kayle", "凱爾"),
+            new HeroNameEntity("Kayn", "慨影"),
             new HeroNameEntity("Kennen", "凱能"),
             new HeroNameEntity("Khazix", "卡力斯"),
             new HeroNameEntity("Kindred", "鏡爪"),
