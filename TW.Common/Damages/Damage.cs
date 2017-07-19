@@ -3857,7 +3857,7 @@ namespace TW.Common
                                 Damage =
                                     (source, target, level) =>
                                     new double[] { 80, 125, 170, 215, 260 }[level]
-                                    + 1.2 * source.FlatPhysicalDamageMod + 1 * source.FlatMagicDamageMod
+                                    + 1.2 * source.FlatPhysicalDamageMod + 0.8 * source.FlatMagicDamageMod
                             },
 
                         // R
