@@ -7,92 +7,120 @@
     public static class MasteryData
     {
         #region Enums
-        // updated 7 december 2016
+
         public enum Cunning
         {
-            Wanderer = 65,
 
-            Savagery = 66,
+            Wanderer = 80,
 
-            RunicAffinity = 81,
+            Savagery = 43,
 
-            SecretStash = 82,
+            RunicAffinity = 39,
 
-            Meditation = 98,
+            SecretStash = 108,
 
-            Merciless = 97,
+            Assassin = 18,
 
-            Bandit = 114,
+            Merciless = 60,
 
-            DangerousGame = 115,
+            Meditation = 74,
 
-            Precision = 129,
+            GreenFathersGift = 90,
 
-            Intelligence = 130,
+            Bandit = 6,
 
-            StormraidersSurge = 145,
+            DangerousGame = 11,
 
-            ThunderlordsDecree = 146,
+            Precision = 33,
 
-            WindspeakerBlessing = 147
+            Intelligence = 76,
+
+            StormraidersSurge = 111,
+
+            ThunderlordsDecree = 65,
+
+            WindspeakersBlessing = 118,
+
         }
 
-        // updated 7 december 2016
+
         public enum Ferocity
         {
-            Fury = 65,
+            Fury = 80,
 
-            Sorcery = 68,
+            Sorcery = 38,
 
-            DoubleEdgedSword = 81,
+            FreshBlood = 39,
 
-            Vampirism = 97,
+            Feast = 108,
 
-            NaturalTalent = 100,
+            ExposeWeakness = 18,
 
-            Feast = 82,
+            Vampirism = 60,
 
-            BountyHunter = 113,
+            NaturalTalent = 7,
+
+            BountyHunter = 90,
+
+            DoubleEdgedSword = 6,
+
+            BattleTrance = 11,
+
+            BatteringBlows = 33,
+
+            PiercingThoughts = 72,
+
+            WarlordsBloodlust = 111,
+
+            FervorofBattle = 65,
+
+            DeathfireTouch = 112,
 
             Oppresor = 114,
 
-            BatteringBlows = 129,
+            DeathFireTouch = 137,
 
-            PiercingThoughts = 132,
-
-            WarlordsBloodlust = 145,
-
-            FervorofBattle = 146,
-
-            DeathFireTouch = 137
         }
 
-        //updated 7 december 2016
+        //untested cause resolve page broken
         public enum Resolve
         {
-            Recovery = 65,
-
-            Unyielding = 66,
-
-            Explorer = 81,
-
-            ToughSkin = 82,
-
-            RunicArmor = 97,
 
             VeteransScar = 98,
 
-            Insight = 113,
-
-            Swiftness = 129,
-
-            LegendaryGuardian = 130,
-
-            GraspoftheUndying = 145,
-
             StrengthoftheAges = 146,
 
-            BondofStones = 147
+            BondofStones = 147,
+
+            Recovery = 80,
+
+            Unyielding = 43,
+
+            Explorer = 0,
+
+            ToughSkin = 18,
+
+            Siegemaster = 0,
+
+            RunicArmor = 60,
+
+            VeteransScars = 74,
+
+            Insight = 90,
+
+            Perseverance = 0,
+
+            Fearless = 0,
+
+            Swiftness = 0,
+
+            LegendaryGuardian = 0,
+
+            GraspoftheUndying = 0,
+
+            CourageOfTheColossus = 0,
+
+            StonebornPact = 0
         }
 
         #endregion
@@ -124,6 +152,37 @@
         {
             return mastery.Points >= 1;
         }
+
+        public static Mastery GetCunningPage(this AIHeroClient hero, Cunning cunning)
+        {
+            return hero?.GetMastery(MasteryPage.Cunning, (uint)cunning);
+        }
+
+        public static Mastery GetFerocityPage(this AIHeroClient hero, Ferocity ferocity)
+        {
+            return hero?.GetMastery(MasteryPage.Ferocity, (uint)ferocity);
+        }
+
+        public static Mastery GetResolvePage(this AIHeroClient hero, Resolve resolve)
+        {
+            return hero?.GetMastery(MasteryPage.Resolve, (uint)resolve);
+        }
+
+        public static Mastery GetMastery(this AIHeroClient hero, MasteryPage page, uint id)
+        {
+            return hero?.Masteries.FirstOrDefault(m => m != null && m.Page == page && m.Id == id);
+        }
+
+        public static bool IsUsingMastery(this AIHeroClient hero, Mastery mastery)
+        {
+            return mastery?.Points > 0;
+        }
+
+        public static bool IsUsingMastery(this AIHeroClient hero, MasteryPage page, uint mastery)
+        {
+            return hero?.GetMastery(page, mastery) != null;
+        }
+
         #endregion
     }
 }

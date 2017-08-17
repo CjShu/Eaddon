@@ -19,6 +19,8 @@
         /// </summary>
         private static readonly Dictionary<int, PredictedDamage> ActiveAttacks = new Dictionary<int, PredictedDamage>();
 
+        private static int lastTick;
+
         #endregion
 
         #region Constructors and Destructors
@@ -28,11 +30,11 @@
         /// </summary>
         static HealthPrediction()
         {
-            //Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
             Game.OnTick += Game_OnGameUpdate;
             Spellbook.OnStopCast += SpellbookOnStopCast;
             GameObject.OnDelete += MissileClient_OnDelete;
             Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
+            Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
             Obj_AI_Base.OnBasicAttack += ObjAiBaseOnOnProcessSpellCast;
         }
 
@@ -181,7 +183,32 @@
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         static void MissileClient_OnDelete(GameObject sender, EventArgs args)
         {
+            if (!sender.IsValid)
+            {
+                return;
+            }
+
+            var aiBase = sender as Obj_AI_Base;
+
+            if (aiBase != null)
+            {
+                var objNetworkId = aiBase.NetworkId;
+
+                if (ActiveAttacks.ContainsKey(objNetworkId))
+                {
+                    ActiveAttacks.Remove(objNetworkId);
+                    return;
+                }
+
+                foreach (var activeAttack in ActiveAttacks.Values.Where(i => i.Target.NetworkId == aiBase.NetworkId))
+                {
+                    ActiveAttacks.Remove(activeAttack.Source.NetworkId);
+                }
+                return;
+            }
+
             var missile = sender as MissileClient;
+
             if (missile != null && missile.SpellCaster != null)
             {
                 var casterNetworkId = missile.SpellCaster.NetworkId;
@@ -202,9 +229,14 @@
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void Obj_AI_Base_OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (ActiveAttacks.ContainsKey(sender.NetworkId) && sender.IsMelee)
+            if (sender.IsValid && sender.IsMelee)
             {
-                ActiveAttacks[sender.NetworkId].Processed = true;
+                var casterNetworkId = sender.NetworkId;
+
+                if (ActiveAttacks.ContainsKey(casterNetworkId))
+                {
+                    ActiveAttacks[casterNetworkId].Processed = true;
+                }
             }
         }
 
@@ -242,14 +274,13 @@
         /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (/*spellbook.IsValid &&*/ args.StopAnimation && args.DestroyMissile)
+            if (spellbook.IsValid && args.StopAnimation && args.DestroyMissile)
             {
-                if (spellbook.IsMelee)
+                var casterNetworkId = spellbook.NetworkId;
+
+                if (ActiveAttacks.ContainsKey(casterNetworkId))
                 {
-                    if (ActiveAttacks.ContainsKey(spellbook.NetworkId))
-                    {
-                        ActiveAttacks.Remove(spellbook.NetworkId);
-                    }
+                    ActiveAttacks.Remove(casterNetworkId);
                 }
             }
         }

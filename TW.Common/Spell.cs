@@ -3,15 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.InteropServices;
+
     using TW.Common.Data;
     using LeagueSharp.Data.Enumerations;
-
-    using SharpDX;
-    using Extensions;
     using EloBuddy;
-
-    // ReSharper disable once InconsistentNaming
+    using Extensions;
+    using SharpDX;
 
     /// <summary>
     ///     This class allows you to handle the spells easily.
@@ -24,8 +21,6 @@
         ///     check if the spell is being channeled
         /// </summary>
         public bool IsChanneling = false;
-        public EloBuddy.SDK.Spell.Skillshot skillshot { get; set; }
-        public EloBuddy.SDK.Spell.Chargeable charge { get; set; }
 
         /// <summary>
         ///     Diffrenet object names
@@ -409,7 +404,7 @@
                 {
                     return baseRange;
                 }
-                
+
                 if (this.IsCharging)
                 {
                     return this.ChargedMinRange
@@ -418,7 +413,6 @@
                                (Utils.TickCount - this._chargedCastedT) * (this.ChargedMaxRange - this.ChargedMinRange)
                                / this.ChargeDuration - 150);
                 }
-                
 
                 return this.ChargedMaxRange;
             }
@@ -893,23 +887,23 @@
             float overrideRange = -1,
             CollisionableObjects[] collisionable = null)
         {
-            return Prediction.GetPrediction(
-                new PredictionInput
-                    {
-                        Unit = unit,
-                        Delay = this.Delay,
-                        Radius = this.Width,
-                        Speed = this.Speed,
-                        From = this.From,
-                        Range = (overrideRange > 0) ? overrideRange : this.Range,
-                        Collision = this.Collision,
-                        Type = this.Type,
-                        RangeCheckFrom = this.RangeCheckFrom,
-                        Aoe = aoe,
-                        CollisionObjects =
-                            collisionable
-                            ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
-                    });
+            return
+                Prediction.GetPrediction(
+                    new PredictionInput
+                        {
+                            Unit = unit,
+                            Delay = this.Delay,
+                            Radius = this.Width,
+                            Speed = this.Speed,
+                            From = this.From,
+                            Range = (overrideRange > 0) ? overrideRange : this.Range,
+                            Collision = this.Collision,
+                            Type = this.Type,
+                            RangeCheckFrom = this.RangeCheckFrom,
+                            Aoe = aoe,
+                            CollisionObjects =
+                                collisionable ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
+                        });
         }
 
         /// <summary>
@@ -1019,19 +1013,9 @@
             this._chargedCastedT = 0;
 
             Obj_AI_Base.OnProcessSpellCast += this.Obj_AI_Hero_OnProcessSpellCast;
-            //Spell.SpellbookUpdateChargedSpell += this.SpellSpellbookUpdateChargedSpell;
             Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
             Spellbook.OnCastSpell += this.SpellbookOnCastSpell;
         }
-
-        private void SpellSpellbookUpdateChargedSpell(Spellbook sender, SpellbookUpdateChargedSpellEventArgs args)
-        {
-            if (sender.Owner.IsMe && Utils.TickCount - this._chargedReqSentT < 3000 && args.ReleaseCast)
-            {
-                args.Process = false;
-            }
-        }
-
 
         /// <summary>
         ///     Spell setings
@@ -1106,7 +1090,6 @@
             this.RangeCheckFrom = rangeCheckFrom;
             this.IsSkillshot = false;
         }
-
 
         /// <summary>
         ///     Start charging the spell if its not charging.
@@ -1204,65 +1187,6 @@
         }
 
         #endregion
-
-
-        public static event SpellbookUpdateChargedSpellEvenH SpellbookUpdateChargedSpell;
-        public delegate void SpellbookUpdateChargedSpellEvenH(Spellbook sender, SpellbookUpdateChargedSpellEventArgs args);
-
-        public class SpellbookUpdateChargedSpellEventArgs : EventArgs
-        {
-            private SpellSlot slot;
-            private Vector3 position;
-            private bool releaseCast;
-            private int _process;
-
-            public bool Process
-            {
-                [return: MarshalAs(UnmanagedType.U1)]
-                get
-                {
-                    return this._process != 0;
-                }
-                [param: MarshalAs(UnmanagedType.U1)]
-                set
-                {
-                    this._process = (value ? 1: 0);
-                }
-            }
-
-            public bool ReleaseCast
-            {
-                [return: MarshalAs(UnmanagedType.U1)]
-                get
-                {
-                    return this.releaseCast;
-                }
-            }
-
-            public Vector3 Position
-            {
-                get
-                {
-                    return this.position;
-                }
-            }
-
-            public SpellSlot Slot
-            {
-                get
-                {
-                    return this.slot;
-                }
-            }
-
-            public SpellbookUpdateChargedSpellEventArgs(SpellSlot _slot, Vector3 _position, [MarshalAs(UnmanagedType.U1)] bool _releaseCast, int process)
-            {
-                this.slot = _slot;
-                this.position = _position;
-                this.releaseCast = _releaseCast;
-                this._process = process;
-            }
-        }
 
         #region Methods
 
@@ -1397,7 +1321,6 @@
             return CastStates.SuccessfullyCasted;
         }
 
-
         /// <summary>
         ///     Fired when the game processes a spell cast.
         /// </summary>
@@ -1407,7 +1330,7 @@
         {
             if (sender.IsMe && args.SData.Name == this.ChargedSpellName)
             {
-                this._chargedCastedT = Utils.TickCount - Game.Ping;
+                this._chargedCastedT = Utils.TickCount;
             }
         }
 
@@ -1486,6 +1409,11 @@
             }
         }
 
+        /// <summary>
+        ///     Fired when the charged spell is updated.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="SpellbookUpdateChargeableSpellEventArgs" /> instance containing the event data.</param>
         void Spellbook_OnUpdateChargedSpell(Spellbook sender, SpellbookUpdateChargeableSpellEventArgs args)
         {
             if (sender.Owner.IsMe && Utils.TickCount - this._chargedReqSentT < 3000 && args.ReleaseCast)

@@ -24,7 +24,7 @@
 
         private static void Initialize()
         {
-            Core.DelayAction(() =>
+            EloBuddy.SDK.Core.DelayAction(() =>
                 {
                     var multiplicator = new Vector3(1000, 1000, 0).WorldToMinimap().Distance(new Vector3(2000, 1000, 0).WorldToMinimap()) / 1000f;
                     if (multiplicator <= float.Epsilon)

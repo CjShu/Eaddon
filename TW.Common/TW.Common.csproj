@@ -77,10 +77,20 @@
     <Compile Include="BetterWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Cache\GameObjectEqualityComparer.cs" />
+    <Compile Include="Cache\GameObjects.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Core\Third_Party\clipper.cs" />
     <Compile Include="CustomEvents.cs" />
     <Compile Include="CustomizableAntiGapcloser.cs" />
     <Compile Include="Damages\Damage.cs" />
+    <Compile Include="Damages\DamageReduction.cs" />
+    <Compile Include="Damages\ItemIds.cs" />
+    <Compile Include="Damages\JSON\DamageScalingTarget.cs" />
+    <Compile Include="Damages\JSON\DamageScalingType.cs" />
+    <Compile Include="Damages\JSON\DamageSpellBonus.cs" />
+    <Compile Include="Damages\JSON\DamageSpellData.cs" />
+    <Compile Include="Damages\JSON\SpellEffectType.cs" />
     <Compile Include="Dash.cs" />
     <Compile Include="Data\ItemData.cs" />
     <Compile Include="Data\MasteryData.cs" />

@@ -26,38 +26,10 @@ namespace TW.Common.Extensions
     using System.Linq;
     using EloBuddy;
     using SharpDX;
+    using System.Collections.Generic;
 
     public static class VectorExtensions
     {
-        /// <summary>
-        ///     Checks if the unit position is on screen
-        /// </summary>
-        public static bool IsOnScreen(this Vector3 position)
-        {
-            var pos = Drawing.WorldToScreen(position);
-            return pos.X > 0 && pos.X <= Drawing.Width && pos.Y > 0 && pos.Y <= Drawing.Height;
-        }
-
-        public static bool IsOnScreen(this Vector3 position, float radius)
-        {
-            var pos = Drawing.WorldToScreen(position);
-            return !(pos.X + radius < 0) && !(pos.X - radius > Drawing.Width) && !(pos.Y + radius < 0) &&
-                   !(pos.Y - radius > Drawing.Height);
-        }
-
-        /// <summary>
-        ///     Checks if the unit position is on screen
-        /// </summary>
-        public static bool IsOnScreen(this Vector2 position)
-        {
-            return position.To3D().IsOnScreen();
-        }
-
-        public static bool IsOnScreen(this Vector2 position, float radius)
-        {
-            return position.To3D().IsOnScreen(radius);
-        }
-
         public static bool IsOnScreen(this Vector2 start, Vector2 end)
         {
             if (start.X > 0 && start.X < Drawing.Width && start.Y > 0 && start.Y < Drawing.Height && end.X > 0 &&
@@ -129,35 +101,5 @@ namespace TW.Common.Extensions
         {
             return IsInsideCircle(lineStart, circlePos, circleRadius) ^ IsInsideCircle(lineEnd, circlePos, circleRadius);
         }
-
-        /*
-        public static Obj_AI_Minion GetNearestMinionByNames(this Vector3 position, string[] names)
-        {
-            var nearest = float.MaxValue;
-            Obj_AI_Minion sMinion = null;
-            foreach (var minion in
-                GameObjects.Jungle.Where(
-                    minion => names.Any(name => minion.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))))
-            {
-                var distance = Vector3.Distance(position, minion.ServerPosition);
-                if (nearest > distance || nearest.Equals(float.MaxValue))
-                {
-                    nearest = distance;
-                    sMinion = minion;
-                }
-            }
-            return sMinion;
-        }
-
-        public static Obj_AI_Minion GetMinionFastByNames(this Vector3 position, float range, string[] names)
-        {
-            return GameObjects.Jungle.FirstOrDefault(m => names.Any(n => m.Name.Equals(n)) && m.IsValidTarget(range));
-        }
-
-        public static Obj_AI_Minion GetNearestMinionByNames(this Vector2 position, string[] names)
-        {
-            return GetNearestMinionByNames(position.To3D(), names);
-        }
-        */
     }
 }

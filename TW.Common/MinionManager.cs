@@ -229,7 +229,7 @@
                           where minion.IsValidTarget(range, false, @from)
                           let minionTeam = minion.Team
                           where
-                          team == MinionTeam.Neutral && minionTeam == GameObjectTeam.Neutral && !minion.BaseSkinName.Contains("Plant")
+                          team == MinionTeam.Neutral && minionTeam == GameObjectTeam.Neutral
                           || team == MinionTeam.Ally
                           && minionTeam
                           == (ObjectManager.Player.Team == GameObjectTeam.Chaos
@@ -242,14 +242,14 @@
                                   : GameObjectTeam.Chaos)
                           || team == MinionTeam.NotAlly && minionTeam != ObjectManager.Player.Team
                           || team == MinionTeam.NotAllyForEnemy
-                          && (minionTeam == ObjectManager.Player.Team || minionTeam == GameObjectTeam.Neutral && !minion.BaseSkinName.Contains("Plant"))
+                          && (minionTeam == ObjectManager.Player.Team || minionTeam == GameObjectTeam.Neutral)
                           || team == MinionTeam.All
                           where
                           minion.IsMelee() && type == MinionTypes.Melee
                           || !minion.IsMelee() && type == MinionTypes.Ranged || type == MinionTypes.All
                           where
                           IsMinion(minion)
-                          || minionTeam == GameObjectTeam.Neutral && !minion.BaseSkinName.Contains("Plant") && minion.MaxHealth > 5 && minion.IsHPBarRendered
+                          || minionTeam == GameObjectTeam.Neutral && minion.MaxHealth > 5 && minion.IsHPBarRendered
                           select minion).Cast<Obj_AI_Base>().ToList();
 
             switch (order)
@@ -329,8 +329,7 @@
         /// <returns><c>true</c> if the specified minion is minion; otherwise, <c>false</c>.</returns>
         public static bool IsMinion(Obj_AI_Minion minion, bool includeWards = false)
         {
-            //return minion.Name.Contains("Minion") || includeWards && IsWard(minion);
-            return IsMinion(minion as Obj_AI_Base, includeWards);
+            return minion.Name.Contains("Minion") || includeWards && IsWard(minion);
         }
 
         /// <summary>
@@ -352,13 +351,6 @@
         public static bool IsWard(Obj_AI_Minion minion)
         {
             return minion.Name.Contains("Ward") && minion.IsHPBarRendered;
-        }
-
-        public static bool IsMinion(Obj_AI_Base minion, bool includeWards = false)
-        {
-            var name = minion.CharData.BaseSkinName.ToLower();
-            return name.Contains("minion") || name.Contains("bilge") || name.Contains("bw_") ||
-                   (includeWards && (name.Contains("ward") || name.Contains("trinket")));
         }
 
         #endregion
@@ -422,140 +414,6 @@
             }
 
             #endregion
-        }
-    }
-
-    public class MinionCacheManager
-    {
-        public static HashSet<MissileClient> MissileList = new HashSet<MissileClient>();
-        public static List<Obj_AI_Base> AllMinionsObj = new List<Obj_AI_Base>();
-        public static List<Obj_AI_Base> MinionsListEnemy = new List<Obj_AI_Base>();
-        public static List<Obj_AI_Base> MinionsListAlly = new List<Obj_AI_Base>();
-        public static List<Obj_AI_Base> MinionsListNeutral = new List<Obj_AI_Base>();
-        public static List<Obj_AI_Turret> TurretList = ObjectManager.Get<Obj_AI_Turret>().ToList();
-        public static List<Obj_HQ> NexusList = ObjectManager.Get<Obj_HQ>().ToList();
-        public static List<Obj_BarracksDampener> InhiList = ObjectManager.Get<Obj_BarracksDampener>().ToList();
-
-        static MinionCacheManager()
-        {
-            foreach (var minion in ObjectManager.Get<Obj_AI_Minion>().Where(minion => minion.IsValid))
-            {
-                AddMinionObject(minion);
-                if (!minion.IsAlly)
-                    AllMinionsObj.Add(minion);
-            }
-            GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            Game.OnUpdate += Game_OnUpdate;
-        }
-
-        private static void Game_OnUpdate(EventArgs args)
-        {
-            MinionsListEnemy.RemoveAll(minion => !IsValidMinion(minion));
-            MinionsListNeutral.RemoveAll(minion => !IsValidMinion(minion));
-            MinionsListAlly.RemoveAll(minion => !IsValidMinion(minion));
-            AllMinionsObj.RemoveAll(minion => !IsValidMinion(minion));
-            MissileList.RemoveWhere(missile => !missile.IsValid);
-        }
-
-        private static void Obj_AI_Base_OnCreate(GameObject sender, EventArgs args)
-        {
-            var minion = sender as Obj_AI_Minion;
-            if (minion != null)
-            {
-                AddMinionObject(minion);
-                if (!minion.IsAlly)
-                    AllMinionsObj.Add(minion);
-            }
-            var missile = sender as MissileClient;
-            if (missile != null)
-            {
-                if (missile.Target != null)
-                {
-                    if (missile.Target is AIHeroClient)
-                        MissileList.Add(missile);
-                }
-                else
-                    MissileList.Add(missile);
-            }
-        }
-
-        public static List<Obj_AI_Base> GetMinions(Vector3 from, float range = float.MaxValue, MinionTeam team = MinionTeam.Enemy)
-        {
-            if (team == MinionTeam.Enemy)
-            {
-
-                return MinionsListEnemy.FindAll(minion => CanReturn(minion, from, range));
-            }
-            else if (team == MinionTeam.Ally)
-            {
-
-                return MinionsListAlly.FindAll(minion => CanReturn(minion, from, range));
-            }
-            else if (team == MinionTeam.Neutral)
-            {
-
-                return MinionsListNeutral.Where(minion => CanReturn(minion, from, range))
-                    .OrderByDescending(minion => minion.MaxHealth).ToList();
-            }
-            else if (team == MinionTeam.NotAlly)
-            {
-                return AllMinionsObj.FindAll(minion => CanReturn(minion, from, range));
-            }
-            else
-            {
-                return AllMinionsObj.FindAll(minion => CanReturn(minion, from, range));
-            }
-        }
-
-        private static void AddMinionObject(Obj_AI_Minion minion)
-        {
-            if (minion.MaxHealth >= 225)
-            {
-                if (minion.Team == GameObjectTeam.Neutral)
-                {
-                    MinionsListNeutral.Add(minion);
-                }
-                else if (minion.MaxMana == 0 && minion.MaxHealth >= 250)
-                {
-                    if (minion.Team == GameObjectTeam.Unknown)
-                        return;
-                    else if (minion.Team != ObjectManager.Player.Team)
-                        MinionsListEnemy.Add(minion);
-                    else if (minion.Team == ObjectManager.Player.Team)
-                        MinionsListAlly.Add(minion);
-                }
-            }
-        }
-
-        private static bool IsValidMinion(Obj_AI_Base minion)
-        {
-            if (minion == null || !minion.IsValid || minion.IsDead)
-                return false;
-            else
-                return true;
-        }
-
-        private static bool CanReturn(Obj_AI_Base minion, Vector3 from, float range)
-        {
-
-            if (minion != null && minion.IsValid && !minion.IsDead && minion.IsVisible && minion.IsTargetable && !minion.BaseSkinName.Contains("Plant"))
-            {
-                if (range == float.MaxValue)
-                    return true;
-                else if (range == 0)
-                {
-                    if (Orbwalking.InAutoAttackRange(minion))
-                        return true;
-                    else
-                        return false;
-                }
-                else if (Vector2.DistanceSquared((@from).To2D(), minion.Position.To2D()) < range * range)
-                    return true;
-                else
-                    return false;
-            }
-            else
-                return false;
         }
     }
 }

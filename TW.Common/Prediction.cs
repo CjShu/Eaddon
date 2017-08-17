@@ -4,6 +4,7 @@ namespace TW.Common
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
+
     using SharpDX;
     using EloBuddy;
     using Extensions;
@@ -13,15 +14,49 @@ namespace TW.Common
     /// </summary>
     public enum HitChance
     {
-
+        /// <summary>
+        ///     The target is immobile.
+        /// </summary>
         Immobile = 8,
+
+        /// <summary>
+        ///     The unit is dashing.
+        /// </summary>
         Dashing = 7,
+
+        /// <summary>
+        ///     Very high probability of hitting the target.
+        /// </summary>
         VeryHigh = 6,
+
+        /// <summary>
+        ///     High probability of hitting the target.
+        /// </summary>
         High = 5,
+
+        /// <summary>
+        ///     Medium probability of hitting the target.
+        /// </summary>
         Medium = 4,
+
+        /// <summary>
+        ///     Low probability of hitting the target.
+        /// </summary>
         Low = 3,
+
+        /// <summary>
+        ///     Impossible to hit the target.
+        /// </summary>
         Impossible = 2,
+
+        /// <summary>
+        ///     The target is out of range.
+        /// </summary>
         OutOfRange = 1,
+
+        /// <summary>
+        ///     The target is blocked by other units.
+        /// </summary>
         Collision = 0
     }
 
@@ -30,8 +65,19 @@ namespace TW.Common
     /// </summary>
     public enum SkillshotType
     {
+        /// <summary>
+        ///     The skillshot is linear.
+        /// </summary>
         SkillshotLine,
+
+        /// <summary>
+        ///     The skillshot is circular.
+        /// </summary>
         SkillshotCircle,
+
+        /// <summary>
+        ///     The skillshot is conical.
+        /// </summary>
         SkillshotCone
     }
 
@@ -40,11 +86,29 @@ namespace TW.Common
     /// </summary>
     public enum CollisionableObjects
     {
-
+        /// <summary>
+        ///     Minions.
+        /// </summary>
         Minions,
+
+        /// <summary>
+        ///     Enemy heroes.
+        /// </summary>
         Heroes,
+
+        /// <summary>
+        ///     Yasuo's Wind Wall (W)
+        /// </summary>
         YasuoWall,
+
+        /// <summary>
+        ///     Walls.
+        /// </summary>
         Walls,
+
+        /// <summary>
+        ///     Ally heroes.
+        /// </summary>
         Allies
     }
 
@@ -358,8 +422,8 @@ namespace TW.Common
         {
             CustomEvents.Game.OnGameLoad += eventArgs =>
                 {
-                    _menu = new Menu("Common \u9810\u6e2c", "Prediction");
-                    var slider = new MenuItem("PredMaxRange", "\u9810\u6e2c \u6700\u5927\u7bc4\u570d %").SetValue(new Slider(100, 70, 100));
+                    _menu = new Menu("Prediction", "Prediction");
+                    var slider = new MenuItem("PredMaxRange", "Max Range %").SetValue(new Slider(100, 70, 100));
                     _menu.AddItem(slider);
                     CommonMenu.Instance.AddSubMenu(_menu);
                 };
@@ -1180,7 +1244,7 @@ namespace TW.Common
         /// </summary>
         static Collision()
         {
-            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
+            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
         }
 
         #endregion
@@ -1333,7 +1397,7 @@ namespace TW.Common
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
-        private static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender.IsValid && sender.Team != ObjectManager.Player.Team && args.SData.Name == "YasuoWMovingWall")
             {
@@ -1447,7 +1511,7 @@ namespace TW.Common
         /// </summary>
         static PathTracker()
         {
-            Obj_AI_Base.OnNewPath += AIHeroClient_OnNewPath;
+            Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
         }
 
         #endregion
@@ -1552,7 +1616,7 @@ namespace TW.Common
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="GameObjectNewPathEventArgs" /> instance containing the event data.</param>
-        private static void AIHeroClient_OnNewPath(Obj_AI_Base sender, GameObjectNewPathEventArgs args)
+        private static void Obj_AI_Hero_OnNewPath(Obj_AI_Base sender, GameObjectNewPathEventArgs args)
         {
             if (!(sender is AIHeroClient))
             {

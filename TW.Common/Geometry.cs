@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using ClipperLib;
-
+    using TW.Common.Core.Third_Party;
+    //using ClipperLib;
     using SharpDX;
 
     using Color = System.Drawing.Color;

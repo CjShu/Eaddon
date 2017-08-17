@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using LeagueSharp.Data.DataTypes;
+
     using EloBuddy;
     using Extensions;
 
@@ -126,7 +127,6 @@
             // Listen to required events
             Game.OnUpdate += Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
-            //Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnProcessSpellCast;
             Spellbook.OnStopCast += Spellbook_OnStopCast;
         }
 
@@ -146,7 +146,6 @@
         {
             Game.OnUpdate -= Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast -= Obj_AI_Base_OnProcessSpellCast;
-            //Obj_AI_Base.OnSpellCast -= Obj_AI_Base_OnProcessSpellCast;
             Spellbook.OnStopCast -= Spellbook_OnStopCast;
         }
 
@@ -254,6 +253,7 @@
         private static void Spellbook_OnStopCast(Obj_AI_Base sender, SpellbookStopCastEventArgs args)
         {
             var target = sender.Spellbook.Owner as AIHeroClient;
+            //var target = sender as AIHeroClient;
 
             if (target != null)
             {

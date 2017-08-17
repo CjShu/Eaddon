@@ -27,51 +27,47 @@
         #region Public Methods and Operators
 
         /// <summary>
-        ///     Returns the unit's ability power
+        ///     Returns the current health a determined unit has, in percentual.
         /// </summary>
-        [Obsolete("Use TotalMagicalDamage attribute.", false)]
-        public static float AbilityPower(this Obj_AI_Base @base)
+        /// <param name="unit">The unit.</param>
+        public static float HealthPercent(this AttackableUnit unit)
         {
-            return @base.FlatMagicDamageMod + (@base.PercentMagicDamageMod * @base.FlatMagicDamageMod);
-        }
-
-        [Obsolete("Use CountEnemiesInRange", false)]
-        public static int CountEnemysInRange(this Obj_AI_Base unit, float range)
-        {
-            return unit.ServerPosition.CountEnemiesInRange(range);
-        }
-
-        [Obsolete("Use CountEnemiesInRange", false)]
-        public static int CountEnemysInRange(this Vector3 point, float range)
-        {
-            return point.CountEnemiesInRange(range);
-        }
-
-        [Obsolete("Use HealthPercent attribute.", false)]
-        public static float HealthPercentage(this Obj_AI_Base unit)
-        {
-            return unit.HealthPercent;
-        }
-
-        [Obsolete("Use TotalAttackDamage attribute from LeagueSharp.Core", false)]
-        public static float TotalAttackDamage(this AIHeroClient target)
-        {
-            return target.TotalAttackDamage;
-        }
-
-        [Obsolete("Use TotalMagicalDamage from Leaguesharp.Core.", false)]
-        public static float TotalMagicalDamage(this AIHeroClient target)
-        {
-            return target.TotalMagicalDamage;
+            return unit.Health / unit.MaxHealth * 100;
         }
 
         /// <summary>
-        ///     Returns the unit's mana percentage (From 0 to 100).
+        ///     Determines whether the specified hero target has a determined item.
         /// </summary>
-        [Obsolete("Use ManaPercent attribute.", false)]
-        public static float ManaPercentage(this Obj_AI_Base unit)
+        /// <param name="from">The target.</param>
+        /// <param name="itemId">The item's ID.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified hero target has the 'itemId' item; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool HasItem(this AIHeroClient from, uint itemId)
         {
-            return unit.ManaPercent;
+            return from.InventoryItems.Any(slot => slot.Id == (ItemId)itemId);
+        }
+
+        /// <summary>
+        ///     Determines whether the specified target has a determined item.
+        /// </summary>
+        /// <param name="from">The target.</param>
+        /// <param name="itemId">The item's ID.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified target has the 'itemId' item; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool HasItem(this Obj_AI_Base from, uint itemId)
+        {
+            return from.InventoryItems.Any(slot => slot.Id == (ItemId)itemId);
+        }
+
+        /// <summary>
+        ///     Gets the buffs of the unit which are valid and active
+        /// </summary>
+        /// <param name="unit">The unit.</param>
+        public static BuffInstance[] ValidActiveBuffs(this Obj_AI_Base unit)
+        {
+            return unit.Buffs.Where(buff => buff.IsValid && buff.IsActive).ToArray();
         }
 
         #endregion
@@ -208,12 +204,6 @@
                 return false;
             }
 
-            var obj = unit as Obj_AI_Base;
-            if (obj != null && !obj.IsHPBarRendered)
-            {
-                return false;
-            }
-
             if (unit.Name == "WardCorpse")
             {
                 return false;
@@ -227,100 +217,11 @@
                             (@base != null ? @base.ServerPosition : unit.Position).To2D()) > range * range);
         }
 
-        public static bool IsValidTarget1(
-            this AttackableUnit target,
-            float? range = null,
-            bool onlyEnemyTeam = true,
-            Vector3? rangeCheckFrom = null)
-        {
-            if (target == null)
-            {
-                return false;
-            }
-            if (!target.IsValid || target.IsDead || !target.IsVisible || target.IsInvulnerable)
-            {
-                return false;
-            }
-            if (onlyEnemyTeam && Player.Instance.Team == target.Team)
-            {
-                return false;
-            }
-            Obj_AI_Base obj_AI_Base = target as Obj_AI_Base;
-            if (obj_AI_Base != null && !obj_AI_Base.IsHPBarRendered)
-            {
-                return false;
-            }
-            if (obj_AI_Base.HasBuff("FizzE"))
-            {
-                return false;
-            }
-            if (!range.HasValue)
-            {
-                return true;
-            }
-            range = new float?(range.Value.Pow());
-            Vector3 pos = (obj_AI_Base != null) ? obj_AI_Base.ServerPosition : target.Position;
-            if (!rangeCheckFrom.HasValue)
-            {
-                float num = ObjectManager.Player.ServerPosition.DistanceSquared(pos);
-                float? num2 = range;
-                return num < num2.GetValueOrDefault() && num2.HasValue;
-            }
-            float num3 = rangeCheckFrom.Value.Distance(pos, true);
-            float? num4 = range;
-            return num3 < num4.GetValueOrDefault() && num4.HasValue;
-        }
-
-        public static bool IsValidTargetEB(this AttackableUnit target, float? range = null, bool onlyEnemyTeam = false, Vector3? rangeCheckFrom = null)
-        {
-            if (target == null || !target.IsValid || target.IsDead || !target.IsVisible || !target.IsTargetable || target.IsInvulnerable)
-            {
-                return false;
-            }
-            if (onlyEnemyTeam && Player.Instance.Team == HeroManager.Player.Team)
-            {
-                return false;
-            }
-            Obj_AI_Base obj_AI_Base = target as Obj_AI_Base;
-            if (obj_AI_Base != null && !obj_AI_Base.IsHPBarRendered)
-            {
-                return false;
-            }
-            if (!range.HasValue)
-            {
-                return true;
-            }
-            range = new float?(range.Value.Pow());
-            Vector3 pos = (obj_AI_Base != null) ? obj_AI_Base.ServerPosition : target.Position;
-            if (!rangeCheckFrom.HasValue)
-            {
-                float num = HeroManager.Player.ServerPosition.DistanceSquared(pos);
-                float? num2 = range;
-                return num < num2.GetValueOrDefault() && num2.HasValue;
-            }
-            float num3 = rangeCheckFrom.Value.Distance(pos, true);
-            float? num4 = range;
-            return num3 < num4.GetValueOrDefault() && num4.HasValue;
-        }
-
-        public static bool IsValidTargetCommon(
-            this AttackableUnit target,
-            float range = float.MaxValue,
-            bool onlyEnemyTeam = true,
-            Vector3 from = default(Vector3))
-        {
-            return IsValidTarget(target, range, onlyEnemyTeam, from);
-        }
-
-        public static float Pow(this float number)
-        {
-            return number * number;
-        }
-
         public static List<Vector2> CutPath(this List<Vector2> path, float distance)
         {
             var result = new List<Vector2>();
             var Distance = distance;
+
             if (distance < 0)
             {
                 path[0] = path[0] + distance * (path[1] - path[0]).Normalized();
@@ -400,6 +301,60 @@
         public static int CountEnemiesInRange(this Vector3 point, float range)
         {
             return HeroManager.Enemies.Count(h => h.IsValidTarget(range, true, point));
+        }
+
+        /// <summary>
+        ///     Counts the ally heroes in range.
+        /// </summary>
+        /// <param name="vector3">The vector3.</param>
+        /// <param name="range">The range.</param>
+        /// <returns>How many ally heroes are inside a 'float' range from the starting 'vector3' point.</returns>
+        public static int CountAllyHeroesInRange(this Vector3 vector3, float range)
+        {
+            return Cache.GameObjects.AllyHeroes.Count(h => !h.IsMe && h.IsValidTarget(range, true, vector3));
+        }
+
+        /// <summary>
+        ///     Counts the ally heroes in range.
+        /// </summary>
+        /// <param name="unit">the unit.</param>
+        /// <param name="range">The range.</param>
+        /// <returns>How many ally heroes are inside a 'float' range from the starting 'unit' GameObject.</returns>
+        public static int CountAllyHeroesInRange(this GameObject unit, float range)
+        {
+            return unit.Position.CountAllyHeroesInRange(range);
+        }
+
+        /// <summary>
+        ///     Counts the enemy heroes in range.
+        /// </summary>
+        /// <param name="vector3">The vector3.</param>
+        /// <param name="range">The range.</param>
+        /// <param name="dontIncludeStartingUnit">The starting unit which should not be included in the counting.</param>
+        /// <returns>How many enemy heroes are inside a 'float' range from the starting 'vector3' point.</returns>
+        public static int CountEnemyHeroesInRange(
+            this Vector3 vector3,
+            float range,
+            Obj_AI_Base dontIncludeStartingUnit = null)
+        {
+            return Cache.GameObjects.EnemyHeroes.Count(
+                h => h.NetworkId != dontIncludeStartingUnit?.NetworkId
+                     && h.IsValidTarget(range, false, vector3));
+        }
+
+        /// <summary>
+        ///     Counts the enemy heroes in range.
+        /// </summary>
+        /// <param name="unit">the unit.</param>
+        /// <param name="range">The range.</param>
+        /// <param name="dontIncludeStartingUnit">The original unit.</param>
+        /// <returns>How many enemy heroes are inside a 'float' range from the starting 'unit' GameObject.</returns>
+        public static int CountEnemyHeroesInRange(
+            this GameObject unit,
+            float range,
+            Obj_AI_Base dontIncludeStartingUnit = null)
+        {
+            return unit.Position.CountEnemyHeroesInRange(range, dontIncludeStartingUnit);
         }
 
         public static List<AIHeroClient> GetAlliesInRange(this Obj_AI_Base unit, float range)
@@ -643,6 +598,31 @@
                 {
                     result = CutPath(path, (int)(unit.MoveSpeed * timePassed));
                 }
+            }
+
+            return result;
+        }
+
+        public static List<Vector2> GetWaypointsNew(this Obj_AI_Base unit)
+        {
+            var result = new List<Vector2>();
+
+            if (!unit.IsVisible)
+            {
+                return result;
+            }
+
+            result.Add(unit.ServerPosition.To2D());
+            var path = unit.Path;
+
+            if (path.Length <= 0)
+            {
+                return result;
+            }
+
+            for (var i = 1; i < path.Length; i++)
+            {
+                result.Add(path[i].To2D());
             }
 
             return result;
@@ -921,6 +901,35 @@
         {
             var nav = NavMesh.WorldToGrid(position.X, position.Y);
             return NavMesh.GetCell((short)nav.X, (short)nav.Y);
+        }
+
+        /// <summary>
+        ///     Checks if the unit position is on screen
+        /// </summary>
+        public static bool IsOnScreen(this Vector3 position)
+        {
+            var pos = Drawing.WorldToScreen(position);
+            return pos.X > 0 && pos.X <= Drawing.Width && pos.Y > 0 && pos.Y <= Drawing.Height;
+        }
+
+        public static bool IsOnScreen(this Vector3 position, float radius)
+        {
+            var pos = Drawing.WorldToScreen(position);
+            return !(pos.X + radius < 0) && !(pos.X - radius > Drawing.Width) && !(pos.Y + radius < 0) &&
+                   !(pos.Y - radius > Drawing.Height);
+        }
+
+        /// <summary>
+        ///     Checks if the unit position is on screen
+        /// </summary>
+        public static bool IsOnScreen(this Vector2 position)
+        {
+            return position.To3D().IsOnScreen();
+        }
+
+        public static bool IsOnScreen(this Vector2 position, float radius)
+        {
+            return position.To3D().IsOnScreen(radius);
         }
 
         /// <summary>
